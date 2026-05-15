@@ -1,0 +1,29 @@
+experiment:
+  name: baseline
+  seed: 42
+  output_dir: results/
+
+data:
+  dataset: null          # override in child configs
+  source_domain: null
+  target_domain: null
+  split_ratio: 0.2
+
+representation:
+  method: null
+  params: {}
+
+adaptation:
+  method: null
+  params: {}
+
+model:
+  type: null
+  params: {}
+
+metrics:
+  - name: null
+
+analysis:
+  plot: true
+  report: true
