@@ -13,7 +13,7 @@ CLI usage (installed entry-point ``nstad-download``)::
 
     nstad-download mitbih --target-dir ~/data/mitbih
     nstad-download cwru   --subset minimal
-    nstad-download deepbeat
+    SYNAPSE_TOKEN=eyJ0eXAi... nstad-download deepbeat
     nstad-download stead  --noise-only
 
 Requirements: requests, tqdm, wfdb (all listed in pyproject.toml).
@@ -138,19 +138,37 @@ def _scrape_cwru_urls(session: requests.Session) -> dict[int, str]:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# DeepBeat manifest (PhysioNet, credentialed access)
+# MIT-BIH manifest
 # ─────────────────────────────────────────────────────────────────────────────
 
-_DEEPBEAT_BASE = "https://physionet.org/files/deepbeat/1.0"
-_DEEPBEAT_FILES: dict[str, tuple[str, str | None]] = {
-    "RECORDS":          (f"{_DEEPBEAT_BASE}/RECORDS",          None),
-    "train_data.csv":   (f"{_DEEPBEAT_BASE}/train_data.csv",   None),
-    "val_data.csv":     (f"{_DEEPBEAT_BASE}/val_data.csv",     None),
-    "test_data.csv":    (f"{_DEEPBEAT_BASE}/test_data.csv",    None),
-    "train_labels.csv": (f"{_DEEPBEAT_BASE}/train_labels.csv", None),
-    "val_labels.csv":   (f"{_DEEPBEAT_BASE}/val_labels.csv",   None),
-    "test_labels.csv":  (f"{_DEEPBEAT_BASE}/test_labels.csv",  None),
-}
+_MITBIH_BASE = "https://physionet.org/files/mitdb/1.0.0"
+
+# All 48 record IDs in the MIT-BIH Arrhythmia Database.
+# Source: https://physionet.org/content/mitdb/1.0.0/
+_MITBIH_RECORDS: list[str] = [
+    "100", "101", "102", "103", "104", "105", "106", "107", "108", "109",
+    "111", "112", "113", "114", "115", "116", "117", "118", "119",
+    "121", "122", "123", "124",
+    "200", "201", "202", "203", "205", "207", "208", "209", "210",
+    "212", "213", "214", "215", "217", "219", "220", "221", "222", "223",
+    "228", "230", "231", "232", "233", "234",
+]
+_MITBIH_EXTS: list[str] = [".hea", ".dat", ".atr"]
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# DeepBeat — Synapse (Sage Bionetworks) entity
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# Hosting  : Synapse, entity ID syn21985690
+# Access   : free account on synapse.org + one-click DUA (no CITI training,
+#            no institutional review — "account + checkbox" only)
+# Auth     : Personal Access Token (PAT) generated at
+#            https://www.synapse.org/PersonalAccessTokens
+# Download : synapseclient + synapseutils handle file listing and MD5
+#            verification internally; no separate manifest needed.
+
+_DEEPBEAT_SYNAPSE_ID = "syn21985690"
 
 # ─────────────────────────────────────────────────────────────────────────────
 # STEAD manifest
@@ -167,25 +185,23 @@ _DEEPBEAT_FILES: dict[str, tuple[str, str | None]] = {
 #
 # rebrand.ly short-links resolve via redirect to Google Drive; large-file
 # downloads require the download_warning confirmation cookie workaround.
-# CSV metadata files for each chunk are served from the GitHub repository.
+#
+# CSV metadata: NOT present in the GitHub repository (verified 2026-05).
+# The CSV files are bundled inside each Google Drive folder that the
+# rebrand.ly links point to.  After downloading an HDF5 file, check whether
+# the corresponding CSV was placed alongside it by the Drive download; if not,
+# it can be obtained from the Illinois DataBank entry for the dataset:
+# https://databank.illinois.edu/datasets/IDB-0305358
 
 _STEAD_FILES: dict[str, tuple[str, str | None]] = {
-    # Noise chunk
+    # Noise chunk (~14.6 GB) — CSV bundled in the same Drive folder
     "chunk1.hdf5": ("https://rebrand.ly/chunk1", None),
-    "chunk1.csv":  (
-        "https://raw.githubusercontent.com/smousavi05/STEAD/master/chunk1.csv",
-        None,
-    ),
-    # First earthquake chunk (included in the default full download)
+    # First earthquake chunk (~13.7 GB)
     "chunk2.hdf5": ("https://rebrand.ly/chunk2", None),
-    "chunk2.csv":  (
-        "https://raw.githubusercontent.com/smousavi05/STEAD/master/chunk2.csv",
-        None,
-    ),
 }
 
 # Files that constitute the noise-only download (chunk1).
-_STEAD_NOISE: frozenset[str] = frozenset({"chunk1.hdf5", "chunk1.csv"})
+_STEAD_NOISE: frozenset[str] = frozenset({"chunk1.hdf5"})
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -361,11 +377,18 @@ def download_mitbih(
 
     Dataset details
     ---------------
-    * Size      : ~104 MB (48 two-lead ECG records, 30 min each, 360 Hz)
-    * Records   : 100–124, 200–234 (48 total)
+    * Size      : ~104 MB (48 two-lead ECG records × 3 files: .hea/.dat/.atr)
+    * Sampling  : 360 Hz, 30 min per record, two leads
+    * Records   : 100–124, 200–234 (48 total, some numbers skipped)
     * License   : Open Data Commons Attribution License v1.0 (ODC-BY)
     * Citation  : Moody & Mark (2001), ``doi:10.1161/01.CIR.101.23.e215``
     * PhysioNet : https://physionet.org/content/mitdb/1.0.0/
+
+    .. note::
+        Files are downloaded directly via ``requests`` from the PhysioNet
+        ``/files/`` mirror, bypassing ``wfdb.dl_database`` which uses
+        ``aiohttp`` internally and occasionally hangs after the last file due
+        to an unclosed event loop (known issue in wfdb ≤ 4.3.1).
 
     Parameters
     ----------
@@ -379,8 +402,6 @@ def download_mitbih(
     Path
         Resolved target directory containing the downloaded records.
     """
-    import wfdb
-
     target_dir = Path(target_dir) if target_dir else _default_dir("mitbih")
     target_dir.mkdir(parents=True, exist_ok=True)
 
@@ -389,9 +410,23 @@ def download_mitbih(
             f.unlink()
         log.info("Cleared %s for re-download", target_dir)
 
-    log.info("Downloading MITDB → %s", target_dir)
-    wfdb.dl_database("mitdb", dl_dir=str(target_dir))
-    log.info("MITDB complete (%s)", target_dir)
+    session = _make_session()
+    cache = _load_cache(target_dir)
+
+    total = len(_MITBIH_RECORDS) * len(_MITBIH_EXTS)
+    log.info(
+        "Downloading MITDB (%d records × %d files = %d total) → %s",
+        len(_MITBIH_RECORDS), len(_MITBIH_EXTS), total, target_dir,
+    )
+    for record in _MITBIH_RECORDS:
+        for ext in _MITBIH_EXTS:
+            filename = record + ext
+            url = f"{_MITBIH_BASE}/{filename}"
+            _download_file(
+                session, filename, url, None, target_dir, cache, force_redownload
+            )
+
+    log.info("MITDB complete — %d files in %s", total, target_dir)
     return target_dir
 
 
@@ -497,35 +532,41 @@ def download_cwru(
 def download_deepbeat(
     target_dir: str | Path | None = None,
     force_redownload: bool = False,
-    username: str | None = None,
-    password: str | None = None,
+    token: str | None = None,
 ) -> Path:
-    """Download the DeepBeat PPG heart-rate dataset from PhysioNet.
-
-    .. note::
-        Access status (open vs. credentialed) is unconfirmed at time of writing.
-        If HTTP 401 is returned, register at https://physionet.org/register/ and
-        pass credentials via arguments or environment variables.
+    """Download the DeepBeat PPG heart-rate dataset from Synapse.
 
     Dataset details
     ---------------
+    * Hosting   : Sage Bionetworks Synapse, entity ``syn21985690``
     * Size      : ~500 MB (train / val / test splits in CSV)
-    * Content   : Continuous PPG waveforms + ground-truth HR labels from
+    * Content   : Deidentified PPG waveforms + ground-truth HR labels from
                   wrist-worn sensors during in-hospital stays
-    * License   : PhysioNet Credentialed Health Data License 1.5.0 (tentative)
+    * License   : Synapse non-commercial Data Use Agreement (DUA) — free
+                  account + one-click agreement, no CITI training required
     * Citation  : Kaisti et al. (2023)
-    * PhysioNet : https://physionet.org/content/deepbeat/1.0/
+    * Synapse   : https://www.synapse.org/Synapse:syn21985690
+
+    Authentication
+    --------------
+    Requires a Personal Access Token (PAT) from
+    ``https://www.synapse.org/PersonalAccessTokens``.
+    Pass it via the *token* argument or the ``SYNAPSE_TOKEN`` environment
+    variable::
+
+        SYNAPSE_TOKEN=eyJ0eXAi... nstad-download deepbeat
+
+    File integrity (MD5) is verified automatically by ``synapseclient``.
 
     Parameters
     ----------
     target_dir:
         Destination directory.  Default: ``~/.nstad_bench/data/deepbeat/``.
     force_redownload:
-        If True, overwrite any already-present files.
-    username:
-        PhysioNet username (e-mail).  Falls back to env ``PHYSIONET_USER``.
-    password:
-        PhysioNet password.  Falls back to env ``PHYSIONET_PASS``.
+        If True, pass ``ifcollision="overwrite.local"`` to Synapse so that
+        already-present files are replaced.
+    token:
+        Synapse PAT.  Falls back to the ``SYNAPSE_TOKEN`` environment variable.
 
     Returns
     -------
@@ -535,35 +576,41 @@ def download_deepbeat(
     Raises
     ------
     RuntimeError
-        If credentials are required but not provided.
-    requests.HTTPError
-        On 401 (bad credentials) or 404 (dataset version changed).
+        If no PAT is found.
+    synapseclient.core.exceptions.SynapseAuthenticationError
+        If the token is invalid or the DUA has not been accepted.
     """
     import os
+
+    import synapseclient
+    import synapseutils
 
     target_dir = Path(target_dir) if target_dir else _default_dir("deepbeat")
     target_dir.mkdir(parents=True, exist_ok=True)
 
-    user = username or os.environ.get("PHYSIONET_USER")
-    passwd = password or os.environ.get("PHYSIONET_PASS")
-    if not user or not passwd:
+    pat = token or os.environ.get("SYNAPSE_TOKEN")
+    if not pat:
         raise RuntimeError(
-            "PhysioNet credentials required for DeepBeat.\n"
-            "Pass username/password arguments or set PHYSIONET_USER / "
-            "PHYSIONET_PASS environment variables.\n"
-            "Register at https://physionet.org/register/"
+            "A Synapse Personal Access Token is required for DeepBeat.\n"
+            "Generate one at https://www.synapse.org/PersonalAccessTokens\n"
+            "then pass it via --token or SYNAPSE_TOKEN=<token> nstad-download deepbeat"
         )
 
-    session = _make_session(username=user, password=passwd)
-    cache = _load_cache(target_dir)
+    collision = "overwrite.local" if force_redownload else "keep.local"
+
+    log.info("Logging in to Synapse …")
+    syn = synapseclient.Synapse()
+    syn.login(authToken=pat, silent=True)
 
     log.info(
-        "Downloading DeepBeat (%d files) → %s", len(_DEEPBEAT_FILES), target_dir
+        "Downloading DeepBeat (%s) → %s", _DEEPBEAT_SYNAPSE_ID, target_dir
     )
-    for filename, (url, sha256) in _DEEPBEAT_FILES.items():
-        _download_file(
-            session, filename, url, sha256, target_dir, cache, force_redownload
-        )
+    synapseutils.syncFromSynapse(
+        syn,
+        _DEEPBEAT_SYNAPSE_ID,
+        path=str(target_dir),
+        ifcollision=collision,
+    )
 
     log.info("DeepBeat complete (%s)", target_dir)
     return target_dir
@@ -690,16 +737,14 @@ examples:
         help="STEAD: download noise chunk only (chunk1, ~14.6 GB).",
     )
     parser.add_argument(
-        "--username",
+        "--token",
         default=None,
-        metavar="USER",
-        help="PhysioNet username (required for DeepBeat).",
-    )
-    parser.add_argument(
-        "--password",
-        default=None,
-        metavar="PASS",
-        help="PhysioNet password (required for DeepBeat).",
+        metavar="PAT",
+        help=(
+            "Synapse Personal Access Token for DeepBeat. "
+            "Alternatively set SYNAPSE_TOKEN env var. "
+            "Generate at https://www.synapse.org/PersonalAccessTokens"
+        ),
     )
     parser.add_argument(
         "--verbose", "-v",
@@ -734,8 +779,7 @@ def main(argv: list[str] | None = None) -> None:
         "deepbeat": lambda: download_deepbeat(
             target_dir=args.target_dir,
             force_redownload=args.force,
-            username=args.username,
-            password=args.password,
+            token=args.token,
         ),
         "stead":    lambda: download_stead(
             target_dir=args.target_dir,

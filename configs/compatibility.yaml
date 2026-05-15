@@ -1,0 +1,43 @@
+# Compatibility matrix: which (representation φ, model θ) pairs are valid.
+#
+# A pair is compatible when the model's expected input dimensionality matches
+# the representation's output dimensionality:
+#
+#   1-D models  (InceptionTime1D, PatchTST)  ← φ that produce (N, T) or (N, C, T)
+#   2-D models  (ResNet18_2D)                ← φ that produce (N, F, T) spectrograms
+#
+# Representation output shapes
+# ----------------------------
+# RawSignal   : (N, T)         → 1-D
+# LogSTFT     : (N, F, T)      → 2-D
+# CWT_Morlet  : (N, F, T)      → 2-D
+# CARLA_SSL   : (N, embed_dim) → 1-D (treated as a 1-channel 1-D sequence)
+#
+# CARLA_SSL × PatchTST rationale
+# --------------------------------
+# CARLA produces a fixed-length embedding vector (N, embed_dim).  PatchTST's
+# _preprocess reshapes (N, T) → (N, 1, T), so the embedding is treated as a
+# single-channel sequence of length embed_dim.  PatchTST then slices it into
+# patches exactly as it would raw signal, giving a methodologically valid pair
+# and an additional experimental data-point.
+
+compatibility:
+  RawSignal:
+    InceptionTime1D: true
+    ResNet18_2D:     false
+    PatchTST:        true
+
+  LogSTFT:
+    InceptionTime1D: false
+    ResNet18_2D:     true
+    PatchTST:        false
+
+  CWT_Morlet:
+    InceptionTime1D: false
+    ResNet18_2D:     true
+    PatchTST:        false
+
+  CARLA_SSL:
+    InceptionTime1D: true
+    ResNet18_2D:     false
+    PatchTST:        true

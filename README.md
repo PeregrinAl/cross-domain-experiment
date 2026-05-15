@@ -34,6 +34,9 @@ examples/             # Runnable usage examples
 3. Configure your run in a YAML file extending `configs/base.yaml`.
 4. Run tests with `pytest`.
 
+# Zero-padding chosen for consistency with LogSTFT preprocessing.
+# Alternative: mean-padding. Both are valid; choice is fixed across all models.
+
 ## License
 
 MIT

@@ -33,7 +33,9 @@ from nstad_bench.data.download import (
     _DEFAULT_ROOT,
     _CWRU_ID_TO_NAME,
     _CWRU_SUBSET_IDS,
-    _DEEPBEAT_FILES,
+    _DEEPBEAT_SYNAPSE_ID,
+    _MITBIH_EXTS,
+    _MITBIH_RECORDS,
     _STEAD_FILES,
     _STEAD_NOISE,
     _build_parser,
@@ -316,10 +318,11 @@ class TestResolveGdriveUrl:
 # ─────────────────────────────────────────────────────────────────────────────
 
 class TestSteadNoiseOnly:
-    def test_noise_set_contains_chunk1_only(self):
+    def test_noise_set_contains_chunk1_hdf5_only(self):
         assert "chunk1.hdf5" in _STEAD_NOISE
-        assert "chunk1.csv" in _STEAD_NOISE
         assert "chunk2.hdf5" not in _STEAD_NOISE
+        # CSV files are bundled in the Drive folder, not separate downloads
+        assert "chunk1.csv" not in _STEAD_NOISE
 
     def test_noise_only_downloads_chunk1_only(self, tmp_path):
         downloaded: list[str] = []
@@ -349,24 +352,90 @@ class TestSteadNoiseOnly:
     def test_chunk2_url_is_rebrand_chunk2(self):
         assert _STEAD_FILES["chunk2.hdf5"][0] == "https://rebrand.ly/chunk2"
 
+    def test_no_csv_entries_in_manifest(self):
+        """CSV files are bundled in Drive folders, not standalone downloads."""
+        assert not any(k.endswith(".csv") for k in _STEAD_FILES)
+
 
 # ─────────────────────────────────────────────────────────────────────────────
-# DeepBeat credentials guard
+# DeepBeat — Synapse PAT authentication
 # ─────────────────────────────────────────────────────────────────────────────
 
-class TestDeepBeatCredentials:
-    def test_raises_without_credentials(self, tmp_path, monkeypatch):
-        monkeypatch.delenv("PHYSIONET_USER", raising=False)
-        monkeypatch.delenv("PHYSIONET_PASS", raising=False)
-        with pytest.raises(RuntimeError, match="credentials"):
+class TestDeepBeatSynapse:
+    """download_deepbeat() uses synapseclient + PAT, not HTTP Basic Auth."""
+
+    def _mock_synapse(self):
+        """Return (mock_synapse_cls, mock_syn_instance, mock_syncFromSynapse)."""
+        mock_syn = MagicMock()
+        mock_cls = MagicMock(return_value=mock_syn)
+        mock_sync = MagicMock()
+        return mock_cls, mock_syn, mock_sync
+
+    def test_raises_without_token(self, tmp_path, monkeypatch):
+        monkeypatch.delenv("SYNAPSE_TOKEN", raising=False)
+        with pytest.raises(RuntimeError, match="Personal Access Token"):
             download_deepbeat(target_dir=tmp_path)
 
-    def test_accepts_env_vars(self, tmp_path, monkeypatch):
-        monkeypatch.setenv("PHYSIONET_USER", "u@x.com")
-        monkeypatch.setenv("PHYSIONET_PASS", "pass")
-        with patch("nstad_bench.data.download._download_file"):
+    def test_uses_synapse_token_env_var(self, tmp_path, monkeypatch):
+        monkeypatch.setenv("SYNAPSE_TOKEN", "tok123")
+        mock_cls, mock_syn, mock_sync = self._mock_synapse()
+        with (
+            patch("synapseclient.Synapse", mock_cls),
+            patch("synapseutils.syncFromSynapse", mock_sync),
+        ):
             out = download_deepbeat(target_dir=tmp_path)
+        mock_syn.login.assert_called_once_with(authToken="tok123", silent=True)
         assert out == tmp_path
+
+    def test_token_argument_takes_priority(self, tmp_path, monkeypatch):
+        monkeypatch.setenv("SYNAPSE_TOKEN", "env_tok")
+        mock_cls, mock_syn, mock_sync = self._mock_synapse()
+        with (
+            patch("synapseclient.Synapse", mock_cls),
+            patch("synapseutils.syncFromSynapse", mock_sync),
+        ):
+            download_deepbeat(target_dir=tmp_path, token="arg_tok")
+        mock_syn.login.assert_called_once_with(authToken="arg_tok", silent=True)
+
+    def test_syncs_correct_entity(self, tmp_path, monkeypatch):
+        monkeypatch.setenv("SYNAPSE_TOKEN", "tok")
+        mock_cls, mock_syn, mock_sync = self._mock_synapse()
+        with (
+            patch("synapseclient.Synapse", mock_cls),
+            patch("synapseutils.syncFromSynapse", mock_sync),
+        ):
+            download_deepbeat(target_dir=tmp_path)
+        args, kwargs = mock_sync.call_args
+        assert args[1] == _DEEPBEAT_SYNAPSE_ID
+
+    def test_force_passes_overwrite_collision(self, tmp_path, monkeypatch):
+        monkeypatch.setenv("SYNAPSE_TOKEN", "tok")
+        mock_cls, mock_syn, mock_sync = self._mock_synapse()
+        with (
+            patch("synapseclient.Synapse", mock_cls),
+            patch("synapseutils.syncFromSynapse", mock_sync),
+        ):
+            download_deepbeat(target_dir=tmp_path, force_redownload=True)
+        _, kwargs = mock_sync.call_args
+        assert kwargs.get("ifcollision") == "overwrite.local"
+
+    def test_no_force_passes_keep_collision(self, tmp_path, monkeypatch):
+        monkeypatch.setenv("SYNAPSE_TOKEN", "tok")
+        mock_cls, mock_syn, mock_sync = self._mock_synapse()
+        with (
+            patch("synapseclient.Synapse", mock_cls),
+            patch("synapseutils.syncFromSynapse", mock_sync),
+        ):
+            download_deepbeat(target_dir=tmp_path, force_redownload=False)
+        _, kwargs = mock_sync.call_args
+        assert kwargs.get("ifcollision") == "keep.local"
+
+    def test_no_username_password_params(self):
+        """Old PhysioNet-style parameters must not exist on the function."""
+        import inspect
+        sig = inspect.signature(download_deepbeat)
+        assert "username" not in sig.parameters
+        assert "password" not in sig.parameters
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -374,17 +443,54 @@ class TestDeepBeatCredentials:
 # ─────────────────────────────────────────────────────────────────────────────
 
 class TestDownloadMitbih:
-    def test_calls_wfdb_dl_database(self, tmp_path):
-        with patch("wfdb.dl_database") as mock_dl:
-            out = download_mitbih(target_dir=tmp_path)
-        mock_dl.assert_called_once_with("mitdb", dl_dir=str(tmp_path))
-        assert out == tmp_path
+    def test_record_list_has_48_entries(self):
+        assert len(_MITBIH_RECORDS) == 48
+
+    def test_extensions_are_hea_dat_atr(self):
+        assert set(_MITBIH_EXTS) == {".hea", ".dat", ".atr"}
+
+    def test_does_not_call_wfdb(self, tmp_path):
+        """New implementation uses requests, not wfdb.dl_database."""
+        with (
+            patch("nstad_bench.data.download._download_file"),
+            patch("wfdb.dl_database") as mock_wfdb,
+        ):
+            download_mitbih(target_dir=tmp_path)
+        mock_wfdb.assert_not_called()
+
+    def test_calls_download_file_144_times(self, tmp_path):
+        """48 records × 3 extensions = 144 _download_file calls."""
+        calls: list[str] = []
+
+        def fake_dl(session, filename, url, sha256, tdir, cache, force, **kw):
+            calls.append(filename)
+
+        with patch("nstad_bench.data.download._download_file", side_effect=fake_dl):
+            download_mitbih(target_dir=tmp_path)
+
+        assert len(calls) == 48 * 3
+
+    def test_urls_point_to_physionet(self, tmp_path):
+        urls: list[str] = []
+
+        def fake_dl(session, filename, url, sha256, tdir, cache, force, **kw):
+            urls.append(url)
+
+        with patch("nstad_bench.data.download._download_file", side_effect=fake_dl):
+            download_mitbih(target_dir=tmp_path)
+
+        assert all("physionet.org/files/mitdb" in u for u in urls)
 
     def test_force_clears_existing_files(self, tmp_path):
         existing = _write(tmp_path / "100.dat", b"old")
-        with patch("wfdb.dl_database"):
+        with patch("nstad_bench.data.download._download_file"):
             download_mitbih(target_dir=tmp_path, force_redownload=True)
         assert not existing.exists()
+
+    def test_returns_target_dir(self, tmp_path):
+        with patch("nstad_bench.data.download._download_file"):
+            out = download_mitbih(target_dir=tmp_path)
+        assert out == tmp_path
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -414,10 +520,14 @@ class TestCLIParser:
         ns = self._parse("stead")
         assert ns.noise_only is False
 
-    def test_deepbeat_credentials(self):
-        ns = self._parse("deepbeat", "--username", "u@x.com", "--password", "p")
-        assert ns.username == "u@x.com"
-        assert ns.password == "p"
+    def test_deepbeat_token_flag(self):
+        ns = self._parse("deepbeat", "--token", "eyJ0eXAi")
+        assert ns.token == "eyJ0eXAi"
+
+    def test_deepbeat_no_username_password_flags(self):
+        """Old PhysioNet flags must be gone from the CLI."""
+        with pytest.raises(SystemExit):
+            self._parse("deepbeat", "--username", "u", "--password", "p")
 
     def test_force_flag(self):
         assert self._parse("mitbih", "--force").force is True
@@ -459,10 +569,10 @@ class TestCLIDispatch:
             main(argv)
         mock_fn.assert_called_once()
 
-    def test_deepbeat_dispatch_passes_credentials(self, tmp_path):
+    def test_deepbeat_dispatch_passes_token(self, tmp_path):
         with patch("nstad_bench.data.download.download_deepbeat", return_value=tmp_path) as m:
             from nstad_bench.data.download import main
-            main(["deepbeat", "--username", "u", "--password", "p"])
+            main(["deepbeat", "--token", "mytoken"])
         m.assert_called_once()
 
     def test_main_exits_1_on_exception(self):

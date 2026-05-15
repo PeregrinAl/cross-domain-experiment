@@ -23,6 +23,7 @@ dependencies = [
     "wfdb==4.3.1",
     "requests==2.32.3",
     "tqdm==4.66.4",
+    "synapseclient==4.3.0",
 ]
 
 [project.optional-dependencies]
