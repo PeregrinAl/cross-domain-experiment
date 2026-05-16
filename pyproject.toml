@@ -24,6 +24,10 @@ dependencies = [
     "requests==2.32.3",
     "tqdm==4.66.4",
     "synapseclient==4.3.0",
+    "matplotlib>=3.9",
+    "seaborn>=0.13",
+    "statsmodels>=0.14",
+    "scikit-posthocs>=0.9",
 ]
 
 [project.optional-dependencies]
@@ -36,6 +40,7 @@ dev = [
 
 [project.scripts]
 nstad-download = "nstad_bench.data.download:main"
+nstad-analyze  = "nstad_bench.analysis.pipeline:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["nstad_bench"]
