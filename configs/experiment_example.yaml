@@ -1,0 +1,98 @@
+# Example experiment config for nstad_bench runner.
+#
+# Run with:
+#   from nstad_bench.experiments.runner import register_dataset, run_experiment
+#   register_dataset("mitbih_ds1_ds2", my_loader)
+#   df = run_experiment("configs/experiment_example.yaml")
+#
+# Two-stage pipeline
+# ------------------
+# Stage 1 (screening): every valid (phi × theta) pair is evaluated with
+#   SourceOnly on all datasets and seeds.  Pairs are ranked by mean delta_auc
+#   and the top-K are passed to Stage 2.
+#
+# Stage 2 (adaptation): top-K pairs × all adaptation methods.  For methods
+#   with a hyperparameter space, n_trials random HP configs are drawn (each
+#   evaluated with all seeds).  SourceOnly has no HP space → 1 trial only.
+
+experiment_name: example_mitbih
+output_dir:      results/
+n_bootstrap:     200          # bootstrap resamples for roc_auc / pr_auc CI
+
+# ── Two-stage settings ────────────────────────────────────────────────────────
+screening:
+  top_k: 2                    # number of (phi, theta) pairs kept after stage 1
+  metric: delta_auc           # ranking criterion: delta_auc | roc_auc | source_roc_auc
+
+random_search:
+  n_trials:  10               # HP trials per adaptation method (per dataset × seed)
+  seeds:     [0, 1, 2]        # model init / adaptation seeds
+  base_seed: 42               # seed for the HP sampler (deterministic across runs)
+
+# ── Datasets ─────────────────────────────────────────────────────────────────
+# Each entry must match a name registered with register_dataset().
+datasets:
+  - mitbih_ds1_ds2
+
+# ── Representations φ ────────────────────────────────────────────────────────
+# Either a list of names (using defaults) or a dict with per-repr params.
+#
+# List form (defaults):
+representations:
+  - RawSignal
+  - LogSTFT
+#
+# Dict form (with custom params) — uncomment to use:
+# representations:
+#   RawSignal: {}
+#   LogSTFT:
+#     n_fft: 256
+#     hop_length: 64
+
+# ── Models θ ─────────────────────────────────────────────────────────────────
+# Keys are model names; values control training (epochs/lr/batch_size) and
+# may include architecture params (nb_filters, depth, d_model, etc.).
+# Parameters 'in_channels' and 'seq_len' are auto-determined from data.
+models:
+  InceptionTime1D:
+    epochs:     30
+    lr:         1.0e-3
+    batch_size: 64
+    nb_filters: 32
+    depth:      3
+
+  PatchTST:
+    epochs:     30
+    lr:         5.0e-4
+    batch_size: 32
+    d_model:    128
+    n_heads:    4
+    n_layers:   3
+
+# ── Adaptation methods ψ ──────────────────────────────────────────────────────
+# Empty dict {} = no hyperparameters → exactly 1 trial in Stage 2.
+# HP specs:
+#   {type: log_float, low: …, high: …}  log-uniform float
+#   {type: float,     low: …, high: …}  uniform float
+#   {type: int,       low: …, high: …}  uniform integer
+#   {type: choice,    choices: […]}     uniform choice
+adaptation_methods:
+  SourceOnly: {}
+
+  MK_MMD:
+    n_epochs:   {type: int,       low: 5,     high: 20}
+    lr:         {type: log_float, low: 1.0e-5, high: 1.0e-3}
+    lambda_mmd: {type: log_float, low: 0.1,   high: 10.0}
+    batch_size: {type: choice,    choices: [16, 32, 64]}
+
+  CoDATS:
+    n_epochs:      {type: int,       low: 5,     high: 20}
+    lr:            {type: log_float, low: 1.0e-5, high: 1.0e-3}
+    lr_disc:       {type: log_float, low: 1.0e-4, high: 1.0e-2}
+    lambda_domain: {type: log_float, low: 0.1,   high: 10.0}
+    batch_size:    {type: choice,    choices: [16, 32, 64]}
+
+  M2N2:
+    n_steps:    {type: int,       low: 20,    high: 100}
+    lr:         {type: log_float, low: 1.0e-5, high: 1.0e-3}
+    batch_size: {type: choice,    choices: [16, 32, 64]}
