@@ -1,0 +1,125 @@
+site_name: nstad_bench
+site_url: https://peregrinAl.github.io/cross-domain-experiment/
+site_description: >-
+  Non-Stationary Transfer Adaptation Domain Benchmark —
+  a modular framework for evaluating domain adaptation under distribution shift
+  on physiological and sensor time-series.
+site_author: parshintseva
+
+repo_name: PeregrinAl/cross-domain-experiment
+repo_url: https://github.com/PeregrinAl/cross-domain-experiment
+edit_uri: edit/main/docs/
+
+copyright: Copyright &copy; 2024-2026 parshintseva
+
+# ── Theme ─────────────────────────────────────────────────────────────────────
+theme:
+  name: material
+  language: en
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: deep purple
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: deep purple
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  font:
+    text: Inter
+    code: JetBrains Mono
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - navigation.footer
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+    - toc.follow
+
+# ── Plugins ───────────────────────────────────────────────────────────────────
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_style: numpy
+            show_root_heading: true
+            show_source: true
+            show_signature_annotations: true
+            heading_level: 2
+
+# ── Extensions ────────────────────────────────────────────────────────────────
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.arithmatex:
+      generic: true
+  - tables
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+
+extra_javascript:
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+extra_css:
+  - assets/extra.css
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/PeregrinAl/cross-domain-experiment
+
+# ── Navigation ────────────────────────────────────────────────────────────────
+nav:
+  - Home: index.md
+  - Getting started:
+    - Installation: installation.md
+    - Quickstart: quickstart.md
+  - Datasets:
+    - Overview: datasets.md
+    - MIT-BIH Arrhythmia: datasets/mitbih.md
+    - DeepBeat PPG: datasets/deepbeat.md
+    - STEAD Seismic: datasets/stead.md
+    - Bearing datasets (excluded): bearing_analysis.md
+  - Components:
+    - Representations (φ): representations.md
+    - Models (θ): models.md
+    - Adaptation methods (ψ): adaptation.md
+    - Metrics: metrics.md
+  - Experiment runner: runner.md
+  - Analysis & reporting: analysis.md
+  - API reference:
+    - nstad_bench.experiments: api/experiments.md
+    - nstad_bench.metrics: api/metrics.md
+    - nstad_bench.analysis: api/analysis.md
+    - nstad_bench.models: api/models.md
+    - nstad_bench.adaptation: api/adaptation.md
+    - nstad_bench.representations: api/representations.md
+  - Contributing: contributing.md

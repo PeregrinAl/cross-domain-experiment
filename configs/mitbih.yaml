@@ -1,0 +1,88 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# MIT-BIH Arrhythmia Database  —  inter-patient DS1 → DS2
+# ──────────────────────────────────────────────────────────────────────────────
+#
+# Task        : Binary classification — Normal (N) vs Arrhythmia (A+V+L+R+/)
+# Split       : AAMI-recommended inter-patient partition
+#               DS1 (22 records) → source domain
+#               DS2 (22 records) → target domain
+# Signal      : Lead II, 360 Hz, 180-sample windows centred on R-peaks
+# Download    : nstad-download mitbih
+# Loader key  : "mitbih_ds1_ds2"
+# Reference   : Moody & Mark (2001) IEEE EMBS Magazine 20(3):45-50
+#
+# Expected wall time  ≈ 2–4 h on a single V100 (full config)
+# ──────────────────────────────────────────────────────────────────────────────
+
+experiment_name: mitbih
+output_dir:      results/
+
+n_bootstrap: 200
+
+screening:
+  top_k:  2
+  metric: delta_auc
+
+random_search:
+  n_trials:  10
+  seeds:     [0, 1, 2]
+  base_seed: 42
+
+datasets:
+  - mitbih_ds1_ds2
+
+# ── Representations ───────────────────────────────────────────────────────────
+# RawSignal  → 1-D waveform (N, 180)          compatible: InceptionTime1D, PatchTST
+# LogSTFT    → log-power spectrogram (N,F,T)  compatible: ResNet18_2D
+# CWT_Morlet → scalogram (N,F,T)              compatible: ResNet18_2D
+representations:
+  RawSignal:  {}
+  LogSTFT:
+    n_fft:      64
+    hop_length: 16
+  CWT_Morlet:
+    num_scales: 32
+
+# ── Models ────────────────────────────────────────────────────────────────────
+models:
+  InceptionTime1D:
+    epochs:     40
+    lr:         1.0e-3
+    batch_size: 64
+    nb_filters: 32
+    depth:      6
+
+  PatchTST:
+    epochs:     40
+    lr:         5.0e-4
+    batch_size: 32
+    d_model:    128
+    n_heads:    4
+    n_layers:   3
+
+  ResNet18_2D:
+    epochs:     40
+    lr:         5.0e-4
+    batch_size: 32
+
+# ── Adaptation methods ────────────────────────────────────────────────────────
+adaptation_methods:
+  SourceOnly: {}
+
+  MK_MMD:
+    n_epochs:   {type: int,       low: 5,     high: 30}
+    lr:         {type: log_float, low: 1.0e-5, high: 1.0e-3}
+    lambda_mmd: {type: log_float, low: 0.1,   high: 10.0}
+    batch_size: {type: choice,    choices: [32, 64, 128]}
+
+  CoDATS:
+    n_epochs:      {type: int,       low: 5,     high: 30}
+    lr:            {type: log_float, low: 1.0e-5, high: 1.0e-3}
+    lr_disc:       {type: log_float, low: 1.0e-4, high: 1.0e-2}
+    lambda_domain: {type: log_float, low: 0.1,   high: 10.0}
+    batch_size:    {type: choice,    choices: [32, 64, 128]}
+
+  M2N2:
+    n_steps:    {type: int,       low: 20,    high: 150}
+    lr:         {type: log_float, low: 1.0e-5, high: 1.0e-3}
+    batch_size: {type: choice,    choices: [32, 64, 128]}

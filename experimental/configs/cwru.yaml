@@ -1,0 +1,112 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# CWRU Bearing Dataset  —  cross-severity transfer
+# ──────────────────────────────────────────────────────────────────────────────
+#
+# Task        : Binary classification — Healthy vs Faulty bearing
+# Split       : Defect size shift  ← CROSS-SEVERITY
+#               Source : 0.007″ defects (B007, IR007, OR007@3/6/12) + Normal_0HP
+#               Target : 0.014″ + 0.021″ defects                    + Normal_0HP
+#               Load condition fixed at 0 HP / 1797 RPM for both domains.
+# Signal      : Drive-end accelerometer (DE_time), 12 kHz, 1024-sample windows
+# Fault types : Ball, Inner race, Outer race (pooled → Faulty)
+# Download    : nstad-download cwru --subset 12k_drive_end
+# Loader key  : "cwru_severity"
+# Reference   : Smith & Randall (2015) Mech. Systems & Signal Processing 64-65
+#
+# ── Why cross-severity? ───────────────────────────────────────────────────────
+# The cross-load split (0HP → 3HP) was found to be trivially easy (AUC ≈ 1.0)
+# because per-window z-score normalisation eliminates amplitude shortcuts while
+# kurtosis separates healthy vs faulty across load conditions perfectly.
+#
+# The cross-severity split asks: can a model trained on small defects (0.007")
+# detect larger defects (0.014"–0.021")?  Source and target share the same load
+# condition and healthy signal — only defect size shifts.  Expected SourceOnly
+# AUC on target: 0.75–0.90.
+#
+# ── Loader impl ──────────────────────────────────────────────────────────────
+# Loader is implemented in nstad_bench/data/cwru_loader.py.
+# Data path resolved in order: cwru_loader(data_root=…) → $NSTAD_DATA_ROOT/cwru/
+# → ~/.nstad_bench/data/cwru/
+#
+# ── Quick start ──────────────────────────────────────────────────────────────
+#   from nstad_bench.data.cwru_loader import cwru_loader
+#   from nstad_bench.experiments.runner import register_dataset, run_experiment
+#
+#   register_dataset("cwru_severity", cwru_loader())
+#   # or with explicit path:
+#   register_dataset("cwru_severity", cwru_loader(data_root="/path/to/cwru"))
+#
+# Expected wall time  ≈ 1–2 h on a single V100 (full config)
+# ──────────────────────────────────────────────────────────────────────────────
+
+experiment_name: cwru
+output_dir:      results/
+
+n_bootstrap: 200
+
+screening:
+  top_k:  2
+  metric: delta_auc
+
+random_search:
+  n_trials:  10
+  seeds:     [0, 1, 2]
+  base_seed: 42
+
+datasets:
+  - cwru_severity
+
+# ── Representations ───────────────────────────────────────────────────────────
+# Vibration data benefits from frequency-domain views;
+# CWT_Morlet is particularly effective for non-stationary bearing signals.
+representations:
+  RawSignal:  {}
+  LogSTFT:
+    n_fft:      256
+    hop_length: 64
+  CWT_Morlet:
+    num_scales: 64
+
+# ── Models ────────────────────────────────────────────────────────────────────
+models:
+  InceptionTime1D:
+    epochs:     50
+    lr:         1.0e-3
+    batch_size: 128
+    nb_filters: 64
+    depth:      6
+
+  PatchTST:
+    epochs:     50
+    lr:         5.0e-4
+    batch_size: 64
+    d_model:    256
+    n_heads:    8
+    n_layers:   4
+
+  ResNet18_2D:
+    epochs:     50
+    lr:         5.0e-4
+    batch_size: 64
+
+# ── Adaptation methods ────────────────────────────────────────────────────────
+adaptation_methods:
+  SourceOnly: {}
+
+  MK_MMD:
+    n_epochs:   {type: int,       low: 5,     high: 30}
+    lr:         {type: log_float, low: 1.0e-5, high: 1.0e-3}
+    lambda_mmd: {type: log_float, low: 0.01,  high: 5.0}
+    batch_size: {type: choice,    choices: [64, 128, 256]}
+
+  CoDATS:
+    n_epochs:      {type: int,       low: 5,     high: 30}
+    lr:            {type: log_float, low: 1.0e-5, high: 1.0e-3}
+    lr_disc:       {type: log_float, low: 1.0e-4, high: 1.0e-2}
+    lambda_domain: {type: log_float, low: 0.01,  high: 5.0}
+    batch_size:    {type: choice,    choices: [64, 128, 256]}
+
+  M2N2:
+    n_steps:    {type: int,       low: 30,    high: 200}
+    lr:         {type: log_float, low: 1.0e-5, high: 1.0e-3}
+    batch_size: {type: choice,    choices: [64, 128, 256]}

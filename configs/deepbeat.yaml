@@ -1,0 +1,117 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# DeepBeat  —  inter-patient PPG AF detection
+# ──────────────────────────────────────────────────────────────────────────────
+#
+# Task        : Binary classification — Sinus Rhythm / 0 (SR) vs AF / 1
+# Split       : Pre-made patient-level split (non-overlapping patients)
+#               Source : train.npz  — patients   1–137 (137 patients)
+#               Target : test.npz   — patients 146–167 ( 22 patients)
+#               Zero patient overlap between source and target.
+# Sensor      : Wrist-worn PPG only — single modality throughout.
+#               There is NO cross-device (wrist→finger) variant.
+# Signal      : 800-sample windows, normalised to [0,1]
+#               Sampling rate ≈ 125 Hz (6.4 s windows)
+#               Input shape: (N, 800) — single channel
+# Class balance:
+#               Source (train.npz): SR 54.6 % / AF 45.4 %  (≈ balanced)
+#               Target (test.npz):  SR 76.0 % / AF 24.0 %  (natural imbalance)
+#               Imbalance shift is part of the domain gap.
+# Download    : SYNAPSE_TOKEN=<token> nstad-download deepbeat
+#               (free Synapse account: synapse.org)
+# Loader impl : nstad_bench/data/deepbeat_loader.py — deepbeat_loader()
+# Loader key  : "deepbeat_patient_split"
+# Reference   : Kaisti et al. (2023), Synapse syn21985690
+#
+# ── File format (actual, verified) ──────────────────────────────────────────
+# Three NumPy archives in ~/.nstad_bench/data/deepbeat/:
+#
+#   train.npz / validate.npz / test.npz
+#
+#   signal     (N, 800, 1)  float64  PPG waveform, channel 0 used
+#   rhythm     (N, 2)       float64  one-hot: col0=SR, col1=AF
+#   qa_label   (N, 3)       float32  signal quality (not used)
+#   parameters (N, 3)       object   [timestamp, session_id, patient_id]
+#
+# ── Quick start ──────────────────────────────────────────────────────────────
+#   from nstad_bench.data.deepbeat_loader import deepbeat_loader
+#   from nstad_bench.experiments.runner import register_dataset, run_experiment
+#
+#   register_dataset("deepbeat_patient_split", deepbeat_loader())
+#   df = run_experiment("configs/deepbeat.yaml")
+#
+# Note: source has 2.8M windows; loader caps each class to max_per_class=50 000
+#       by default (~100 k source windows total, ~600 MB RAM).
+#
+# Expected wall time  ≈ 1–3 h on a single V100 (full config)
+# ──────────────────────────────────────────────────────────────────────────────
+
+experiment_name: deepbeat
+output_dir:      results/
+
+n_bootstrap: 200
+
+screening:
+  top_k:  2
+  metric: delta_auc
+
+random_search:
+  n_trials:  10
+  seeds:     [0, 1, 2]
+  base_seed: 42
+
+datasets:
+  - deepbeat_patient_split
+
+# ── Representations ───────────────────────────────────────────────────────────
+# PPG morphology is captured well by raw signal and STFT;
+# CARLA_SSL provides pretrained embeddings robust to device noise.
+representations:
+  RawSignal:  {}
+  LogSTFT:
+    n_fft:      128
+    hop_length: 32
+  CARLA_SSL:  {}
+
+# ── Models ────────────────────────────────────────────────────────────────────
+models:
+  InceptionTime1D:
+    epochs:     40
+    lr:         1.0e-3
+    batch_size: 64
+    nb_filters: 32
+    depth:      4
+
+  PatchTST:
+    epochs:     40
+    lr:         5.0e-4
+    batch_size: 32
+    d_model:    128
+    n_heads:    4
+    n_layers:   3
+
+  ResNet18_2D:
+    epochs:     40
+    lr:         5.0e-4
+    batch_size: 32
+
+# ── Adaptation methods ────────────────────────────────────────────────────────
+adaptation_methods:
+  SourceOnly: {}
+
+  MK_MMD:
+    n_epochs:   {type: int,       low: 5,     high: 25}
+    lr:         {type: log_float, low: 1.0e-5, high: 1.0e-3}
+    lambda_mmd: {type: log_float, low: 0.1,   high: 10.0}
+    batch_size: {type: choice,    choices: [32, 64]}
+
+  CoDATS:
+    n_epochs:      {type: int,       low: 5,     high: 25}
+    lr:            {type: log_float, low: 1.0e-5, high: 1.0e-3}
+    lr_disc:       {type: log_float, low: 1.0e-4, high: 1.0e-2}
+    lambda_domain: {type: log_float, low: 0.1,   high: 10.0}
+    batch_size:    {type: choice,    choices: [32, 64]}
+
+  M2N2:
+    n_steps:    {type: int,       low: 20,    high: 100}
+    lr:         {type: log_float, low: 1.0e-5, high: 1.0e-3}
+    batch_size: {type: choice,    choices: [32, 64]}

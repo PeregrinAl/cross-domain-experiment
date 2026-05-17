@@ -1,0 +1,120 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# STEAD  —  NC/SC geographic seismic event detection
+# ──────────────────────────────────────────────────────────────────────────────
+#
+# Task        : Binary classification — Earthquake (1) vs Noise (0)
+# Split       : Geographic station shift (NC → SC)
+#               Source : Southern California networks — CI, SB, AZ, WR
+#                        (SCSN, UC Santa Barbara, ANZA, CADWR)
+#               Target : Northern California networks — NC, BK
+#                        (NCSN / USGS Menlo Park, UC Berkeley BDSN)
+#               ~300 km geographic separation; distinct crustal velocity
+#               models and attenuation → weak but real domain shift.
+# Signal      : Vertical (Z) component only, 100 Hz, 6000-sample windows (60 s)
+#               Raw HDF5: shape (6000, 3) columns [E, N, Z]; index 2 used.
+#               Per-trace z-score normalisation applied in the loader.
+#               Input shape: (N, 6000) — single channel.
+# Download    : nstad-download stead              (≈ 28 GB, chunk1 + chunk2)
+#               nstad-download stead --noise-only  (≈ 14.6 GB, chunk1 only)
+# Loader key  : "stead_nc_sc"
+# Loader impl : nstad_bench/data/stead_loader.py — stead_nc_sc_loader()
+# Reference   : Mousavi et al. (2019) doi:10.1038/s41598-019-55563-3
+#
+# ── Approximate trace counts (chunk2, per Mousavi et al. 2019) ───────────────
+#   CI (SoCal)  ~150 000  earthquake traces   ← source majority
+#   AZ (SoCal)  ~  9 000
+#   SB (SoCal)  ~  3 000
+#   WR (SoCal)  ~  1 500
+#   NC (NorCal) ~ 35 000                      ← target majority
+#   BK (NorCal) ~ 12 000
+#   NN / NP / UW / US / …  (excluded)
+#   chunk1 (noise) ~ 100 000 traces — split 50/50 between domains
+#
+# Both domains include both earthquake and noise to keep the binary task
+# identical across domains; only the geographic recording conditions differ.
+# Classes are balanced (eq = noise) per domain via the loader.
+#
+# ── Quick start ───────────────────────────────────────────────────────────────
+#   from nstad_bench.data.stead_loader import stead_nc_sc_loader
+#   from nstad_bench.experiments.runner import register_dataset, run_experiment
+#
+#   register_dataset("stead_nc_sc", stead_nc_sc_loader(max_per_class=20_000))
+#   df = run_experiment("configs/stead.yaml")
+#
+# ── Inspect network distribution before running ───────────────────────────────
+#   python scripts/stead_inspect_networks.py
+#
+# Expected wall time  ≈ 3–6 h on a single V100 (full config)
+# ──────────────────────────────────────────────────────────────────────────────
+
+experiment_name: stead
+output_dir:      results/
+
+n_bootstrap: 200
+
+screening:
+  top_k:  2
+  metric: delta_auc
+
+random_search:
+  n_trials:  10
+  seeds:     [0, 1, 2]
+  base_seed: 42
+
+datasets:
+  - stead_nc_sc
+
+# ── Representations ───────────────────────────────────────────────────────────
+# Single-channel (Z-component) seismic data → in_channels=1 for all models.
+# LogSTFT and CWT_Morlet produce 2-D spectrograms consumed by ResNet18_2D.
+representations:
+  RawSignal:  {}
+  LogSTFT:
+    n_fft:      512
+    hop_length: 128
+  CWT_Morlet:
+    num_scales: 64
+
+# ── Models ────────────────────────────────────────────────────────────────────
+models:
+  InceptionTime1D:
+    epochs:     50
+    lr:         5.0e-4
+    batch_size: 64
+    nb_filters: 64
+    depth:      6
+
+  PatchTST:
+    epochs:     50
+    lr:         2.0e-4
+    batch_size: 32
+    d_model:    256
+    n_heads:    8
+    n_layers:   4
+
+  ResNet18_2D:
+    epochs:     50
+    lr:         5.0e-4
+    batch_size: 32
+
+# ── Adaptation methods ────────────────────────────────────────────────────────
+adaptation_methods:
+  SourceOnly: {}
+
+  MK_MMD:
+    n_epochs:   {type: int,       low: 5,     high: 30}
+    lr:         {type: log_float, low: 1.0e-5, high: 5.0e-4}
+    lambda_mmd: {type: log_float, low: 0.01,  high: 5.0}
+    batch_size: {type: choice,    choices: [32, 64]}
+
+  CoDATS:
+    n_epochs:      {type: int,       low: 5,     high: 30}
+    lr:            {type: log_float, low: 1.0e-5, high: 5.0e-4}
+    lr_disc:       {type: log_float, low: 1.0e-4, high: 1.0e-2}
+    lambda_domain: {type: log_float, low: 0.01,  high: 5.0}
+    batch_size:    {type: choice,    choices: [32, 64]}
+
+  M2N2:
+    n_steps:    {type: int,       low: 30,    high: 200}
+    lr:         {type: log_float, low: 1.0e-5, high: 5.0e-4}
+    batch_size: {type: choice,    choices: [32, 64]}

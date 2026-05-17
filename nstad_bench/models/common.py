@@ -115,9 +115,37 @@ class BenchModel(nn.Module, BaseModel):
     # Public numpy API                                                     #
     # ------------------------------------------------------------------ #
 
+    # Default batch size used during inference.  Training uses its own
+    # batch_size argument passed to fit().  Inference must also be batched:
+    # a full forward pass on N=17 617 samples through InceptionTime1D
+    # creates intermediate activations of shape (N, nb_filters×4, T=800)
+    # — up to 3.6 GB per module at nb_filters=16 — causing OOM if the
+    # entire array is pushed through at once.
+    _INFER_BATCH: int = 256
+
     @property
     def _device(self) -> torch.device:
         return next(self.parameters()).device
+
+    @torch.no_grad()
+    def _run_batched(self, X: np.ndarray, fn) -> np.ndarray:
+        """Run *fn(batch_tensor) → tensor* over X in mini-batches.
+
+        Preprocesses X once (CPU), then streams batches of size
+        ``_INFER_BATCH`` to the model device.  Concatenates results on CPU.
+        Avoids peak-memory spikes from single large forward passes.
+        """
+        self.eval()
+        t = self._preprocess(X)           # stays on CPU until batch loop
+        loader = DataLoader(
+            TensorDataset(t),
+            batch_size=self._INFER_BATCH,
+            shuffle=False,
+        )
+        parts: list[torch.Tensor] = []
+        for (xb,) in loader:
+            parts.append(fn(xb.to(self._device)).cpu())
+        return torch.cat(parts, dim=0).numpy()
 
     @torch.no_grad()
     def get_features(self, X: np.ndarray) -> np.ndarray:
@@ -138,9 +166,9 @@ class BenchModel(nn.Module, BaseModel):
         np.ndarray
             Shape ``(N, 128)`` — one 128-dimensional feature vector per sample.
         """
-        self.eval()
-        t = self._preprocess(X).to(self._device)
-        return self.projector(self.backbone(t)).cpu().numpy()
+        return self._run_batched(
+            X, lambda xb: self.projector(self.backbone(xb))
+        )
 
     @torch.no_grad()
     def predict_proba(self, X: np.ndarray) -> np.ndarray:
@@ -151,10 +179,9 @@ class BenchModel(nn.Module, BaseModel):
         np.ndarray
             Shape ``(N, 2)`` with values in ``[0, 1]`` summing to 1 per row.
         """
-        self.eval()
-        t = self._preprocess(X).to(self._device)
-        logits = self(t)
-        return torch.softmax(logits, dim=-1).cpu().numpy()
+        return self._run_batched(
+            X, lambda xb: torch.softmax(self(xb), dim=-1)
+        )
 
     def predict(self, X: np.ndarray) -> np.ndarray:
         """Return predicted class indices (argmax of ``predict_proba``)."""
