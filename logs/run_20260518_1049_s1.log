@@ -1,0 +1,22 @@
+2026-05-18 10:49:34  INFO      ============================================================
+2026-05-18 10:49:34  INFO        nstad_bench  run_all.py
+2026-05-18 10:49:34  INFO        Started : 2026-05-18 10:49:34
+2026-05-18 10:49:34  INFO        Log file: logs/run_20260518_1049_s1.log
+2026-05-18 10:49:34  INFO        Mode    : STAGE 1 ONLY
+2026-05-18 10:49:34  INFO      ============================================================
+2026-05-18 10:49:37  INFO      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-05-18 10:49:37  INFO        Dataset : mitbih_ds1_ds2
+2026-05-18 10:49:37  INFO        Config  : /Users/user/projects/cross-domain-experiment/configs/mitbih.yaml
+2026-05-18 10:49:37  INFO        Mode    : STAGE 1 ONLY (screening)
+2026-05-18 10:49:37  INFO      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-05-18 10:49:37  INFO      ======================================================================
+2026-05-18 10:49:37  INFO      Experiment : mitbih
+2026-05-18 10:49:37  INFO      Output     : results/mitbih.parquet
+2026-05-18 10:49:37  INFO      n_bootstrap: 200
+2026-05-18 10:49:37  INFO      ======================================================================
+2026-05-18 10:49:37  INFO      --- Stage 1: Screening (SourceOnly) ---
+2026-05-18 10:49:37  INFO      Stage 1 — 12 screening configs
+2026-05-18 10:49:37  INFO      [S1 1/12] [screening] RawSignal×InceptionTime1D×SourceOnly  ds=mitbih_ds1_ds2  seed=0  trial=0
+2026-05-18 10:49:37  INFO      Segmenting DS1 (source) from /Users/user/.nstad_bench/data/mitbih …
+2026-05-18 10:49:37  INFO      Segmenting DS2 (target) from /Users/user/.nstad_bench/data/mitbih …
+2026-05-18 10:49:38  INFO      MIT-BIH DS1→DS2 — source: 6000  (N=3000, A=3000)  target: 6000  (N=3000, A=3000)

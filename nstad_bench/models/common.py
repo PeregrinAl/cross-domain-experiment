@@ -31,6 +31,7 @@ and ``self._config``.
 
 from __future__ import annotations
 
+import logging
 from abc import abstractmethod
 from pathlib import Path
 from typing import Any
@@ -41,6 +42,8 @@ import torch.nn as nn
 from torch.utils.data import DataLoader, TensorDataset
 
 from nstad_bench.models.base import BaseModel
+
+log = logging.getLogger(__name__)
 
 
 class _ClassHead(nn.Module):
@@ -227,12 +230,22 @@ class BenchModel(nn.Module, BaseModel):
         criterion = nn.CrossEntropyLoss()
 
         self.train()
-        for _ in range(epochs):
+        for epoch in range(epochs):
+            epoch_loss = 0.0
+            n_batches  = 0
             for xb, yb in loader:
                 xb, yb = xb.to(self._device), yb.to(self._device)
                 optimizer.zero_grad()
-                criterion(self(xb), yb).backward()
+                loss = criterion(self(xb), yb)
+                loss.backward()
                 optimizer.step()
+                epoch_loss += float(loss.item())
+                n_batches  += 1
+            if (epoch + 1) % 5 == 0 or epoch == 0:
+                log.info(
+                    "    epoch %d/%d  loss=%.4f",
+                    epoch + 1, epochs, epoch_loss / max(n_batches, 1),
+                )
 
         return self
 

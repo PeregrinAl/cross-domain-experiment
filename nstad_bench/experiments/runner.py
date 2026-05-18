@@ -336,6 +336,20 @@ def _build_adapt(
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# Device selection
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _get_device() -> "torch.device":
+    """Return the best available device: MPS (Apple Silicon) > CUDA > CPU."""
+    import torch
+    if torch.backends.mps.is_available():
+        return torch.device("mps")
+    if torch.cuda.is_available():
+        return torch.device("cuda")
+    return torch.device("cpu")
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # Single-run execution
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -380,8 +394,11 @@ def _run_single(
     log.debug("    repr %s: %s → %s", cfg.phi, X_s_raw.shape, X_s.shape)
 
     # ── Train source model ────────────────────────────────────────────────────
+    device = _get_device()
     m_cfg = model_train_cfg.get(cfg.theta, {})
     model = _build_model(cfg.theta, X_s, m_cfg)
+    model = model.to(device)
+    log.info("    device: %s", device)
     model.fit(
         X_s, y_s,
         epochs=int(m_cfg.get("epochs", 30)),
@@ -464,7 +481,13 @@ def _adaptation_configs(
     top_pairs: list[tuple[str, str]],
     base_seed: int = 0,
 ) -> list[RunConfig]:
-    """Top-K (φ, θ) × every ψ (with HP trials) × datasets × seeds."""
+    """Top-K (φ, θ) × every ψ (with HP trials) × datasets × seeds.
+
+    SourceOnly is intentionally excluded from Stage 2: it was already run in
+    Stage 1 (screening) and its rows are carried into the final output via
+    ``s1_rows``.  Running it again would produce duplicate rows with identical
+    ``config_hash`` values (stage is not part of the hash).
+    """
     seeds      = exp_cfg["random_search"]["seeds"]
     n_trials   = int(exp_cfg["random_search"]["n_trials"])
     datasets   = exp_cfg["datasets"]
@@ -476,13 +499,9 @@ def _adaptation_configs(
     ):
         space = psi_spaces[psi] or {}
         if not space:
-            # No HP space (e.g. SourceOnly) — single trial
-            configs.append(RunConfig(
-                dataset=dataset, phi=phi, theta=theta,
-                psi=psi, seed=int(seed),
-                hp_trial=0, hp_params=(),
-                stage="adaptation",
-            ))
+            # No HP space → SourceOnly.  Already covered by Stage 1; skip here
+            # to avoid duplicate rows in the final DataFrame.
+            continue
         else:
             for trial in range(n_trials):
                 # Deterministic RNG per (psi, trial, base_seed) — independent of seed
@@ -594,13 +613,39 @@ def _add_gain_rows(df: pd.DataFrame) -> pd.DataFrame:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Save helper
+# Save helpers
 # ─────────────────────────────────────────────────────────────────────────────
 
 def _save(df: pd.DataFrame, output_dir: Path, output_path: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     df[RESULT_COLS].to_parquet(output_path, index=False, engine="pyarrow")
     log.info("Saved %d rows → %s", len(df), output_path)
+
+
+def _save_checkpoint(rows: list[dict[str, Any]], path: Path) -> None:
+    """Atomically overwrite a checkpoint Parquet with *rows*.
+
+    Uses a write-then-rename pattern so a crash mid-write never leaves a
+    corrupted checkpoint: the old file remains intact until the new one is
+    fully flushed.
+    """
+    if not rows:
+        return
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_suffix(".tmp.parquet")
+    pd.DataFrame(rows)[RESULT_COLS].to_parquet(tmp, index=False, engine="pyarrow")
+    tmp.replace(path)   # atomic on POSIX; best-effort on Windows
+    log.debug("Checkpoint updated: %d rows → %s", len(rows), path.name)
+
+
+def _load_checkpoint(path: Path) -> tuple[list[dict[str, Any]], set[str]]:
+    """Return (rows, done_hashes) from an existing checkpoint, or ([], set())."""
+    if not path.exists():
+        return [], set()
+    df = pd.read_parquet(path)
+    rows = df.to_dict("records")
+    done = set(df["config_hash"].unique())
+    return rows, done
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -612,8 +657,9 @@ def run_experiment(
     *,
     config_root: str | Path | None = None,
     dry_run: bool = False,
+    stage1_only: bool = False,
 ) -> pd.DataFrame:
-    """Load a YAML config and run the full two-stage experiment pipeline.
+    """Load a YAML config and run the two-stage experiment pipeline.
 
     Parameters
     ----------
@@ -626,17 +672,51 @@ def run_experiment(
         If ``True``, expand and log the run queue without executing any run.
         Useful for estimating total compute before committing.
         Returns an empty DataFrame.
+    stage1_only :
+        If ``True``, run only Stage 1 (SourceOnly screening) and return.
+        Results are saved to ``<output_dir>/<experiment_name>.s1.parquet``
+        and the checkpoint is intentionally kept so that a subsequent call
+        without ``stage1_only`` can resume directly into Stage 2 without
+        repeating any Stage 1 work.
 
     Returns
     -------
     pd.DataFrame
         Long-format results table (schema: ``RESULT_COLS``).
-        Also written to ``<output_dir>/<experiment_name>.parquet``.
+        In ``stage1_only`` mode, contains only Stage 1 rows.
+        In full mode, also written to ``<output_dir>/<experiment_name>.parquet``.
 
     Notes
     -----
-    Failed runs are logged at ERROR level and skipped; the runner continues
-    with remaining configs so a single exception never aborts the experiment.
+    **Two-phase workflow**::
+
+        # Phase 1 — run screening, inspect results
+        df_s1 = run_experiment("configs/mitbih.yaml", stage1_only=True)
+        # → results/mitbih.s1.parquet  (checkpoint kept for Phase 2)
+
+        # Phase 2 — run adaptation (Stage 1 skipped via checkpoint resume)
+        df_full = run_experiment("configs/mitbih.yaml")
+
+    **Crash recovery / resume**
+
+    Two checkpoint files are written incrementally during the run::
+
+        <output_dir>/<experiment_name>.s1.parquet   — Stage 1 screening rows
+        <output_dir>/<experiment_name>.s2.parquet   — Stage 2 adaptation rows
+
+    If the process is killed and restarted with the same config, the runner
+    detects existing checkpoints and skips already-completed configs.
+    Checkpoints are deleted automatically on successful full completion.
+
+    **Between-dataset fault isolation**
+
+    ``run_all.py`` calls ``run_experiment`` once per dataset; each call writes
+    its own Parquet independently.  A crash on dataset B never affects dataset
+    A's already-saved results.
+
+    Failed individual runs are logged at ERROR level and skipped; the runner
+    continues with remaining configs so a single exception never aborts the
+    experiment.
     """
     config_path = Path(config_path)
     if config_root is None:
@@ -658,6 +738,10 @@ def run_experiment(
 
     compat = _load_compat_mask(config_root)
 
+    # Checkpoint paths (hidden from final output dir; clearly named)
+    s1_ckpt_path = output_dir / f"{exp_name}.s1.parquet"
+    s2_ckpt_path = output_dir / f"{exp_name}.s2.parquet"
+
     log.info("=" * 70)
     log.info("Experiment : %s", exp_name)
     log.info("Output     : %s", output_path)
@@ -669,39 +753,84 @@ def run_experiment(
     s1_cfgs = _screening_configs(exp_cfg, compat)
 
     if dry_run:
-        s2_cfgs_estimate = len(s1_cfgs)  # upper bound before top-K is known
         log.info(
             "DRY RUN — Stage 1: %d configs  (Stage 2 TBD after screening)",
-            s2_cfgs_estimate,
+            len(s1_cfgs),
         )
         return pd.DataFrame(columns=RESULT_COLS)
 
-    s1_rows: list[dict[str, Any]] = []
+    # Resume: load any existing Stage-1 checkpoint
+    s1_rows, s1_done_hashes = _load_checkpoint(s1_ckpt_path)
+    if s1_done_hashes:
+        log.info(
+            "Resume: Stage 1 checkpoint found — %d/%d configs already done",
+            len(s1_done_hashes), len(s1_cfgs),
+        )
+
     for i, cfg in enumerate(s1_cfgs, 1):
+        if cfg.config_hash in s1_done_hashes:
+            log.info("[S1 %d/%d] SKIP (checkpoint) %s", i, len(s1_cfgs), cfg)
+            continue
         log.info("[S1 %d/%d] %s", i, len(s1_cfgs), cfg)
         try:
-            s1_rows.extend(_run_single(cfg, model_train_cfg, n_bootstrap))
+            new_rows = _run_single(cfg, model_train_cfg, n_bootstrap)
+            s1_rows.extend(new_rows)
+            s1_done_hashes.add(cfg.config_hash)
+            _save_checkpoint(s1_rows, s1_ckpt_path)
         except Exception as exc:
             log.error("FAILED [S1 %d/%d] %s — %s", i, len(s1_cfgs), cfg, exc,
                       exc_info=True)
 
-    # ── Select top-K ─────────────────────────────────────────────────────────
+    # ── Select top-K (always computed; logged even in stage1_only mode) ──────
     top_pairs = _select_top_k(s1_rows, top_k, s_metric)
+
+    # ── Stage 1 only — save and return without running Stage 2 ───────────────
+    if stage1_only:
+        df = pd.DataFrame(s1_rows)[RESULT_COLS]
+        # Save a human-readable copy alongside the checkpoint.
+        s1_results_path = output_dir / f"{exp_name}.s1_results.parquet"
+        _save(df, output_dir, s1_results_path)
+        log.info(
+            "=== Stage 1 complete: %d rows saved to %s ===",
+            len(df), s1_results_path,
+        )
+        log.info(
+            "    Checkpoint kept at %s — Stage 2 will resume from here.",
+            s1_ckpt_path,
+        )
+        if not top_pairs:
+            log.warning("No (φ, θ) pairs survived screening.")
+        return df
+
     if not top_pairs:
         log.warning("No (φ, θ) pairs survived screening; skipping Stage 2.")
-        df = pd.DataFrame(s1_rows, columns=RESULT_COLS)
+        df = pd.DataFrame(s1_rows)[RESULT_COLS]
         _save(df, output_dir, output_path)
+        s1_ckpt_path.unlink(missing_ok=True)
         return df
 
     # ── Stage 2: Adaptation ───────────────────────────────────────────────────
     log.info("--- Stage 2: Adaptation (top-%d pairs × all ψ) ---", top_k)
     s2_cfgs = _adaptation_configs(exp_cfg, compat, top_pairs, base_seed)
 
-    s2_rows: list[dict[str, Any]] = []
+    # Resume: load any existing Stage-2 checkpoint
+    s2_rows, s2_done_hashes = _load_checkpoint(s2_ckpt_path)
+    if s2_done_hashes:
+        log.info(
+            "Resume: Stage 2 checkpoint found — %d/%d configs already done",
+            len(s2_done_hashes), len(s2_cfgs),
+        )
+
     for i, cfg in enumerate(s2_cfgs, 1):
+        if cfg.config_hash in s2_done_hashes:
+            log.info("[S2 %d/%d] SKIP (checkpoint) %s", i, len(s2_cfgs), cfg)
+            continue
         log.info("[S2 %d/%d] %s", i, len(s2_cfgs), cfg)
         try:
-            s2_rows.extend(_run_single(cfg, model_train_cfg, n_bootstrap))
+            new_rows = _run_single(cfg, model_train_cfg, n_bootstrap)
+            s2_rows.extend(new_rows)
+            s2_done_hashes.add(cfg.config_hash)
+            _save_checkpoint(s2_rows, s2_ckpt_path)
         except Exception as exc:
             log.error("FAILED [S2 %d/%d] %s — %s", i, len(s2_cfgs), cfg, exc,
                       exc_info=True)
@@ -718,6 +847,12 @@ def run_experiment(
         df["config_hash"].nunique(),
         output_path,
     )
+
+    # Remove checkpoints only after the final Parquet is fully written
+    s1_ckpt_path.unlink(missing_ok=True)
+    s2_ckpt_path.unlink(missing_ok=True)
+    log.info("Checkpoints removed (run completed successfully)")
+
     return df
 
 
