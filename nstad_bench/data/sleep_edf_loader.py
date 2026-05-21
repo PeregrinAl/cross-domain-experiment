@@ -2,11 +2,16 @@
 
 Domain split (per task spec)
 ----------------------------
-1. Pick *n_subjects* subjects deterministically from the seed.
-2. Hold out one of them as the **target**; the rest are the **source**.
+1. Select *n_subjects* subjects from the Sleep Cassette pool using a fixed
+   *subject_seed* (default 42) — the same cohort across all experiment seeds.
+2. The last *n_target* of those subjects form the **target pool**.
+   The remaining form the fixed **source** split.
+3. Within a single run, *seed* (the experiment seed) selects which subject
+   from the target pool is tested: ``target = pool[seed % n_target]``.
 
-Different seeds yield different (source-subjects, target-subject) splits,
-giving an honest cross-subject shift with a built-in variance estimate.
+This gives leave-one-subject-out evaluation across *n_target* folds while
+keeping the source cohort fixed — matching the cross-subject protocol used
+in the sleep staging literature.
 
 Binary task — Wake vs. Sleep:
     0 = Wake          (Sleep stage W)
@@ -94,8 +99,33 @@ _FPZ_CZ_CANDIDATES: tuple[str, ...] = (
 )
 
 
+IN_BED_MARGIN_EPOCHS: int = 60   # 30 min × 2 epochs/min = 60 epochs at 30 s/epoch
+
+
 def _default_root() -> Path:
     return resolve_data_root("sleep-edf")
+
+
+def _trim_in_bed_window(
+    X: np.ndarray,
+    y: np.ndarray,
+    margin: int = IN_BED_MARGIN_EPOCHS,
+) -> tuple[np.ndarray, np.ndarray]:
+    """Trim to the in-bed window: *margin* wake epochs before the first sleep
+    epoch and *margin* wake epochs after the last sleep epoch.
+
+    This removes the long pre-lights-out and post-wake-up tails that would
+    otherwise inflate the Wake class to ~70 % and make the classification
+    trivial.  Standard preprocessing in the Sleep-EDF literature.
+    """
+    sleep_idx = np.where(y == 1)[0]
+    if sleep_idx.size == 0:
+        return X, y
+    first_sleep = int(sleep_idx[0])
+    last_sleep  = int(sleep_idx[-1])
+    start = max(0, first_sleep - margin)
+    end   = min(len(y), last_sleep + 1 + margin)
+    return X[start:end], y[start:end]
 
 
 def _index_subjects(root: Path) -> dict[str, tuple[Path, Path]]:
@@ -173,6 +203,7 @@ def _read_subject(psg: Path, hyp: Path) -> tuple[np.ndarray, np.ndarray]:
     sigma = X.std(axis=1, keepdims=True) + 1e-8
     X = (X - mu) / sigma
     y = np.asarray(y_parts, dtype=np.int64)
+    X, y = _trim_in_bed_window(X, y)
     return X, y
 
 
@@ -201,7 +232,9 @@ def _stack_subjects(
 def sleep_edf_loader(
     data_root: str | Path | None = None,
     *,
-    n_subjects: int = 10,
+    n_subjects: int = 12,
+    n_target: int = 4,
+    subject_seed: int = 42,
     seed: int = 0,
     balance: bool = True,
     max_per_class: int | None = None,
@@ -211,21 +244,26 @@ def sleep_edf_loader(
     Parameters
     ----------
     data_root :
-        Sleep-EDF directory (searched recursively for ``*-PSG.edf`` /
-        ``*-Hypnogram.edf`` pairs).
+        Sleep-EDF **cassette** directory (searched recursively for
+        ``*-PSG.edf`` / ``*-Hypnogram.edf`` pairs).
     n_subjects :
-        Total subjects to draw from the database.  One of them becomes the
-        target, the rest become source.  Default 10 per task spec.
+        Total subjects drawn from the database.  Default 12 per task spec.
+    n_target :
+        Size of the target pool.  The last *n_target* of the chosen subjects
+        become candidates for target; the remainder are always source.
+        Default 4, giving an 8-source / 4-target split over 12 subjects.
+    subject_seed :
+        Seed used **only** to select the *n_subjects* cohort.  Fixed at 42
+        so every experiment run uses the same subjects; changing this would
+        break comparability across seeds.
     seed :
-        Random seed used for **both** subject selection and target choice.
-        Different seeds → different (source, target) splits — this is how
-        the benchmark provides variance estimates across 3 seeds.
+        Experiment seed.  Selects which subject from the target pool is
+        tested in this run (``target = pool[seed % n_target]``) and controls
+        subsampling / shuffling.  Seeds 0, 1, 2 cover 3 of the 4 LOSO folds.
     balance :
-        If ``True``, downsample the majority class within each domain to
-        match the minority class count.  Sleep epochs vastly outnumber
-        Wake epochs in healthy recordings, so balancing is on by default.
+        Downsample majority class to match minority within each domain.
     max_per_class :
-        Optional hard cap on per-class epoch count per domain (after balancing).
+        Optional hard cap on per-class epoch count (after balancing).
 
     Returns
     -------
@@ -249,24 +287,34 @@ def sleep_edf_loader(
             )
 
         available = sorted(index.keys())
-        if len(available) < n_subjects:
+
+        # Fixed cohort: always the same n_subjects regardless of experiment seed.
+        subj_rng = np.random.default_rng(subject_seed)
+        if len(available) <= n_subjects:
             log.warning(
                 "Only %d subjects available, requested %d — using all of them.",
                 len(available), n_subjects,
             )
             chosen = available
         else:
-            chosen_idx = rng.choice(len(available), n_subjects, replace=False)
+            chosen_idx = subj_rng.choice(len(available), n_subjects, replace=False)
             chosen = [available[i] for i in sorted(chosen_idx)]
 
-        # Pick one of the chosen subjects as target; remaining become source.
-        target_pos = int(rng.integers(len(chosen)))
-        target = [chosen[target_pos]]
-        source = [s for i, s in enumerate(chosen) if i != target_pos]
+        # Split into fixed source pool and rotating target pool.
+        # n_target is clamped so source always has ≥ 1 subject.
+        effective_n_target = min(n_target, len(chosen) - 1)
+        n_src = len(chosen) - effective_n_target
+        source      = chosen[:n_src]
+        target_pool = chosen[n_src:]
+        target      = [target_pool[seed % len(target_pool)]]
 
-        log.info("Sleep-EDF cross-subject split (seed=%d)", seed)
+        log.info(
+            "Sleep-EDF LOSO split (subject_seed=%d, seed=%d, fold %d/%d)",
+            subject_seed, seed, seed % len(target_pool) + 1, len(target_pool),
+        )
         log.info("  Source (%d subjects): %s", len(source), source)
-        log.info("  Target (%d subject):  %s", len(target), target)
+        log.info("  Target pool (%d):     %s", len(target_pool), target_pool)
+        log.info("  This run's target:    %s", target[0])
 
         X_s, y_s = _stack_subjects(source, index)
         X_t, y_t = _stack_subjects(target, index)

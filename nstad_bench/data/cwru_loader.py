@@ -69,7 +69,11 @@ WIN: int = 1024
 STRIDE: int = 512
 
 _NORMAL_PAT = re.compile(r"(?i)normal")
-_HP_PAT = re.compile(r"(?i)_(\d+)\s*hp")   # captures the load in HP
+# Old canonical format: Normal_0HP.mat, B007_DE_0HP.mat
+_HP_PAT_OLD = re.compile(r"(?i)_(\d+)\s*hp")
+# brjapon/Kaggle format: Time_Normal_1_098.mat, B007_1_123.mat, OR007_6_1_136.mat
+# HP load is always the second-to-last underscore token (file ID is last).
+_HP_PAT_NEW = re.compile(r"_(\d+)_\d+$")
 
 
 def _default_root() -> Path:
@@ -118,16 +122,21 @@ def _slice_windows(sig: np.ndarray, win: int, stride: int) -> np.ndarray:
 def _discover_files(root: Path, hp: str) -> tuple[list[Path], list[Path]]:
     """Return ``(normal_files, fault_files)`` matching load *hp* under *root*.
 
-    Files are matched by suffix ``_<hp>HP`` in the stem (case-insensitive)
-    and classified as Normal if the stem contains ``"normal"``.  All other
-    matching files are treated as fault recordings.  Search is recursive so
-    Kaggle's nested directory layouts work without any pre-processing.
+    Two filename conventions are recognised:
+    - Old canonical: ``Normal_0HP.mat``, ``B007_DE_0HP.mat``
+    - Kaggle brjapon: ``Time_Normal_1_098.mat``, ``B007_1_123.mat``,
+      ``OR007_6_1_136.mat`` (HP is always second-to-last ``_``-token)
+
+    Files are classified as Normal if the stem contains ``"normal"``; all
+    other matching files are treated as fault recordings.  Search is
+    recursive so Kaggle's nested directory layouts work without any
+    pre-processing.
     """
     normal: list[Path] = []
     fault: list[Path] = []
     target_hp = str(hp)
     for p in sorted(root.rglob("*.mat")):
-        m = _HP_PAT.search(p.stem)
+        m = _HP_PAT_OLD.search(p.stem) or _HP_PAT_NEW.search(p.stem)
         if not m or m.group(1) != target_hp:
             continue
         if _NORMAL_PAT.search(p.stem):
@@ -148,7 +157,9 @@ def _load_domain(
     if not normal_files and not fault_files:
         raise FileNotFoundError(
             f"No CWRU .mat files found for HP={hp} under {root}.\n"
-            "Expected filenames like 'Normal_0HP.mat' or 'B007_DE_0HP.mat'.\n"
+            "Expected filenames in one of two formats:\n"
+            "  canonical: Normal_0HP.mat, B007_DE_0HP.mat\n"
+            "  brjapon/Kaggle: Time_Normal_0_098.mat, B007_0_123.mat\n"
             "Set data_root / DATA_ROOT / NSTAD_DATA_ROOT to your CWRU directory."
         )
 

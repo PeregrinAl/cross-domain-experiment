@@ -58,6 +58,26 @@ def test_window_constants_match_spec():
     assert sef.FS == 100
     assert sef.EPOCH_SEC == 30
     assert sef.WIN == 3000
+    assert sef.IN_BED_MARGIN_EPOCHS == 60   # 30 min / 30 s = 60 epochs
+
+
+def test_trim_in_bed_window_removes_leading_trailing_wake():
+    """Long wake tails outside the 30-min margin are removed."""
+    # 10 wake + 5 sleep + 10 wake — margin=2 → keep [8:17]
+    y = np.array([0]*10 + [1]*5 + [0]*10, dtype=np.int64)
+    X = np.zeros((len(y), sef.WIN), dtype=np.float32)
+    Xt, yt = sef._trim_in_bed_window(X, y, margin=2)
+    assert yt[0] == 0 and yt[-1] == 0          # still starts/ends with wake
+    assert (yt == 1).sum() == 5                 # all sleep epochs preserved
+    assert len(yt) == 2 + 5 + 2                 # exactly margin on each side
+
+
+def test_trim_in_bed_window_all_wake_unchanged():
+    """If there are no sleep epochs, the signal is returned unchanged."""
+    y = np.zeros(20, dtype=np.int64)
+    X = np.zeros((20, sef.WIN), dtype=np.float32)
+    Xt, yt = sef._trim_in_bed_window(X, y, margin=5)
+    assert len(yt) == 20
 
 
 def test_loader_raises_when_no_subjects(tmp_path):
@@ -67,57 +87,63 @@ def test_loader_raises_when_no_subjects(tmp_path):
 
 
 def test_loader_splits_source_and_target(monkeypatch, tmp_path):
-    """End-to-end with _read_subject mocked — verifies LOSO + balancing."""
-    # Create fake EDF pairs for 6 subjects (TZ default is 10, but test smaller).
+    """End-to-end with _read_subject mocked — verifies 8/4 split + balancing."""
     for prefix in ("SC4001", "SC4002", "SC4003", "SC4004", "SC4005", "SC4006"):
         _touch_pair(tmp_path, prefix)
 
     def _fake_read(psg, hyp):
-        # Each subject contributes 40 Wake + 40 Sleep epochs of synthetic data.
+        # Each subject: 20 leading wake + 40 sleep + 20 trailing wake (in-bed window
+        # trimmer with margin=60 won't trim anything since all fit within one recording).
         rng = np.random.default_rng(hash(psg.stem) % (2 ** 32))
         X = rng.normal(0, 1, (80, sef.WIN)).astype(np.float32)
-        y = np.array([0] * 40 + [1] * 40, dtype=np.int64)
+        y = np.array([0] * 20 + [1] * 40 + [0] * 20, dtype=np.int64)
         return X, y
 
     monkeypatch.setattr(sef, "_read_subject", _fake_read)
 
+    # 6 subjects, n_target=2 → source=4, target pool=2; seed=0 picks pool[0].
     loader = sef.sleep_edf_loader(
-        data_root=tmp_path, n_subjects=6, seed=0, max_per_class=100,
+        data_root=tmp_path, n_subjects=6, n_target=2,
+        subject_seed=0, seed=0, max_per_class=100,
     )
     X_s, y_s, X_t, y_t = loader()
 
     assert X_s.shape[1] == X_t.shape[1] == sef.WIN
     assert set(np.unique(y_s)) == {0, 1}
     assert set(np.unique(y_t)) == {0, 1}
-    # Target = exactly one subject (80 epochs, balanced to 40+40 = 80 then maybe capped)
-    # Source = remaining 5 subjects (5 × 80 = 400 epochs, balanced + capped to 200)
+    # Source (4 subjects) must be larger than target (1 subject).
     assert len(X_t) <= len(X_s), "Target should be one subject; source the rest"
 
 
-def test_loader_seed_changes_split(monkeypatch, tmp_path):
-    """Different seeds → different (source, target) splits."""
+def test_loader_seed_changes_target(monkeypatch, tmp_path):
+    """Different seeds rotate through the target pool (same source cohort)."""
     for prefix in ("SC4001", "SC4002", "SC4003", "SC4004", "SC4005", "SC4006"):
         _touch_pair(tmp_path, prefix)
 
-    seen_targets: set[str] = set()
+    # Track which subjects are loaded as target.
+    read_calls: list[str] = []
 
     def _fake_read(psg, hyp):
-        seen_targets.add(psg.stem[:6])
+        read_calls.append(psg.stem[:6])
         X = np.zeros((20, sef.WIN), dtype=np.float32)
-        y = np.array([0] * 10 + [1] * 10, dtype=np.int64)
+        y = np.array([0] * 5 + [1] * 10 + [0] * 5, dtype=np.int64)
         return X, y
 
     monkeypatch.setattr(sef, "_read_subject", _fake_read)
 
-    targets = []
-    for seed in range(4):
-        seen_targets.clear()
+    # With n_subjects=6, n_target=2: target pool has 2 subjects (indices 4, 5 of
+    # the sorted chosen list).  seed=0 → pool[0], seed=1 → pool[1].
+    targets_per_seed = []
+    for seed in range(2):
+        read_calls.clear()
         loader = sef.sleep_edf_loader(
-            data_root=tmp_path, n_subjects=4, seed=seed, max_per_class=20,
+            data_root=tmp_path, n_subjects=6, n_target=2,
+            subject_seed=0, seed=seed, max_per_class=20,
         )
         loader()
-        # No deterministic way to recover the target subject from the public API,
-        # but the loader prints it via logging.  As a softer check, we ensure
-        # different seeds touch different subject subsets at least sometimes.
-        targets.append(frozenset(seen_targets))
-    assert len(set(targets)) >= 2, "Different seeds should yield different subject subsets"
+        # The last subject read is the target (source subjects are read first).
+        targets_per_seed.append(read_calls[-1])
+
+    assert targets_per_seed[0] != targets_per_seed[1], (
+        "Different seeds must select different target subjects"
+    )

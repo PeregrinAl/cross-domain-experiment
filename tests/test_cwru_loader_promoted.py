@@ -15,15 +15,15 @@ from nstad_bench.data import cwru_loader as cwru_mod
 
 
 def _make_fake_root(tmp_path: Path) -> Path:
-    """Create empty .mat files (content is supplied by the patched reader)."""
+    """Create empty .mat files using brjapon/Kaggle naming convention."""
     root = tmp_path / "cwru"
     root.mkdir()
     for stem in (
-        # 0 HP
-        "Normal_0HP", "B007_DE_0HP", "IR007_DE_0HP", "OR007@6_DE_0HP",
+        # 0 HP — brjapon format: <Type>_<HP>_<FileID>
+        "Time_Normal_0_097", "B007_0_122", "IR007_0_109", "OR007_6_0_135",
         # 3 HP
-        "Normal_3HP", "B007_DE_3HP", "IR007_DE_3HP", "OR007@6_DE_3HP",
-        # noise file with no HP tag in the name — must be ignored
+        "Time_Normal_3_262", "B007_3_237", "IR007_3_274", "OR007_6_3_250",
+        # noise file with no load pattern — must be ignored
         "fan_end_summary",
     ):
         (root / f"{stem}.mat").touch()
@@ -54,12 +54,12 @@ def test_discovers_files_by_hp_suffix(patched_reader, tmp_path):
     root = _make_fake_root(tmp_path)
     normal_0, fault_0 = cwru_mod._discover_files(root, "0")
     normal_3, fault_3 = cwru_mod._discover_files(root, "3")
-    assert {p.stem for p in normal_0} == {"Normal_0HP"}
-    assert {p.stem for p in normal_3} == {"Normal_3HP"}
+    assert {p.stem for p in normal_0} == {"Time_Normal_0_097"}
+    assert {p.stem for p in normal_3} == {"Time_Normal_3_262"}
     assert len(fault_0) == 3 and len(fault_3) == 3
-    # Files without HP suffix never appear
-    for files in (normal_0, normal_3, fault_0, fault_3):
-        assert all("HP" in p.stem.upper() for p in files)
+    # fan_end_summary has no load pattern — must be absent from all lists
+    all_found = normal_0 + fault_0 + normal_3 + fault_3
+    assert all("fan_end_summary" not in p.stem for p in all_found)
 
 
 def test_loader_returns_correct_shapes(patched_reader, tmp_path):
