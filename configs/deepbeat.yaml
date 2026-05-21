@@ -63,14 +63,17 @@ datasets:
   - deepbeat_patient_split
 
 # ── Representations ───────────────────────────────────────────────────────────
-# PPG morphology is captured well by raw signal and STFT;
-# CARLA_SSL provides pretrained embeddings robust to device noise.
+# RawSignal  → z-score normalised waveform (N, 800)       → InceptionTime1D, PatchTST
+# LogSTFT    → log-power spectrogram (N, F, T)            → ResNet18_2D
+#
+# CARLA_SSL excluded: AD-pretrained SSL encoder semantically incompatible with
+# AF rhythm classification; flat embeddings fed to temporal Conv1d is an
+# architectural category error.  See experimental/carla_ssl.py.
 representations:
   RawSignal:  {}
   LogSTFT:
     n_fft:      128
     hop_length: 32
-  CARLA_SSL:  {}
 
 # ── Models ────────────────────────────────────────────────────────────────────
 models:

@@ -1,0 +1,204 @@
+2026-05-19 20:29:33  INFO      ============================================================
+2026-05-19 20:29:33  INFO        nstad_bench  run_all.py
+2026-05-19 20:29:33  INFO        Started : 2026-05-19 20:29:33
+2026-05-19 20:29:33  INFO        Log file: logs/run_20260519_2029.log
+2026-05-19 20:29:33  INFO        Mode    : FULL
+2026-05-19 20:29:33  INFO      ============================================================
+2026-05-19 20:29:37  INFO      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-05-19 20:29:37  INFO        Dataset : mitbih_ds1_ds2
+2026-05-19 20:29:37  INFO        Config  : /Users/user/projects/cross-domain-experiment/configs/mitbih.yaml
+2026-05-19 20:29:37  INFO        Mode    : FULL
+2026-05-19 20:29:37  INFO      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-05-19 20:29:37  INFO      ======================================================================
+2026-05-19 20:29:37  INFO      Experiment : mitbih
+2026-05-19 20:29:37  INFO      Output     : results/mitbih.parquet
+2026-05-19 20:29:37  INFO      n_bootstrap: 200
+2026-05-19 20:29:37  INFO      ======================================================================
+2026-05-19 20:29:37  INFO      --- Stage 1: Screening (SourceOnly) ---
+2026-05-19 20:29:37  INFO      Stage 1 — 12 screening configs
+2026-05-19 20:29:37  INFO      Resume: Stage 1 checkpoint found — 12/12 configs already done
+2026-05-19 20:29:37  INFO      [S1 1/12] SKIP (checkpoint) [screening] RawSignal×InceptionTime1D×SourceOnly  ds=mitbih_ds1_ds2  seed=0  trial=0
+2026-05-19 20:29:37  INFO      [S1 2/12] SKIP (checkpoint) [screening] RawSignal×InceptionTime1D×SourceOnly  ds=mitbih_ds1_ds2  seed=1  trial=0
+2026-05-19 20:29:37  INFO      [S1 3/12] SKIP (checkpoint) [screening] RawSignal×InceptionTime1D×SourceOnly  ds=mitbih_ds1_ds2  seed=2  trial=0
+2026-05-19 20:29:37  INFO      [S1 4/12] SKIP (checkpoint) [screening] RawSignal×PatchTST×SourceOnly  ds=mitbih_ds1_ds2  seed=0  trial=0
+2026-05-19 20:29:37  INFO      [S1 5/12] SKIP (checkpoint) [screening] RawSignal×PatchTST×SourceOnly  ds=mitbih_ds1_ds2  seed=1  trial=0
+2026-05-19 20:29:37  INFO      [S1 6/12] SKIP (checkpoint) [screening] RawSignal×PatchTST×SourceOnly  ds=mitbih_ds1_ds2  seed=2  trial=0
+2026-05-19 20:29:37  INFO      [S1 7/12] SKIP (checkpoint) [screening] LogSTFT×ResNet18_2D×SourceOnly  ds=mitbih_ds1_ds2  seed=0  trial=0
+2026-05-19 20:29:37  INFO      [S1 8/12] SKIP (checkpoint) [screening] LogSTFT×ResNet18_2D×SourceOnly  ds=mitbih_ds1_ds2  seed=1  trial=0
+2026-05-19 20:29:37  INFO      [S1 9/12] SKIP (checkpoint) [screening] LogSTFT×ResNet18_2D×SourceOnly  ds=mitbih_ds1_ds2  seed=2  trial=0
+2026-05-19 20:29:37  INFO      [S1 10/12] SKIP (checkpoint) [screening] CWT_Morlet×ResNet18_2D×SourceOnly  ds=mitbih_ds1_ds2  seed=0  trial=0
+2026-05-19 20:29:37  INFO      [S1 11/12] SKIP (checkpoint) [screening] CWT_Morlet×ResNet18_2D×SourceOnly  ds=mitbih_ds1_ds2  seed=1  trial=0
+2026-05-19 20:29:37  INFO      [S1 12/12] SKIP (checkpoint) [screening] CWT_Morlet×ResNet18_2D×SourceOnly  ds=mitbih_ds1_ds2  seed=2  trial=0
+2026-05-19 20:29:37  INFO      Top-2 (φ, θ) pairs by mean delta_auc:
+phi        theta      
+LogSTFT    ResNet18_2D    0.151543
+RawSignal  PatchTST       0.146852
+2026-05-19 20:29:37  INFO      --- Stage 2: Adaptation (top-2 pairs × all ψ) ---
+2026-05-19 20:29:37  INFO      Stage 2 — 180 adaptation configs
+2026-05-19 20:29:37  INFO      Resume: Stage 2 checkpoint found — 139/180 configs already done
+2026-05-19 20:29:37  INFO      [S2 1/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=0
+2026-05-19 20:29:37  INFO      [S2 2/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=1
+2026-05-19 20:29:37  INFO      [S2 3/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=2
+2026-05-19 20:29:37  INFO      [S2 4/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=3
+2026-05-19 20:29:37  INFO      [S2 5/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=4
+2026-05-19 20:29:37  INFO      [S2 6/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=5
+2026-05-19 20:29:37  INFO      [S2 7/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=6
+2026-05-19 20:29:37  INFO      [S2 8/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=7
+2026-05-19 20:29:37  INFO      [S2 9/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=8
+2026-05-19 20:29:37  INFO      [S2 10/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=9
+2026-05-19 20:29:37  INFO      [S2 11/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=0
+2026-05-19 20:29:37  INFO      [S2 12/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=1
+2026-05-19 20:29:37  INFO      [S2 13/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=2
+2026-05-19 20:29:37  INFO      [S2 14/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=3
+2026-05-19 20:29:37  INFO      [S2 15/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=4
+2026-05-19 20:29:37  INFO      [S2 16/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=5
+2026-05-19 20:29:37  INFO      [S2 17/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=6
+2026-05-19 20:29:37  INFO      [S2 18/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=7
+2026-05-19 20:29:37  INFO      [S2 19/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=8
+2026-05-19 20:29:37  INFO      [S2 20/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=9
+2026-05-19 20:29:37  INFO      [S2 21/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=0
+2026-05-19 20:29:37  INFO      [S2 22/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=1
+2026-05-19 20:29:37  INFO      [S2 23/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=2
+2026-05-19 20:29:37  INFO      [S2 24/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=3
+2026-05-19 20:29:37  INFO      [S2 25/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=4
+2026-05-19 20:29:37  INFO      [S2 26/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=5
+2026-05-19 20:29:37  INFO      [S2 27/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=6
+2026-05-19 20:29:37  INFO      [S2 28/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=7
+2026-05-19 20:29:37  INFO      [S2 29/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=8
+2026-05-19 20:29:37  INFO      [S2 30/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=9
+2026-05-19 20:29:37  INFO      [S2 31/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=0
+2026-05-19 20:29:37  INFO      [S2 32/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=1
+2026-05-19 20:29:37  INFO      [S2 33/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=2
+2026-05-19 20:29:37  INFO      [S2 34/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=3
+2026-05-19 20:29:37  INFO      [S2 35/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=4
+2026-05-19 20:29:37  INFO      [S2 36/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=5
+2026-05-19 20:29:37  INFO      [S2 37/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=6
+2026-05-19 20:29:37  INFO      [S2 38/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=7
+2026-05-19 20:29:37  INFO      [S2 39/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=8
+2026-05-19 20:29:37  INFO      [S2 40/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=9
+2026-05-19 20:29:37  INFO      [S2 41/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=0
+2026-05-19 20:29:37  INFO      [S2 42/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=1
+2026-05-19 20:29:37  INFO      [S2 43/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=2
+2026-05-19 20:29:37  INFO      [S2 44/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=3
+2026-05-19 20:29:37  INFO      [S2 45/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=4
+2026-05-19 20:29:37  INFO      [S2 46/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=5
+2026-05-19 20:29:37  INFO      [S2 47/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=6
+2026-05-19 20:29:37  INFO      [S2 48/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=7
+2026-05-19 20:29:37  INFO      [S2 49/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=8
+2026-05-19 20:29:37  INFO      [S2 50/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=9
+2026-05-19 20:29:37  INFO      [S2 51/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=2  trial=0
+2026-05-19 20:29:37  INFO      [S2 52/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=2  trial=1
+2026-05-19 20:29:37  INFO      [S2 53/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=2  trial=2
+2026-05-19 20:29:37  INFO      [S2 54/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=2  trial=3
+2026-05-19 20:29:37  INFO      [S2 55/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=2  trial=4
+2026-05-19 20:29:37  INFO      [S2 56/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=2  trial=5
+2026-05-19 20:29:37  INFO      [S2 57/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=2  trial=6
+2026-05-19 20:29:37  INFO      [S2 58/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=2  trial=7
+2026-05-19 20:29:37  INFO      [S2 59/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=2  trial=8
+2026-05-19 20:29:37  INFO      [S2 60/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=2  trial=9
+2026-05-19 20:29:37  INFO      [S2 61/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=0  trial=0
+2026-05-19 20:29:37  INFO      [S2 62/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=0  trial=1
+2026-05-19 20:29:37  INFO      [S2 63/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=0  trial=2
+2026-05-19 20:29:37  INFO      [S2 64/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=0  trial=3
+2026-05-19 20:29:37  INFO      [S2 65/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=0  trial=4
+2026-05-19 20:29:37  INFO      [S2 66/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=0  trial=5
+2026-05-19 20:29:37  INFO      [S2 67/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=0  trial=6
+2026-05-19 20:29:37  INFO      [S2 68/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=0  trial=7
+2026-05-19 20:29:37  INFO      [S2 69/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=0  trial=8
+2026-05-19 20:29:37  INFO      [S2 70/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=0  trial=9
+2026-05-19 20:29:37  INFO      [S2 71/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=1  trial=0
+2026-05-19 20:29:37  INFO      [S2 72/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=1  trial=1
+2026-05-19 20:29:37  INFO      [S2 73/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=1  trial=2
+2026-05-19 20:29:37  INFO      [S2 74/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=1  trial=3
+2026-05-19 20:29:37  INFO      [S2 75/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=1  trial=4
+2026-05-19 20:29:37  INFO      [S2 76/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=1  trial=5
+2026-05-19 20:29:37  INFO      [S2 77/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=1  trial=6
+2026-05-19 20:29:37  INFO      [S2 78/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=1  trial=7
+2026-05-19 20:29:37  INFO      [S2 79/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=1  trial=8
+2026-05-19 20:29:37  INFO      [S2 80/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=1  trial=9
+2026-05-19 20:29:37  INFO      [S2 81/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=2  trial=0
+2026-05-19 20:29:37  INFO      [S2 82/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=2  trial=1
+2026-05-19 20:29:37  INFO      [S2 83/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=2  trial=2
+2026-05-19 20:29:37  INFO      [S2 84/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=2  trial=3
+2026-05-19 20:29:37  INFO      [S2 85/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=2  trial=4
+2026-05-19 20:29:37  INFO      [S2 86/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=2  trial=5
+2026-05-19 20:29:37  INFO      [S2 87/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=2  trial=6
+2026-05-19 20:29:37  INFO      [S2 88/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=2  trial=7
+2026-05-19 20:29:37  INFO      [S2 89/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=2  trial=8
+2026-05-19 20:29:37  INFO      [S2 90/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=2  trial=9
+2026-05-19 20:29:37  INFO      [S2 91/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=0
+2026-05-19 20:29:37  INFO      [S2 92/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=1
+2026-05-19 20:29:37  INFO      [S2 93/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=2
+2026-05-19 20:29:37  INFO      [S2 94/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=3
+2026-05-19 20:29:37  INFO      [S2 95/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=4
+2026-05-19 20:29:37  INFO      [S2 96/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=5
+2026-05-19 20:29:37  INFO      [S2 97/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=6
+2026-05-19 20:29:37  INFO      [S2 98/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=7
+2026-05-19 20:29:37  INFO      [S2 99/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=8
+2026-05-19 20:29:37  INFO      [S2 100/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=9
+2026-05-19 20:29:37  INFO      [S2 101/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=0
+2026-05-19 20:29:37  INFO      [S2 102/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=1
+2026-05-19 20:29:37  INFO      [S2 103/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=2
+2026-05-19 20:29:37  INFO      [S2 104/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=3
+2026-05-19 20:29:37  INFO      [S2 105/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=4
+2026-05-19 20:29:37  INFO      [S2 106/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=5
+2026-05-19 20:29:37  INFO      [S2 107/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=6
+2026-05-19 20:29:37  INFO      [S2 108/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=7
+2026-05-19 20:29:37  INFO      [S2 109/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=8
+2026-05-19 20:29:37  INFO      [S2 110/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=9
+2026-05-19 20:29:37  INFO      [S2 111/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=0
+2026-05-19 20:29:37  INFO      [S2 112/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=1
+2026-05-19 20:29:37  INFO      [S2 113/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=2
+2026-05-19 20:29:37  INFO      [S2 114/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=3
+2026-05-19 20:29:37  INFO      [S2 115/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=4
+2026-05-19 20:29:37  INFO      [S2 116/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=5
+2026-05-19 20:29:37  INFO      [S2 117/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=6
+2026-05-19 20:29:37  INFO      [S2 118/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=7
+2026-05-19 20:29:37  INFO      [S2 119/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=8
+2026-05-19 20:29:37  INFO      [S2 120/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=9
+2026-05-19 20:29:37  INFO      [S2 121/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=0
+2026-05-19 20:29:37  INFO      [S2 122/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=1
+2026-05-19 20:29:37  INFO      [S2 123/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=2
+2026-05-19 20:29:37  INFO      [S2 124/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=3
+2026-05-19 20:29:37  INFO      [S2 125/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=4
+2026-05-19 20:29:37  INFO      [S2 126/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=5
+2026-05-19 20:29:37  INFO      [S2 127/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=6
+2026-05-19 20:29:37  INFO      [S2 128/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=7
+2026-05-19 20:29:37  INFO      [S2 129/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=8
+2026-05-19 20:29:37  INFO      [S2 130/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=9
+2026-05-19 20:29:37  INFO      [S2 131/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=0
+2026-05-19 20:29:37  INFO      [S2 132/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=1
+2026-05-19 20:29:37  INFO      [S2 133/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=2
+2026-05-19 20:29:37  INFO      [S2 134/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=3
+2026-05-19 20:29:37  INFO      [S2 135/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=4
+2026-05-19 20:29:37  INFO      [S2 136/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=5
+2026-05-19 20:29:37  INFO      [S2 137/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=6
+2026-05-19 20:29:37  INFO      [S2 138/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=7
+2026-05-19 20:29:37  INFO      [S2 139/180] SKIP (checkpoint) [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=8
+2026-05-19 20:29:37  INFO      [S2 140/180] [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=9
+2026-05-19 20:29:37  INFO      Segmenting DS1 (source) from /Users/user/.nstad_bench/data/mitbih …
+2026-05-19 20:29:38  INFO      Segmenting DS2 (target) from /Users/user/.nstad_bench/data/mitbih …
+2026-05-19 20:29:38  INFO      MIT-BIH DS1→DS2 — source: 6000  (N=3000, A=3000)  target: 6000  (N=3000, A=3000)
+2026-05-19 20:29:38  INFO          device: mps
+2026-05-19 20:29:38  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 20:29:44  INFO          epoch 1/40  loss=0.4205  val_auc=0.9472  patience=0/10
+2026-05-19 20:30:00  INFO          epoch 5/40  loss=0.1894  val_auc=0.9802  patience=0/10
+2026-05-19 20:30:22  INFO          epoch 10/40  loss=0.1438  val_auc=0.9825  patience=1/10
+2026-05-19 20:30:42  INFO          epoch 15/40  loss=0.1173  val_auc=0.9902  patience=0/10
+2026-05-19 20:31:02  INFO          epoch 20/40  loss=0.1033  val_auc=0.9910  patience=1/10
+2026-05-19 20:31:22  INFO          epoch 25/40  loss=0.0927  val_auc=0.9909  patience=6/10
+2026-05-19 20:31:42  INFO          epoch 30/40  loss=0.0822  val_auc=0.9927  patience=1/10
+2026-05-19 20:32:01  INFO          epoch 35/40  loss=0.0691  val_auc=0.9900  patience=6/10
+2026-05-19 20:32:21  INFO          epoch 40/40  loss=0.0652  val_auc=0.9938  patience=1/10
+2026-05-19 20:33:02  INFO        [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=9  roc=0.8404 [0.8290,0.8498]  Δauc=+0.1578
+2026-05-19 20:33:02  INFO      [S2 141/180] [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=2  trial=0
+2026-05-19 20:33:02  INFO          device: mps
+2026-05-19 20:33:02  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 20:33:06  INFO          epoch 1/40  loss=0.4602  val_auc=0.9294  patience=0/10
+2026-05-19 20:33:22  INFO          epoch 5/40  loss=0.1970  val_auc=0.9750  patience=1/10
+2026-05-19 20:33:41  INFO          epoch 10/40  loss=0.1379  val_auc=0.9868  patience=0/10
+2026-05-19 20:34:01  INFO          epoch 15/40  loss=0.1155  val_auc=0.9907  patience=0/10
+2026-05-19 20:34:21  INFO          epoch 20/40  loss=0.0933  val_auc=0.9899  patience=5/10
+2026-05-19 20:34:41  INFO          epoch 25/40  loss=0.0854  val_auc=0.9904  patience=1/10
+2026-05-19 20:35:00  INFO          epoch 30/40  loss=0.0703  val_auc=0.9913  patience=2/10
+2026-05-19 20:35:20  INFO          epoch 35/40  loss=0.0763  val_auc=0.9858  patience=2/10

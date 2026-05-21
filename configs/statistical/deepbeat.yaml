@@ -1,0 +1,71 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# DeepBeat — STATISTICAL branch
+# Inter-patient PPG AF detection
+# ──────────────────────────────────────────────────────────────────────────────
+# Parallel of configs/deepbeat.yaml using statistical models + statistical DA.
+# See the neural-branch config for dataset / signal / split documentation.
+# ──────────────────────────────────────────────────────────────────────────────
+
+experiment_name: deepbeat_stat
+output_dir:      results/statistical/
+
+n_bootstrap: 200
+
+screening:
+  top_k:  2
+  metric: delta_auc
+
+random_search:
+  n_trials:  10
+  seeds:     [0, 1, 2]
+  base_seed: 42
+
+datasets:
+  - deepbeat_patient_split
+
+# ── Representations ───────────────────────────────────────────────────────────
+representations:
+  RawSignal:  {}
+  LogSTFT:
+    n_fft:      128
+    hop_length: 32
+
+# ── Models (statistical) ──────────────────────────────────────────────────────
+models:
+  LogReg:
+    C:        1.0
+    max_iter: 1000
+
+  RandomForest:
+    n_estimators:     200
+    max_depth:        null
+    min_samples_leaf: 1
+
+  GBM:
+    n_estimators:  200
+    learning_rate: 0.05
+    max_depth:     3
+
+  SVM:
+    C:      1.0
+    kernel: rbf
+    gamma:  scale
+
+# ── Adaptation methods (statistical) ──────────────────────────────────────────
+adaptation_methods:
+  SourceOnly: {}
+
+  CORAL:
+    lambda_reg: {type: log_float, low: 1.0e-5, high: 1.0e-1}
+    align_mean: {type: choice,    choices: [true, false]}
+
+  SubspaceAlignment:
+    n_components: {type: int, low: 10, high: 100}
+
+  ImportanceReweighting:
+    estimator: {type: choice,    choices: [classifier, kliep, ulsif]}
+    clip:      {type: log_float, low: 2.0, high: 100.0}
+
+  KMM:
+    B:   {type: log_float, low: 10.0, high: 1000.0}
+    eps: {type: log_float, low: 1.0e-3, high: 1.0e-1}

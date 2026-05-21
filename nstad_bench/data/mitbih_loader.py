@@ -64,6 +64,8 @@ from typing import Callable
 
 import numpy as np
 
+from nstad_bench.data._paths import resolve_data_root
+
 log = logging.getLogger(__name__)
 
 # ── AAMI EC57 inter-patient partition ────────────────────────────────────────
@@ -93,10 +95,7 @@ WIN: int = 140   # half-window → 280 samples total (≈0.78 s at 360 Hz)
 
 
 def _default_root() -> Path:
-    env = os.environ.get("NSTAD_DATA_ROOT")
-    if env:
-        return Path(env) / "mitbih"
-    return Path.home() / ".nstad_bench" / "data" / "mitbih"
+    return resolve_data_root("mitbih")
 
 
 # ── Core segmentation ─────────────────────────────────────────────────────────

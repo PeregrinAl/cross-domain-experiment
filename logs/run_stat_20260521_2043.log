@@ -1,0 +1,65 @@
+2026-05-21 20:43:37  INFO      ============================================================
+2026-05-21 20:43:37  INFO        nstad_bench  run_all_stat.py
+2026-05-21 20:43:37  INFO        Started : 2026-05-21 20:43:37
+2026-05-21 20:43:37  INFO        Log file: logs/run_stat_20260521_2043.log
+2026-05-21 20:43:37  INFO        Mode    : FULL
+2026-05-21 20:43:37  INFO      ============================================================
+2026-05-21 20:43:41  INFO      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-05-21 20:43:41  INFO        Dataset : mitbih_ds1_ds2
+2026-05-21 20:43:41  INFO        Config  : /Users/user/projects/cross-domain-experiment/configs/statistical/mitbih.yaml
+2026-05-21 20:43:41  INFO        Mode    : FULL  [statistical branch]
+2026-05-21 20:43:41  INFO      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-05-21 20:43:41  INFO      ======================================================================
+2026-05-21 20:43:41  INFO      Experiment : mitbih_stat  [statistical branch]
+2026-05-21 20:43:41  INFO      Output     : results/statistical/mitbih_stat.parquet
+2026-05-21 20:43:41  INFO      n_bootstrap: 200
+2026-05-21 20:43:41  INFO      ======================================================================
+2026-05-21 20:43:41  INFO      --- Stage 1: Screening (SourceOnly) ---
+2026-05-21 20:43:41  INFO      Stage 1 — 36 screening configs
+2026-05-21 20:43:41  INFO      Resume: Stage 1 checkpoint found — 36/36 configs already done
+2026-05-21 20:43:41  INFO      [S1 1/36] SKIP (checkpoint) [screening] RawSignal×LogReg×SourceOnly  ds=mitbih_ds1_ds2  seed=0  trial=0
+2026-05-21 20:43:41  INFO      [S1 2/36] SKIP (checkpoint) [screening] RawSignal×LogReg×SourceOnly  ds=mitbih_ds1_ds2  seed=1  trial=0
+2026-05-21 20:43:41  INFO      [S1 3/36] SKIP (checkpoint) [screening] RawSignal×LogReg×SourceOnly  ds=mitbih_ds1_ds2  seed=2  trial=0
+2026-05-21 20:43:41  INFO      [S1 4/36] SKIP (checkpoint) [screening] RawSignal×RandomForest×SourceOnly  ds=mitbih_ds1_ds2  seed=0  trial=0
+2026-05-21 20:43:41  INFO      [S1 5/36] SKIP (checkpoint) [screening] RawSignal×RandomForest×SourceOnly  ds=mitbih_ds1_ds2  seed=1  trial=0
+2026-05-21 20:43:41  INFO      [S1 6/36] SKIP (checkpoint) [screening] RawSignal×RandomForest×SourceOnly  ds=mitbih_ds1_ds2  seed=2  trial=0
+2026-05-21 20:43:41  INFO      [S1 7/36] SKIP (checkpoint) [screening] RawSignal×GBM×SourceOnly  ds=mitbih_ds1_ds2  seed=0  trial=0
+2026-05-21 20:43:41  INFO      [S1 8/36] SKIP (checkpoint) [screening] RawSignal×GBM×SourceOnly  ds=mitbih_ds1_ds2  seed=1  trial=0
+2026-05-21 20:43:41  INFO      [S1 9/36] SKIP (checkpoint) [screening] RawSignal×GBM×SourceOnly  ds=mitbih_ds1_ds2  seed=2  trial=0
+2026-05-21 20:43:41  INFO      [S1 10/36] SKIP (checkpoint) [screening] RawSignal×SVM×SourceOnly  ds=mitbih_ds1_ds2  seed=0  trial=0
+2026-05-21 20:43:41  INFO      [S1 11/36] SKIP (checkpoint) [screening] RawSignal×SVM×SourceOnly  ds=mitbih_ds1_ds2  seed=1  trial=0
+2026-05-21 20:43:41  INFO      [S1 12/36] SKIP (checkpoint) [screening] RawSignal×SVM×SourceOnly  ds=mitbih_ds1_ds2  seed=2  trial=0
+2026-05-21 20:43:41  INFO      [S1 13/36] SKIP (checkpoint) [screening] LogSTFT×LogReg×SourceOnly  ds=mitbih_ds1_ds2  seed=0  trial=0
+2026-05-21 20:43:41  INFO      [S1 14/36] SKIP (checkpoint) [screening] LogSTFT×LogReg×SourceOnly  ds=mitbih_ds1_ds2  seed=1  trial=0
+2026-05-21 20:43:41  INFO      [S1 15/36] SKIP (checkpoint) [screening] LogSTFT×LogReg×SourceOnly  ds=mitbih_ds1_ds2  seed=2  trial=0
+2026-05-21 20:43:41  INFO      [S1 16/36] SKIP (checkpoint) [screening] LogSTFT×RandomForest×SourceOnly  ds=mitbih_ds1_ds2  seed=0  trial=0
+2026-05-21 20:43:41  INFO      [S1 17/36] SKIP (checkpoint) [screening] LogSTFT×RandomForest×SourceOnly  ds=mitbih_ds1_ds2  seed=1  trial=0
+2026-05-21 20:43:41  INFO      [S1 18/36] SKIP (checkpoint) [screening] LogSTFT×RandomForest×SourceOnly  ds=mitbih_ds1_ds2  seed=2  trial=0
+2026-05-21 20:43:41  INFO      [S1 19/36] SKIP (checkpoint) [screening] LogSTFT×GBM×SourceOnly  ds=mitbih_ds1_ds2  seed=0  trial=0
+2026-05-21 20:43:41  INFO      [S1 20/36] SKIP (checkpoint) [screening] LogSTFT×GBM×SourceOnly  ds=mitbih_ds1_ds2  seed=1  trial=0
+2026-05-21 20:43:41  INFO      [S1 21/36] SKIP (checkpoint) [screening] LogSTFT×GBM×SourceOnly  ds=mitbih_ds1_ds2  seed=2  trial=0
+2026-05-21 20:43:41  INFO      [S1 22/36] SKIP (checkpoint) [screening] LogSTFT×SVM×SourceOnly  ds=mitbih_ds1_ds2  seed=0  trial=0
+2026-05-21 20:43:41  INFO      [S1 23/36] SKIP (checkpoint) [screening] LogSTFT×SVM×SourceOnly  ds=mitbih_ds1_ds2  seed=1  trial=0
+2026-05-21 20:43:41  INFO      [S1 24/36] SKIP (checkpoint) [screening] LogSTFT×SVM×SourceOnly  ds=mitbih_ds1_ds2  seed=2  trial=0
+2026-05-21 20:43:41  INFO      [S1 25/36] SKIP (checkpoint) [screening] CWT_Morlet×LogReg×SourceOnly  ds=mitbih_ds1_ds2  seed=0  trial=0
+2026-05-21 20:43:41  INFO      [S1 26/36] SKIP (checkpoint) [screening] CWT_Morlet×LogReg×SourceOnly  ds=mitbih_ds1_ds2  seed=1  trial=0
+2026-05-21 20:43:41  INFO      [S1 27/36] SKIP (checkpoint) [screening] CWT_Morlet×LogReg×SourceOnly  ds=mitbih_ds1_ds2  seed=2  trial=0
+2026-05-21 20:43:41  INFO      [S1 28/36] SKIP (checkpoint) [screening] CWT_Morlet×RandomForest×SourceOnly  ds=mitbih_ds1_ds2  seed=0  trial=0
+2026-05-21 20:43:41  INFO      [S1 29/36] SKIP (checkpoint) [screening] CWT_Morlet×RandomForest×SourceOnly  ds=mitbih_ds1_ds2  seed=1  trial=0
+2026-05-21 20:43:41  INFO      [S1 30/36] SKIP (checkpoint) [screening] CWT_Morlet×RandomForest×SourceOnly  ds=mitbih_ds1_ds2  seed=2  trial=0
+2026-05-21 20:43:41  INFO      [S1 31/36] SKIP (checkpoint) [screening] CWT_Morlet×GBM×SourceOnly  ds=mitbih_ds1_ds2  seed=0  trial=0
+2026-05-21 20:43:41  INFO      [S1 32/36] SKIP (checkpoint) [screening] CWT_Morlet×GBM×SourceOnly  ds=mitbih_ds1_ds2  seed=1  trial=0
+2026-05-21 20:43:41  INFO      [S1 33/36] SKIP (checkpoint) [screening] CWT_Morlet×GBM×SourceOnly  ds=mitbih_ds1_ds2  seed=2  trial=0
+2026-05-21 20:43:41  INFO      [S1 34/36] SKIP (checkpoint) [screening] CWT_Morlet×SVM×SourceOnly  ds=mitbih_ds1_ds2  seed=0  trial=0
+2026-05-21 20:43:41  INFO      [S1 35/36] SKIP (checkpoint) [screening] CWT_Morlet×SVM×SourceOnly  ds=mitbih_ds1_ds2  seed=1  trial=0
+2026-05-21 20:43:41  INFO      [S1 36/36] SKIP (checkpoint) [screening] CWT_Morlet×SVM×SourceOnly  ds=mitbih_ds1_ds2  seed=2  trial=0
+2026-05-21 20:43:41  INFO      Top-2 (φ, θ) pairs by mean delta_auc:
+phi         theta 
+CWT_Morlet  LogReg    0.118871
+RawSignal   LogReg    0.114328
+2026-05-21 20:43:41  INFO      --- Stage 2: Adaptation (top-2 pairs × all ψ) ---
+2026-05-21 20:43:41  INFO      Stage 2 — 240 adaptation configs
+2026-05-21 20:43:41  INFO      [S2 1/240] [adaptation] CWT_Morlet×LogReg×CORAL  ds=mitbih_ds1_ds2  seed=0  trial=0
+2026-05-21 20:43:41  INFO      Segmenting DS1 (source) from /Users/user/.nstad_bench/data/mitbih …
+2026-05-21 20:43:42  INFO      Segmenting DS2 (target) from /Users/user/.nstad_bench/data/mitbih …
+2026-05-21 20:43:42  INFO      MIT-BIH DS1→DS2 — source: 6000  (N=3000, A=3000)  target: 6000  (N=3000, A=3000)

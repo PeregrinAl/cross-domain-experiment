@@ -270,11 +270,15 @@ class TestScreeningConfigs:
 
 class TestAdaptationConfigs:
 
-    def test_source_only_single_trial(self, compat):
+    def test_source_only_excluded_from_stage2(self, compat):
+        """SourceOnly is intentionally excluded from Stage 2 to avoid duplicate
+        rows: it already runs in Stage 1 (screening) and its rows are carried
+        into the final output via s1_rows.  Including it again would produce
+        rows with identical config_hash (stage is not part of the hash)."""
         exp  = _minimal_exp_cfg(psi_spaces={"SourceOnly": {}}, n_trials=10)
         cfgs = _adaptation_configs(exp, compat, [("RawSignal", "InceptionTime1D")])
         so   = [c for c in cfgs if c.psi == "SourceOnly"]
-        assert len(so) == 1   # 1 dataset × 1 seed × 1 trial
+        assert len(so) == 0   # Stage 2 skips SourceOnly
 
     def test_method_with_hp_gets_n_trials(self, compat):
         psi_spaces = {

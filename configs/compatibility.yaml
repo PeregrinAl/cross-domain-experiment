@@ -11,15 +11,16 @@
 # RawSignal   : (N, T)         → 1-D
 # LogSTFT     : (N, F, T)      → 2-D
 # CWT_Morlet  : (N, F, T)      → 2-D
-# CARLA_SSL   : (N, embed_dim) → 1-D (treated as a 1-channel 1-D sequence)
 #
-# CARLA_SSL × PatchTST rationale
-# --------------------------------
-# CARLA produces a fixed-length embedding vector (N, embed_dim).  PatchTST's
-# _preprocess reshapes (N, T) → (N, 1, T), so the embedding is treated as a
-# single-channel sequence of length embed_dim.  PatchTST then slices it into
-# patches exactly as it would raw signal, giving a methodologically valid pair
-# and an additional experimental data-point.
+# CARLA_SSL excluded — methodological decision (2026-05-18)
+# ---------------------------------------------------------
+# CARLA is an anomaly-detection SSL model (triplet loss: clean vs. synthetically
+# corrupted signal).  Its training objective is semantically incompatible with
+# the AF rhythm classification task: AF is a rhythm disorder, not a morphological
+# anomaly, so the encoder learns no task-relevant features.  Additionally,
+# transform() returns a flat (N, embed_dim) vector; passing this to temporal
+# Conv1d models (InceptionTime1D, PatchTST) treats embedding dimensions as time
+# steps — an architectural category error.  CARLA moved to experimental/.
 
 compatibility:
   RawSignal:
@@ -36,8 +37,3 @@ compatibility:
     InceptionTime1D: false
     ResNet18_2D:     true
     PatchTST:        false
-
-  CARLA_SSL:
-    InceptionTime1D: true
-    ResNet18_2D:     false
-    PatchTST:        true

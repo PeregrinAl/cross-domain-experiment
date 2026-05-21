@@ -27,7 +27,7 @@ from nstad_bench.models import InceptionTime1D, PatchTST, ResNet18_2D
 # ---------------------------------------------------------------------------
 
 CONFIGS_DIR = Path(__file__).parents[1] / "configs"
-KNOWN_REPRS = {"RawSignal", "LogSTFT", "CWT_Morlet", "CARLA_SSL"}
+KNOWN_REPRS = {"RawSignal", "LogSTFT", "CWT_Morlet"}
 KNOWN_MODELS = {"InceptionTime1D", "ResNet18_2D", "PatchTST"}
 
 BATCH = 4  # small batch — keeps tests fast on CPU
@@ -375,7 +375,7 @@ class TestCompatibilityYaml:
 
     def test_2d_models_not_used_with_1d_reprs(self, compat):
         """ResNet18_2D must be False for 1-D representations."""
-        for repr_name in ("RawSignal", "CARLA_SSL"):
+        for repr_name in ("RawSignal",):
             assert not compat[repr_name]["ResNet18_2D"], (
                 f"ResNet18_2D should not be compatible with {repr_name}"
             )
@@ -394,23 +394,6 @@ class TestCompatibilityYaml:
                 f"Representation '{repr_name}' has no compatible model"
             )
 
-    def test_carla_patchtst_is_valid(self, compat):
-        """CARLA embeddings are 1-D sequences; PatchTST is a valid consumer."""
-        assert compat["CARLA_SSL"]["PatchTST"], (
-            "CARLA_SSL × PatchTST should be marked compatible"
-        )
-
-    def test_carla_patchtst_forward_smoke(self):
-        """PatchTST must accept a CARLA-style (N, embed_dim) array end-to-end."""
-        embed_dim = 64
-        # seq_len must match embed_dim because _preprocess treats embed_dim as T
-        m = PatchTST(
-            in_channels=1, seq_len=embed_dim,
-            patch_len=8, stride=4, d_model=32, n_heads=4, n_layers=1,
-        )
-        m.eval()
-        X_emb = _rng_array(BATCH, embed_dim)   # CARLA output shape
-        proba = m.predict_proba(X_emb)
-        assert proba.shape == (BATCH, 2)
-        feats = m.get_features(X_emb)
-        assert feats.shape == (BATCH, 128)
+    # CARLA_SSL was removed from the main benchmark (2026-05-18) due to
+    # semantic incompatibility between its AD-pretrained embedding and
+    # temporal Conv1d downstream models.  Tests preserved in experimental/.

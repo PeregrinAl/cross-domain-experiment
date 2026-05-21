@@ -1,0 +1,135 @@
+2026-05-18 21:34:53  INFO      ============================================================
+2026-05-18 21:34:53  INFO        nstad_bench  run_all.py
+2026-05-18 21:34:53  INFO        Started : 2026-05-18 21:34:53
+2026-05-18 21:34:53  INFO        Log file: logs/run_20260518_2134.log
+2026-05-18 21:34:53  INFO        Mode    : FULL
+2026-05-18 21:34:53  INFO      ============================================================
+2026-05-18 21:34:55  INFO      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-05-18 21:34:55  INFO        Dataset : mitbih_ds1_ds2
+2026-05-18 21:34:55  INFO        Config  : /Users/user/projects/cross-domain-experiment/configs/mitbih.yaml
+2026-05-18 21:34:55  INFO        Mode    : FULL
+2026-05-18 21:34:55  INFO      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-05-18 21:34:55  INFO      ======================================================================
+2026-05-18 21:34:55  INFO      Experiment : mitbih
+2026-05-18 21:34:55  INFO      Output     : results/mitbih.parquet
+2026-05-18 21:34:55  INFO      n_bootstrap: 200
+2026-05-18 21:34:55  INFO      ======================================================================
+2026-05-18 21:34:55  INFO      --- Stage 1: Screening (SourceOnly) ---
+2026-05-18 21:34:55  INFO      Stage 1 — 12 screening configs
+2026-05-18 21:34:55  INFO      Resume: Stage 1 checkpoint found — 12/12 configs already done
+2026-05-18 21:34:55  INFO      [S1 1/12] SKIP (checkpoint) [screening] RawSignal×InceptionTime1D×SourceOnly  ds=mitbih_ds1_ds2  seed=0  trial=0
+2026-05-18 21:34:55  INFO      [S1 2/12] SKIP (checkpoint) [screening] RawSignal×InceptionTime1D×SourceOnly  ds=mitbih_ds1_ds2  seed=1  trial=0
+2026-05-18 21:34:55  INFO      [S1 3/12] SKIP (checkpoint) [screening] RawSignal×InceptionTime1D×SourceOnly  ds=mitbih_ds1_ds2  seed=2  trial=0
+2026-05-18 21:34:55  INFO      [S1 4/12] SKIP (checkpoint) [screening] RawSignal×PatchTST×SourceOnly  ds=mitbih_ds1_ds2  seed=0  trial=0
+2026-05-18 21:34:55  INFO      [S1 5/12] SKIP (checkpoint) [screening] RawSignal×PatchTST×SourceOnly  ds=mitbih_ds1_ds2  seed=1  trial=0
+2026-05-18 21:34:55  INFO      [S1 6/12] SKIP (checkpoint) [screening] RawSignal×PatchTST×SourceOnly  ds=mitbih_ds1_ds2  seed=2  trial=0
+2026-05-18 21:34:55  INFO      [S1 7/12] SKIP (checkpoint) [screening] LogSTFT×ResNet18_2D×SourceOnly  ds=mitbih_ds1_ds2  seed=0  trial=0
+2026-05-18 21:34:55  INFO      [S1 8/12] SKIP (checkpoint) [screening] LogSTFT×ResNet18_2D×SourceOnly  ds=mitbih_ds1_ds2  seed=1  trial=0
+2026-05-18 21:34:55  INFO      [S1 9/12] SKIP (checkpoint) [screening] LogSTFT×ResNet18_2D×SourceOnly  ds=mitbih_ds1_ds2  seed=2  trial=0
+2026-05-18 21:34:55  INFO      [S1 10/12] SKIP (checkpoint) [screening] CWT_Morlet×ResNet18_2D×SourceOnly  ds=mitbih_ds1_ds2  seed=0  trial=0
+2026-05-18 21:34:55  INFO      [S1 11/12] SKIP (checkpoint) [screening] CWT_Morlet×ResNet18_2D×SourceOnly  ds=mitbih_ds1_ds2  seed=1  trial=0
+2026-05-18 21:34:55  INFO      [S1 12/12] SKIP (checkpoint) [screening] CWT_Morlet×ResNet18_2D×SourceOnly  ds=mitbih_ds1_ds2  seed=2  trial=0
+2026-05-18 21:34:55  INFO      Top-2 (φ, θ) pairs by mean delta_auc:
+phi        theta      
+LogSTFT    ResNet18_2D    0.151543
+RawSignal  PatchTST       0.146852
+2026-05-18 21:34:55  INFO      --- Stage 2: Adaptation (top-2 pairs × all ψ) ---
+2026-05-18 21:34:55  INFO      Stage 2 — 180 adaptation configs
+2026-05-18 21:34:55  INFO      [S2 1/180] [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=0
+2026-05-18 21:34:55  INFO      Segmenting DS1 (source) from /Users/user/.nstad_bench/data/mitbih …
+2026-05-18 21:34:55  INFO      Segmenting DS2 (target) from /Users/user/.nstad_bench/data/mitbih …
+2026-05-18 21:34:55  INFO      MIT-BIH DS1→DS2 — source: 6000  (N=3000, A=3000)  target: 6000  (N=3000, A=3000)
+2026-05-18 21:34:56  INFO          device: mps
+2026-05-18 21:35:03  INFO          epoch 1/40  loss=0.2457
+2026-05-18 21:35:25  INFO          epoch 5/40  loss=0.1067
+2026-05-18 21:35:53  INFO          epoch 10/40  loss=0.0648
+2026-05-18 21:36:21  INFO          epoch 15/40  loss=0.0569
+2026-05-18 21:36:49  INFO          epoch 20/40  loss=0.0383
+2026-05-18 21:37:17  INFO          epoch 25/40  loss=0.0289
+2026-05-18 21:37:45  INFO          epoch 30/40  loss=0.0327
+2026-05-18 21:38:14  INFO          epoch 35/40  loss=0.0245
+2026-05-18 21:38:46  INFO          epoch 40/40  loss=0.0209
+2026-05-18 21:40:04  INFO        [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=0  roc=0.8490 [0.8400,0.8573]  Δauc=+0.1508
+2026-05-18 21:40:04  INFO      [S2 2/180] [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=1
+2026-05-18 21:40:05  INFO          device: mps
+2026-05-18 21:40:11  INFO          epoch 1/40  loss=0.2457
+2026-05-18 21:40:37  INFO          epoch 5/40  loss=0.1067
+2026-05-18 21:41:09  INFO          epoch 10/40  loss=0.0648
+2026-05-18 21:41:41  INFO          epoch 15/40  loss=0.0569
+2026-05-18 21:42:12  INFO          epoch 20/40  loss=0.0383
+2026-05-18 21:42:43  INFO          epoch 25/40  loss=0.0289
+2026-05-18 21:43:15  INFO          epoch 30/40  loss=0.0327
+2026-05-18 21:43:46  INFO          epoch 35/40  loss=0.0245
+2026-05-18 21:44:18  INFO          epoch 40/40  loss=0.0209
+2026-05-18 21:46:54  INFO        [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=1  roc=0.8550 [0.8468,0.8638]  Δauc=+0.1449
+2026-05-18 21:46:54  INFO      [S2 3/180] [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=2
+2026-05-18 21:46:54  INFO          device: mps
+2026-05-18 21:47:02  INFO          epoch 1/40  loss=0.2457
+2026-05-18 21:47:28  INFO          epoch 5/40  loss=0.1067
+2026-05-18 21:48:00  INFO          epoch 10/40  loss=0.0648
+2026-05-18 21:48:32  INFO          epoch 15/40  loss=0.0569
+2026-05-18 21:49:09  INFO          epoch 20/40  loss=0.0383
+2026-05-18 21:49:43  INFO          epoch 25/40  loss=0.0289
+2026-05-18 21:50:16  INFO          epoch 30/40  loss=0.0327
+2026-05-18 21:50:50  INFO          epoch 35/40  loss=0.0245
+2026-05-18 21:51:23  INFO          epoch 40/40  loss=0.0209
+2026-05-18 21:55:18  INFO        [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=2  roc=0.8577 [0.8490,0.8673]  Δauc=+0.1421
+2026-05-18 21:55:18  INFO      [S2 4/180] [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=3
+2026-05-18 21:55:18  INFO          device: mps
+2026-05-18 21:55:25  INFO          epoch 1/40  loss=0.2457
+2026-05-18 21:55:50  INFO          epoch 5/40  loss=0.1067
+2026-05-18 21:56:23  INFO          epoch 10/40  loss=0.0648
+2026-05-18 21:56:55  INFO          epoch 15/40  loss=0.0569
+2026-05-18 21:57:27  INFO          epoch 20/40  loss=0.0383
+2026-05-18 21:57:59  INFO          epoch 25/40  loss=0.0289
+2026-05-18 21:58:32  INFO          epoch 30/40  loss=0.0327
+2026-05-18 21:59:04  INFO          epoch 35/40  loss=0.0245
+2026-05-18 21:59:37  INFO          epoch 40/40  loss=0.0209
+2026-05-18 22:04:00  INFO        [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=3  roc=0.8358 [0.8263,0.8449]  Δauc=+0.1641
+2026-05-18 22:04:00  INFO      [S2 5/180] [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=4
+2026-05-18 22:04:00  INFO          device: mps
+2026-05-18 22:04:07  INFO          epoch 1/40  loss=0.2457
+2026-05-18 22:04:33  INFO          epoch 5/40  loss=0.1067
+2026-05-18 22:05:05  INFO          epoch 10/40  loss=0.0648
+2026-05-18 22:05:38  INFO          epoch 15/40  loss=0.0569
+2026-05-18 22:06:10  INFO          epoch 20/40  loss=0.0383
+2026-05-18 22:06:42  INFO          epoch 25/40  loss=0.0289
+2026-05-18 22:07:15  INFO          epoch 30/40  loss=0.0327
+2026-05-18 22:07:47  INFO          epoch 35/40  loss=0.0245
+2026-05-18 22:08:19  INFO          epoch 40/40  loss=0.0209
+2026-05-18 22:11:15  INFO        [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=4  roc=0.8703 [0.8622,0.8786]  Δauc=+0.1296
+2026-05-18 22:11:15  INFO      [S2 6/180] [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=5
+2026-05-18 22:11:16  INFO          device: mps
+2026-05-18 22:11:22  INFO          epoch 1/40  loss=0.2457
+2026-05-18 22:11:48  INFO          epoch 5/40  loss=0.1067
+2026-05-18 22:12:20  INFO          epoch 10/40  loss=0.0648
+2026-05-18 22:12:52  INFO          epoch 15/40  loss=0.0569
+2026-05-18 22:13:25  INFO          epoch 20/40  loss=0.0383
+2026-05-18 22:13:57  INFO          epoch 25/40  loss=0.0289
+2026-05-18 22:14:30  INFO          epoch 30/40  loss=0.0327
+2026-05-18 22:15:02  INFO          epoch 35/40  loss=0.0245
+2026-05-18 22:15:35  INFO          epoch 40/40  loss=0.0209
+2026-05-18 22:18:24  INFO        [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=5  roc=0.8583 [0.8502,0.8669]  Δauc=+0.1416
+2026-05-18 22:18:24  INFO      [S2 7/180] [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=6
+2026-05-18 22:18:24  INFO          device: mps
+2026-05-18 22:18:31  INFO          epoch 1/40  loss=0.2457
+2026-05-18 22:18:59  INFO          epoch 5/40  loss=0.1067
+2026-05-18 22:19:40  INFO          epoch 10/40  loss=0.0648
+2026-05-18 22:20:13  INFO          epoch 15/40  loss=0.0569
+2026-05-18 22:20:47  INFO          epoch 20/40  loss=0.0383
+2026-05-18 22:21:20  INFO          epoch 25/40  loss=0.0289
+2026-05-18 22:21:52  INFO          epoch 30/40  loss=0.0327
+2026-05-18 22:22:27  INFO          epoch 35/40  loss=0.0245
+2026-05-18 22:22:59  INFO          epoch 40/40  loss=0.0209
+2026-05-18 22:27:12  INFO        [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=6  roc=0.8477 [0.8383,0.8581]  Δauc=+0.1522
+2026-05-18 22:27:12  INFO      [S2 8/180] [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=7
+2026-05-18 22:27:12  INFO          device: mps
+2026-05-18 22:27:19  INFO          epoch 1/40  loss=0.2457
+2026-05-18 22:27:46  INFO          epoch 5/40  loss=0.1067
+2026-05-18 22:28:19  INFO          epoch 10/40  loss=0.0648
+2026-05-18 22:28:52  INFO          epoch 15/40  loss=0.0569
+2026-05-18 22:29:29  INFO          epoch 20/40  loss=0.0383
+2026-05-18 22:30:07  INFO          epoch 25/40  loss=0.0289
+2026-05-18 22:30:41  INFO          epoch 30/40  loss=0.0327
+2026-05-18 22:31:14  INFO          epoch 35/40  loss=0.0245
+2026-05-18 22:31:51  INFO          epoch 40/40  loss=0.0209

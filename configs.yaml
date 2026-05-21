@@ -1,0 +1,56 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# configs.yaml — experiment matrix for the Kaggle benchmark.
+#
+# Format
+# ------
+# Each priority is one or more `groups`.  Every group is a cartesian product
+# of (datasets × representations × models × da_methods).  The notebook expands
+# all priority ≤ N groups into individual configs; run_one_config.py refuses
+# any incompatible (model / da_method) or (representation / model) pair with
+# a clean exit-code-2, so over-specified groups are safe.
+#
+# Seeds are global — every config runs once per seed.
+# ─────────────────────────────────────────────────────────────────────────────
+
+seeds: [0, 1, 2]
+
+priorities:
+
+  1:
+    description: >
+      Statistical branch baselines on all three datasets — source-only +
+      CORAL across every (representation × model) pair.  This is the
+      minimum required for the defence: it covers MIT-BIH (mild shift),
+      Sleep-EDF (cross-subject EEG), and CWRU (cross-load vibration).
+    groups:
+      - datasets:        [mitbih, sleep-edf, cwru]
+        representations: [raw, log-stft, cwt-morlet]
+        models:          [logreg, random-forest, gbm]
+        da_methods:      [source-only, coral]
+
+  2:
+    description: >
+      Deep branch on the two large-shift datasets — every deep DA method
+      paired with every (representation × neural-model) combination.  The
+      compatibility matrix prunes incompatible pairs (e.g. raw × resnet2d)
+      automatically.  Each deep run is capped at 30 epochs per the spec.
+    groups:
+      - datasets:        [sleep-edf, cwru]
+        representations: [raw, log-stft, cwt-morlet]
+        models:          [inception-time, patch-tst, resnet2d]
+        da_methods:      [source-only, codats, m2n2, mk-mmd]
+
+  3:
+    description: >
+      Completes the stat-branch DA matrix (adds subspace-alignment for all
+      three datasets) and replays the deep branch on MIT-BIH for direct
+      comparability with the published MIT-BIH baseline tables.
+    groups:
+      - datasets:        [mitbih, sleep-edf, cwru]
+        representations: [raw, log-stft, cwt-morlet]
+        models:          [logreg, random-forest, gbm]
+        da_methods:      [subspace-alignment]
+      - datasets:        [mitbih]
+        representations: [raw, log-stft, cwt-morlet]
+        models:          [inception-time, patch-tst, resnet2d]
+        da_methods:      [source-only, codats, m2n2, mk-mmd]

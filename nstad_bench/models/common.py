@@ -202,9 +202,12 @@ class BenchModel(nn.Module, BaseModel):
         epochs: int = 50,
         lr: float = 1e-3,
         batch_size: int = 32,
+        patience: int = 10,
+        val_fraction: float = 0.15,
+        min_delta: float = 1e-4,
         **kwargs: Any,
     ) -> "BenchModel":
-        """Train with mini-batch cross-entropy and Adam.
+        """Train with mini-batch cross-entropy, Adam, and early stopping on val-AUC.
 
         Parameters
         ----------
@@ -213,14 +216,48 @@ class BenchModel(nn.Module, BaseModel):
         y:
             Integer class labels, shape ``(N,)``.
         epochs:
-            Training epochs.
+            Maximum training epochs.
         lr:
             Adam learning rate.
         batch_size:
             Mini-batch size.
+        patience:
+            Stop if val-AUC has not improved by more than ``min_delta`` for
+            this many consecutive epochs.  Set to ``epochs`` to disable.
+        val_fraction:
+            Fraction of source data held out for early-stopping validation.
+            Stratified split so class balance is preserved.
+            Set to 0.0 to disable (train on all data, no early stopping).
+        min_delta:
+            Minimum AUC improvement to count as progress.
         """
-        X_t = self._preprocess(X)
-        y_t = torch.from_numpy(np.asarray(y, dtype=np.int64))
+        from sklearn.metrics import roc_auc_score
+
+        # ── Stratified train/val split ────────────────────────────────────────
+        use_es = val_fraction > 0.0 and patience < epochs
+        if use_es:
+            rng_split = np.random.default_rng(seed=42)
+            classes, counts = np.unique(y, return_counts=True)
+            train_idx, val_idx = [], []
+            for cls, cnt in zip(classes, counts):
+                idx = np.where(y == cls)[0]
+                rng_split.shuffle(idx)
+                n_val = max(1, int(cnt * val_fraction))
+                val_idx.extend(idx[:n_val].tolist())
+                train_idx.extend(idx[n_val:].tolist())
+            train_idx = np.array(train_idx)
+            val_idx   = np.array(val_idx)
+            X_tr, y_tr = X[train_idx], y[train_idx]
+            X_val, y_val = X[val_idx], y[val_idx]
+            log.info(
+                "    early stopping: train=%d  val=%d  patience=%d",
+                len(X_tr), len(X_val), patience,
+            )
+        else:
+            X_tr, y_tr = X, y
+
+        X_t = self._preprocess(X_tr)
+        y_t = torch.from_numpy(np.asarray(y_tr, dtype=np.int64))
         loader = DataLoader(
             TensorDataset(X_t, y_t),
             batch_size=batch_size,
@@ -229,10 +266,15 @@ class BenchModel(nn.Module, BaseModel):
         optimizer = torch.optim.Adam(self.parameters(), lr=lr)
         criterion = nn.CrossEntropyLoss()
 
+        best_auc    = -1.0
+        best_state  = None
+        no_improve  = 0
+
         self.train()
         for epoch in range(epochs):
             epoch_loss = 0.0
             n_batches  = 0
+            self.train()
             for xb, yb in loader:
                 xb, yb = xb.to(self._device), yb.to(self._device)
                 optimizer.zero_grad()
@@ -241,11 +283,46 @@ class BenchModel(nn.Module, BaseModel):
                 optimizer.step()
                 epoch_loss += float(loss.item())
                 n_batches  += 1
-            if (epoch + 1) % 5 == 0 or epoch == 0:
-                log.info(
-                    "    epoch %d/%d  loss=%.4f",
-                    epoch + 1, epochs, epoch_loss / max(n_batches, 1),
-                )
+
+            avg_loss = epoch_loss / max(n_batches, 1)
+
+            # ── Early stopping check ──────────────────────────────────────────
+            if use_es:
+                val_proba = self.predict_proba(X_val)[:, 1]
+                val_auc   = float(roc_auc_score(y_val, val_proba))
+
+                if val_auc > best_auc + min_delta:
+                    best_auc   = val_auc
+                    best_state = {k: v.cpu().clone()
+                                  for k, v in self.state_dict().items()}
+                    no_improve = 0
+                else:
+                    no_improve += 1
+
+                if (epoch + 1) % 5 == 0 or epoch == 0:
+                    log.info(
+                        "    epoch %d/%d  loss=%.4f  val_auc=%.4f  patience=%d/%d",
+                        epoch + 1, epochs, avg_loss, val_auc, no_improve, patience,
+                    )
+
+                if no_improve >= patience:
+                    log.info(
+                        "    early stop at epoch %d/%d  best_val_auc=%.4f",
+                        epoch + 1, epochs, best_auc,
+                    )
+                    break
+            else:
+                if (epoch + 1) % 5 == 0 or epoch == 0:
+                    log.info(
+                        "    epoch %d/%d  loss=%.4f",
+                        epoch + 1, epochs, avg_loss,
+                    )
+
+        # ── Restore best weights ──────────────────────────────────────────────
+        if use_es and best_state is not None:
+            self.load_state_dict(
+                {k: v.to(self._device) for k, v in best_state.items()}
+            )
 
         return self
 

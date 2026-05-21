@@ -1,0 +1,32 @@
+# Minimal smoke config for the statistical branch.
+# 1 dataset × 1 representation × 1 model × 1 method × 1 seed
+# Mirrors configs/smoke_minimal.yaml; use after the StatModel and
+# BaseStatAdaptation stubs are filled in.
+
+experiment_name: smoke_minimal_stat
+output_dir:      results/smoke/statistical/
+
+n_bootstrap: 50
+
+screening:
+  top_k:  1
+  metric: delta_auc
+
+random_search:
+  n_trials:  1
+  seeds:     [0]
+  base_seed: 42
+
+datasets:
+  - smoke_ds
+
+representations:
+  - RawSignal
+
+models:
+  LogReg:
+    C:        1.0
+    max_iter: 200
+
+adaptation_methods:
+  SourceOnly: {}

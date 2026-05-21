@@ -273,6 +273,9 @@ _DEFAULT_FORMULA = (
     " + C(theta):C(psi)"
 )
 
+# Fallback when the full model is rank-deficient (too few observations).
+_MAIN_EFFECTS_FORMULA = "delta_auc ~ C(phi) + C(theta) + C(psi)"
+
 
 def run_anova(
     df: pd.DataFrame,
@@ -368,7 +371,35 @@ def run_anova(
     with warnings.catch_warnings(record=True) as caught:
         warnings.simplefilter("always")
         try:
-            model  = smf.ols(formula, data=sub).fit()
+            model = smf.ols(formula, data=sub).fit()
+            # When n_obs <= n_params the model uses all df for the fit and
+            # df_resid drops to 0.  anova_lm (Type II) then computes partial SS
+            # via QR on a singular matrix, raising "array must not contain infs
+            # or NaNs".  Fall back to main effects when using the default formula.
+            if model.df_resid <= 0:
+                n_params = len(model.params)
+                if formula == _DEFAULT_FORMULA:
+                    warns.append(
+                        f"No residual df with full formula "
+                        f"(n_obs={len(sub)}, n_params={n_params}) — "
+                        "interactions dropped, refitting with main effects only."
+                    )
+                    formula = _MAIN_EFFECTS_FORMULA
+                    model = smf.ols(formula, data=sub).fit()
+                    if model.df_resid <= 0:
+                        raise ValueError(
+                            f"No residual df even after dropping interactions "
+                            f"(n_obs={len(sub)}, n_params={len(model.params)}). "
+                            "Provide more data or fewer factor levels."
+                        )
+                else:
+                    raise ValueError(
+                        f"No residual df (n_obs={len(sub)}, "
+                        f"n_params={n_params}). "
+                        "Provide more data or use a simpler formula."
+                    )
+        except ValueError:
+            raise
         except Exception as exc:
             raise ValueError(
                 f"OLS fitting failed with formula {formula!r}: {exc}"

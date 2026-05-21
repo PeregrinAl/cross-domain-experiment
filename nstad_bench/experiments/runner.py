@@ -58,9 +58,14 @@ import yaml
 
 from nstad_bench.adaptation import CoDATS, M2N2, MK_MMD, SourceOnly
 from nstad_bench.metrics.bootstrap import bootstrap_ci
-from nstad_bench.metrics.scores import pr_auc, roc_auc
+from nstad_bench.metrics.scores import (
+    best_threshold,
+    mcc,
+    pr_auc,
+    roc_auc,
+)
 from nstad_bench.models import InceptionTime1D, PatchTST, ResNet18_2D
-from nstad_bench.representations import CARLA_SSL, CWT_Morlet, LogSTFT, RawSignal
+from nstad_bench.representations import CWT_Morlet, LogSTFT, RawSignal
 
 log = logging.getLogger(__name__)
 
@@ -103,7 +108,7 @@ _REPR_REGISTRY: dict[str, type] = {
     "RawSignal":  RawSignal,
     "LogSTFT":    LogSTFT,
     "CWT_Morlet": CWT_Morlet,
-    "CARLA_SSL":  CARLA_SSL,
+    # CARLA_SSL excluded — see configs/compatibility.yaml for rationale.
 }
 
 _MODEL_REGISTRY: dict[str, type] = {
@@ -350,6 +355,42 @@ def _get_device() -> "torch.device":
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# Stratified train/val split (shared between fit() early-stopping and
+# threshold selection in _run_single — must use the same RNG / fraction so
+# both refer to the same val pool).
+# ─────────────────────────────────────────────────────────────────────────────
+
+_VAL_FRACTION: float = 0.15
+_VAL_SPLIT_SEED: int = 42
+
+
+def _stratified_val_split(
+    X: np.ndarray,
+    y: np.ndarray,
+    val_fraction: float = _VAL_FRACTION,
+    seed: int = _VAL_SPLIT_SEED,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    """Return ``(X_tr, y_tr, X_val, y_val)`` with class-stratified val split.
+
+    The RNG seed is fixed so successive calls with the same ``y`` produce
+    identical splits, allowing threshold selection on the same val pool
+    used by ``fit()``'s internal early stopping.
+    """
+    rng = np.random.default_rng(seed)
+    train_idx: list[int] = []
+    val_idx:   list[int] = []
+    for cls in np.unique(y):
+        idx = np.where(y == cls)[0]
+        rng.shuffle(idx)
+        n_val = max(1, int(len(idx) * val_fraction))
+        val_idx.extend(idx[:n_val].tolist())
+        train_idx.extend(idx[n_val:].tolist())
+    train_idx = np.array(train_idx)
+    val_idx   = np.array(val_idx)
+    return X[train_idx], y[train_idx], X[val_idx], y[val_idx]
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # Single-run execution
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -360,13 +401,24 @@ def _run_single(
 ) -> list[dict[str, Any]]:
     """Execute one (φ, θ, ψ, dataset, seed, hp_trial) run.
 
+    Threshold-dependent metrics (F1, Precision, Recall, MCC)
+    --------------------------------------------------------
+    The decision threshold is selected to maximise F1 on a held-out
+    *source-validation* split (15 %, class-stratified, fixed seed).  The
+    threshold is then **frozen** and applied to the target domain — no target
+    labels participate in threshold selection (no leakage).
+
     Returns
     -------
     list[dict]
-        One dict per metric (roc_auc, pr_auc, source_roc_auc, delta_auc).
+        One dict per metric:
+        roc_auc, pr_auc, source_roc_auc, delta_auc,
+        f1, precision, recall, mcc,
+        source_val_f1, delta_f1, threshold.
         The ``gain`` metric is added post-hoc by ``_add_gain_rows``.
     """
     import torch  # local import to keep module importable without torch
+    from sklearn.metrics import f1_score, precision_score, recall_score
 
     log.debug("  → %s", cfg)
 
@@ -394,6 +446,9 @@ def _run_single(
     log.debug("    repr %s: %s → %s", cfg.phi, X_s_raw.shape, X_s.shape)
 
     # ── Train source model ────────────────────────────────────────────────────
+    # fit() splits X_s internally for early-stopping val; here we replicate
+    # that same split (identical RNG seed) so threshold selection and ES use
+    # the same val pool, and the model never sees X_val during training.
     device = _get_device()
     m_cfg = model_train_cfg.get(cfg.theta, {})
     model = _build_model(cfg.theta, X_s, m_cfg)
@@ -406,12 +461,24 @@ def _run_single(
         batch_size=int(m_cfg.get("batch_size", 64)),
     )
 
-    # Source AUC (on training data — proxy for source performance)
+    # Re-derive the same val split that fit() used internally (same RNG seed).
+    _, _, X_val, y_val = _stratified_val_split(X_s, y_s)
+
+    # Source AUC (on training data — proxy for source performance, kept for
+    # backward compatibility with existing screening logic).
     src_auc = roc_auc(y_s, model.predict_proba(X_s)[:, 1])
 
     # ── Adapt ─────────────────────────────────────────────────────────────────
     adapt_obj = _build_adapt(cfg.psi, cfg.hp_dict, X_s, y_s)
     adapted   = adapt_obj.adapt(model, X_t)
+
+    # ── Threshold selection on source-val (with the *adapted* model) ─────────
+    val_score = adapted.predict_proba(X_val)[:, 1]
+    threshold = best_threshold(y_val, val_score)
+
+    # Source-val F1 at the same threshold (honest source baseline for ΔF1).
+    val_pred  = (val_score >= threshold).astype(int)
+    src_val_f1 = float(f1_score(y_val, val_pred, zero_division=0.0))
 
     # ── Target metrics with bootstrap CI ─────────────────────────────────────
     tgt_score = adapted.predict_proba(X_t)[:, 1]
@@ -424,9 +491,32 @@ def _run_single(
     )
     d_auc = float(src_auc - ci_roc.estimate)
 
+    # Threshold-dependent metrics — threshold is FIXED (not refit per bootstrap).
+    def _f1_at(yt: np.ndarray, ys: np.ndarray) -> float:
+        return float(f1_score(yt, (ys >= threshold).astype(int),
+                              zero_division=0.0))
+
+    def _prec_at(yt: np.ndarray, ys: np.ndarray) -> float:
+        return float(precision_score(yt, (ys >= threshold).astype(int),
+                                     zero_division=0.0))
+
+    def _rec_at(yt: np.ndarray, ys: np.ndarray) -> float:
+        return float(recall_score(yt, (ys >= threshold).astype(int),
+                                  zero_division=0.0))
+
+    def _mcc_at(yt: np.ndarray, ys: np.ndarray) -> float:
+        return mcc(yt, ys, threshold=threshold)
+
+    ci_f1   = bootstrap_ci(_f1_at,   y_t, tgt_score, n_bootstrap=n_bootstrap, seed=cfg.seed)
+    ci_prec = bootstrap_ci(_prec_at, y_t, tgt_score, n_bootstrap=n_bootstrap, seed=cfg.seed)
+    ci_rec  = bootstrap_ci(_rec_at,  y_t, tgt_score, n_bootstrap=n_bootstrap, seed=cfg.seed)
+    ci_mcc  = bootstrap_ci(_mcc_at,  y_t, tgt_score, n_bootstrap=n_bootstrap, seed=cfg.seed)
+
+    d_f1 = src_val_f1 - ci_f1.estimate
+
     log.info(
-        "  %-60s  roc=%.4f [%.4f,%.4f]  Δauc=%+.4f",
-        str(cfg), ci_roc.estimate, ci_roc.lower, ci_roc.upper, d_auc,
+        "  %-60s  roc=%.4f  f1=%.4f  Δauc=%+.4f  Δf1=%+.4f  t=%.3f",
+        str(cfg), ci_roc.estimate, ci_f1.estimate, d_auc, d_f1, threshold,
     )
 
     return [
@@ -434,6 +524,13 @@ def _run_single(
         _row(cfg, "pr_auc",         ci_pr.estimate,  ci_pr.lower,  ci_pr.upper),
         _row(cfg, "source_roc_auc", src_auc),
         _row(cfg, "delta_auc",      d_auc),
+        _row(cfg, "f1",             ci_f1.estimate,   ci_f1.lower,   ci_f1.upper),
+        _row(cfg, "precision",      ci_prec.estimate, ci_prec.lower, ci_prec.upper),
+        _row(cfg, "recall",         ci_rec.estimate,  ci_rec.lower,  ci_rec.upper),
+        _row(cfg, "mcc",            ci_mcc.estimate,  ci_mcc.lower,  ci_mcc.upper),
+        _row(cfg, "source_val_f1",  src_val_f1),
+        _row(cfg, "delta_f1",       d_f1),
+        _row(cfg, "threshold",      threshold),
     ]
 
 

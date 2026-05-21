@@ -1,0 +1,97 @@
+# Example experiment config for the *statistical* benchmark branch.
+#
+# Mirrors configs/experiment_example.yaml in structure; the only differences
+# are the model and adaptation_methods names, which now refer to the
+# nstad_bench.models.statistical and nstad_bench.adaptation.statistical
+# registries instead of the neural ones.
+#
+# Run with:
+#   from nstad_bench.experiments.runner import register_dataset, run_experiment
+#   register_dataset("mitbih_ds1_ds2", my_loader)
+#   df = run_experiment("configs/statistical/experiment_example.yaml")
+#
+# Two-stage pipeline (identical to the neural branch)
+# ---------------------------------------------------
+# Stage 1 (screening): every valid (phi × theta) pair is evaluated with
+#   SourceOnly on all datasets and seeds.  Pairs are ranked by mean
+#   delta_auc and the top-K are passed to Stage 2.
+#
+# Stage 2 (adaptation): top-K pairs × all adaptation methods.  For methods
+#   with a hyperparameter space, n_trials random HP configs are drawn
+#   (each evaluated with all seeds).  SourceOnly has no HP space → 1
+#   trial only.
+
+experiment_name: example_mitbih_stat
+output_dir:      results/statistical/
+n_bootstrap:     200
+
+# ── Two-stage settings ────────────────────────────────────────────────────────
+screening:
+  top_k:  2
+  metric: delta_auc
+
+random_search:
+  n_trials:  10
+  seeds:     [0, 1, 2]
+  base_seed: 42
+
+# ── Datasets ─────────────────────────────────────────────────────────────────
+datasets:
+  - mitbih_ds1_ds2
+
+# ── Representations φ ────────────────────────────────────────────────────────
+# Statistical models consume flattened representations; see
+# configs/statistical/compatibility.yaml for the full matrix.
+representations:
+  RawSignal: {}
+  LogSTFT:
+    n_fft:      64
+    hop_length: 16
+
+# ── Models θ (statistical) ───────────────────────────────────────────────────
+# Keys must match nstad_bench.models.statistical class names.
+# Training keys (epochs/lr/batch_size) are silently ignored by StatModel.fit.
+models:
+  LogReg:
+    C:         1.0
+    max_iter:  1000
+
+  RandomForest:
+    n_estimators:     200
+    max_depth:        null
+    min_samples_leaf: 1
+
+  GBM:
+    n_estimators:  200
+    learning_rate: 0.05
+    max_depth:     3
+
+  SVM:
+    C:      1.0
+    kernel: rbf
+    gamma:  scale
+
+# ── Adaptation methods ψ (statistical) ───────────────────────────────────────
+# HP specs (same syntax as the neural branch):
+#   {type: log_float, low: …, high: …}  log-uniform float
+#   {type: float,     low: …, high: …}  uniform float
+#   {type: int,       low: …, high: …}  uniform integer
+#   {type: choice,    choices: […]}     uniform choice
+adaptation_methods:
+  SourceOnly: {}
+
+  CORAL:
+    lambda_reg: {type: log_float, low: 1.0e-5, high: 1.0e-1}
+    align_mean: {type: choice,    choices: [true, false]}
+
+  SubspaceAlignment:
+    n_components: {type: int, low: 10, high: 100}
+
+  ImportanceReweighting:
+    estimator: {type: choice,    choices: [classifier, kliep, ulsif]}
+    clip:      {type: log_float, low: 2.0, high: 100.0}
+
+  KMM:
+    # sigma=null → median heuristic on the concatenated features
+    B:   {type: log_float, low: 10.0, high: 1000.0}
+    eps: {type: log_float, low: 1.0e-3, high: 1.0e-1}

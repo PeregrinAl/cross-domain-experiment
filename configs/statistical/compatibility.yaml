@@ -1,0 +1,45 @@
+# Compatibility matrix for the *statistical* benchmark branch.
+#
+# A pair (representation φ, model θ) is compatible when the model's expected
+# input dimensionality matches the representation's output dimensionality.
+#
+# Statistical models (LogReg / RandomForest / GBM / SVM / StatTestClassifier)
+# all consume a flat per-sample feature vector ``(N, D)``.  Every existing
+# representation can therefore be made compatible by flattening:
+#
+#   RawSignal   (N, T)         → flatten → (N, T)
+#   LogSTFT     (N, F, T)      → flatten → (N, F·T)
+#   CWT_Morlet  (N, F, T)      → flatten → (N, F·T)
+#
+# The default StatModel._extract already does this flatten.  Override per
+# subclass if you want hand-crafted features (mean, var, kurtosis, spectral
+# moments, etc.) instead of raw flattening.
+#
+# Note on dimensionality
+# ----------------------
+# Some representation × dataset combinations produce very wide feature
+# vectors after flatten (e.g. STEAD LogSTFT with n_fft=512, hop=128, T=6000
+# → D ≈ 12 000).  Linear models (LogReg/SVM-linear) handle this well; tree
+# models (RandomForest/GBM) may need a hand-crafted feature extractor.
+
+compatibility:
+  RawSignal:
+    LogReg:              true
+    RandomForest:        true
+    GBM:                 true
+    SVM:                 true
+    StatTestClassifier:  true
+
+  LogSTFT:
+    LogReg:              true
+    RandomForest:        true
+    GBM:                 true
+    SVM:                 true
+    StatTestClassifier:  false   # 2-D distribution — define per implementation
+
+  CWT_Morlet:
+    LogReg:              true
+    RandomForest:        true
+    GBM:                 true
+    SVM:                 true
+    StatTestClassifier:  false   # 2-D distribution — define per implementation

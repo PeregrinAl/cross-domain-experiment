@@ -1,0 +1,1608 @@
+2026-05-18 22:34:46  INFO      ============================================================
+2026-05-18 22:34:46  INFO        nstad_bench  run_all.py
+2026-05-18 22:34:46  INFO        Started : 2026-05-18 22:34:46
+2026-05-18 22:34:46  INFO        Log file: logs/run_20260518_2234.log
+2026-05-18 22:34:46  INFO        Mode    : FULL
+2026-05-18 22:34:46  INFO      ============================================================
+2026-05-18 22:34:48  INFO      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-05-18 22:34:48  INFO        Dataset : mitbih_ds1_ds2
+2026-05-18 22:34:48  INFO        Config  : /Users/user/projects/cross-domain-experiment/configs/mitbih.yaml
+2026-05-18 22:34:48  INFO        Mode    : FULL
+2026-05-18 22:34:48  INFO      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2026-05-18 22:34:48  INFO      ======================================================================
+2026-05-18 22:34:48  INFO      Experiment : mitbih
+2026-05-18 22:34:48  INFO      Output     : results/mitbih.parquet
+2026-05-18 22:34:48  INFO      n_bootstrap: 200
+2026-05-18 22:34:48  INFO      ======================================================================
+2026-05-18 22:34:48  INFO      --- Stage 1: Screening (SourceOnly) ---
+2026-05-18 22:34:48  INFO      Stage 1 — 12 screening configs
+2026-05-18 22:34:48  INFO      Resume: Stage 1 checkpoint found — 12/12 configs already done
+2026-05-18 22:34:48  INFO      [S1 1/12] SKIP (checkpoint) [screening] RawSignal×InceptionTime1D×SourceOnly  ds=mitbih_ds1_ds2  seed=0  trial=0
+2026-05-18 22:34:48  INFO      [S1 2/12] SKIP (checkpoint) [screening] RawSignal×InceptionTime1D×SourceOnly  ds=mitbih_ds1_ds2  seed=1  trial=0
+2026-05-18 22:34:48  INFO      [S1 3/12] SKIP (checkpoint) [screening] RawSignal×InceptionTime1D×SourceOnly  ds=mitbih_ds1_ds2  seed=2  trial=0
+2026-05-18 22:34:48  INFO      [S1 4/12] SKIP (checkpoint) [screening] RawSignal×PatchTST×SourceOnly  ds=mitbih_ds1_ds2  seed=0  trial=0
+2026-05-18 22:34:48  INFO      [S1 5/12] SKIP (checkpoint) [screening] RawSignal×PatchTST×SourceOnly  ds=mitbih_ds1_ds2  seed=1  trial=0
+2026-05-18 22:34:48  INFO      [S1 6/12] SKIP (checkpoint) [screening] RawSignal×PatchTST×SourceOnly  ds=mitbih_ds1_ds2  seed=2  trial=0
+2026-05-18 22:34:48  INFO      [S1 7/12] SKIP (checkpoint) [screening] LogSTFT×ResNet18_2D×SourceOnly  ds=mitbih_ds1_ds2  seed=0  trial=0
+2026-05-18 22:34:48  INFO      [S1 8/12] SKIP (checkpoint) [screening] LogSTFT×ResNet18_2D×SourceOnly  ds=mitbih_ds1_ds2  seed=1  trial=0
+2026-05-18 22:34:48  INFO      [S1 9/12] SKIP (checkpoint) [screening] LogSTFT×ResNet18_2D×SourceOnly  ds=mitbih_ds1_ds2  seed=2  trial=0
+2026-05-18 22:34:48  INFO      [S1 10/12] SKIP (checkpoint) [screening] CWT_Morlet×ResNet18_2D×SourceOnly  ds=mitbih_ds1_ds2  seed=0  trial=0
+2026-05-18 22:34:48  INFO      [S1 11/12] SKIP (checkpoint) [screening] CWT_Morlet×ResNet18_2D×SourceOnly  ds=mitbih_ds1_ds2  seed=1  trial=0
+2026-05-18 22:34:48  INFO      [S1 12/12] SKIP (checkpoint) [screening] CWT_Morlet×ResNet18_2D×SourceOnly  ds=mitbih_ds1_ds2  seed=2  trial=0
+2026-05-18 22:34:48  INFO      Top-2 (φ, θ) pairs by mean delta_auc:
+phi        theta      
+LogSTFT    ResNet18_2D    0.151543
+RawSignal  PatchTST       0.146852
+2026-05-18 22:34:48  INFO      --- Stage 2: Adaptation (top-2 pairs × all ψ) ---
+2026-05-18 22:34:48  INFO      Stage 2 — 180 adaptation configs
+2026-05-18 22:34:48  INFO      Resume: Stage 2 checkpoint found — 7/180 configs already done
+2026-05-18 22:34:48  INFO      [S2 1/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=0
+2026-05-18 22:34:48  INFO      [S2 2/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=1
+2026-05-18 22:34:48  INFO      [S2 3/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=2
+2026-05-18 22:34:48  INFO      [S2 4/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=3
+2026-05-18 22:34:48  INFO      [S2 5/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=4
+2026-05-18 22:34:48  INFO      [S2 6/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=5
+2026-05-18 22:34:48  INFO      [S2 7/180] SKIP (checkpoint) [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=6
+2026-05-18 22:34:48  INFO      [S2 8/180] [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=7
+2026-05-18 22:34:48  INFO      Segmenting DS1 (source) from /Users/user/.nstad_bench/data/mitbih …
+2026-05-18 22:34:49  INFO      Segmenting DS2 (target) from /Users/user/.nstad_bench/data/mitbih …
+2026-05-18 22:34:49  INFO      MIT-BIH DS1→DS2 — source: 6000  (N=3000, A=3000)  target: 6000  (N=3000, A=3000)
+2026-05-18 22:34:49  INFO          device: mps
+2026-05-18 22:34:49  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-18 22:35:00  INFO          epoch 1/40  loss=0.2862  val_auc=0.9793  patience=0/10
+2026-05-18 22:35:24  INFO          epoch 5/40  loss=0.1249  val_auc=0.9953  patience=0/10
+2026-05-18 22:35:52  INFO          epoch 10/40  loss=0.0706  val_auc=0.9964  patience=1/10
+2026-05-18 22:36:20  INFO          epoch 15/40  loss=0.0505  val_auc=0.9969  patience=3/10
+2026-05-18 22:36:49  INFO          epoch 20/40  loss=0.0392  val_auc=0.9967  patience=8/10
+2026-05-18 22:37:01  INFO          early stop at epoch 22/40  best_val_auc=0.9978
+2026-05-18 22:39:34  INFO        [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=7  roc=0.8321 [0.8216,0.8420]  Δauc=+0.1669
+2026-05-18 22:39:34  INFO      [S2 9/180] [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=8
+2026-05-18 22:39:35  INFO          device: mps
+2026-05-18 22:39:35  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-18 22:39:40  INFO          epoch 1/40  loss=0.2862  val_auc=0.9793  patience=0/10
+2026-05-18 22:40:03  INFO          epoch 5/40  loss=0.1249  val_auc=0.9953  patience=0/10
+2026-05-18 22:40:33  INFO          epoch 10/40  loss=0.0706  val_auc=0.9964  patience=1/10
+2026-05-18 22:41:02  INFO          epoch 15/40  loss=0.0505  val_auc=0.9969  patience=3/10
+2026-05-18 22:41:31  INFO          epoch 20/40  loss=0.0392  val_auc=0.9967  patience=8/10
+2026-05-18 22:41:43  INFO          early stop at epoch 22/40  best_val_auc=0.9978
+2026-05-18 22:44:56  INFO        [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=8  roc=0.8440 [0.8354,0.8535]  Δauc=+0.1551
+2026-05-18 22:44:56  INFO      [S2 10/180] [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=9
+2026-05-18 22:44:57  INFO          device: mps
+2026-05-18 22:44:57  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-18 22:45:02  INFO          epoch 1/40  loss=0.2862  val_auc=0.9793  patience=0/10
+2026-05-18 22:45:26  INFO          epoch 5/40  loss=0.1249  val_auc=0.9953  patience=0/10
+2026-05-18 22:45:55  INFO          epoch 10/40  loss=0.0706  val_auc=0.9964  patience=1/10
+2026-05-18 22:46:24  INFO          epoch 15/40  loss=0.0505  val_auc=0.9969  patience=3/10
+2026-05-18 22:46:53  INFO          epoch 20/40  loss=0.0392  val_auc=0.9967  patience=8/10
+2026-05-18 22:47:04  INFO          early stop at epoch 22/40  best_val_auc=0.9978
+2026-05-18 22:47:47  INFO        [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=9  roc=0.8233 [0.8140,0.8342]  Δauc=+0.1757
+2026-05-18 22:47:47  INFO      [S2 11/180] [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=0
+2026-05-18 22:47:47  INFO          device: mps
+2026-05-18 22:47:47  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-18 22:47:53  INFO          epoch 1/40  loss=0.2866  val_auc=0.9844  patience=0/10
+2026-05-18 22:48:16  INFO          epoch 5/40  loss=0.1316  val_auc=0.9944  patience=0/10
+2026-05-18 22:48:45  INFO          epoch 10/40  loss=0.0774  val_auc=0.9958  patience=1/10
+2026-05-18 22:49:14  INFO          epoch 15/40  loss=0.0633  val_auc=0.9962  patience=2/10
+2026-05-18 22:49:43  INFO          epoch 20/40  loss=0.0454  val_auc=0.9974  patience=1/10
+2026-05-18 22:50:12  INFO          epoch 25/40  loss=0.0380  val_auc=0.9923  patience=6/10
+2026-05-18 22:50:35  INFO          early stop at epoch 29/40  best_val_auc=0.9974
+2026-05-18 22:51:50  INFO        [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=0  roc=0.8361 [0.8258,0.8476]  Δauc=+0.1632
+2026-05-18 22:51:50  INFO      [S2 12/180] [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=1
+2026-05-18 22:51:50  INFO          device: mps
+2026-05-18 22:51:50  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-18 22:51:56  INFO          epoch 1/40  loss=0.2866  val_auc=0.9844  patience=0/10
+2026-05-18 22:52:19  INFO          epoch 5/40  loss=0.1316  val_auc=0.9944  patience=0/10
+2026-05-18 22:52:48  INFO          epoch 10/40  loss=0.0774  val_auc=0.9958  patience=1/10
+2026-05-18 22:53:17  INFO          epoch 15/40  loss=0.0633  val_auc=0.9962  patience=2/10
+2026-05-18 22:53:46  INFO          epoch 20/40  loss=0.0454  val_auc=0.9974  patience=1/10
+2026-05-18 22:54:15  INFO          epoch 25/40  loss=0.0380  val_auc=0.9923  patience=6/10
+2026-05-18 22:54:38  INFO          early stop at epoch 29/40  best_val_auc=0.9974
+2026-05-18 22:57:01  INFO        [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=1  roc=0.8293 [0.8191,0.8399]  Δauc=+0.1700
+2026-05-18 22:57:01  INFO      [S2 13/180] [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=2
+2026-05-18 22:57:01  INFO          device: mps
+2026-05-18 22:57:01  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-18 22:57:07  INFO          epoch 1/40  loss=0.2866  val_auc=0.9844  patience=0/10
+2026-05-18 22:57:30  INFO          epoch 5/40  loss=0.1316  val_auc=0.9944  patience=0/10
+2026-05-18 22:57:58  INFO          epoch 10/40  loss=0.0774  val_auc=0.9958  patience=1/10
+2026-05-18 22:58:27  INFO          epoch 15/40  loss=0.0633  val_auc=0.9962  patience=2/10
+2026-05-18 22:58:56  INFO          epoch 20/40  loss=0.0454  val_auc=0.9974  patience=1/10
+2026-05-18 22:59:24  INFO          epoch 25/40  loss=0.0380  val_auc=0.9923  patience=6/10
+2026-05-18 22:59:47  INFO          early stop at epoch 29/40  best_val_auc=0.9974
+2026-05-18 23:03:40  INFO        [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=2  roc=0.8150 [0.8042,0.8262]  Δauc=+0.1843
+2026-05-18 23:03:40  INFO      [S2 14/180] [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=3
+2026-05-18 23:03:41  INFO          device: mps
+2026-05-18 23:03:41  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-18 23:03:47  INFO          epoch 1/40  loss=0.2866  val_auc=0.9844  patience=0/10
+2026-05-18 23:04:10  INFO          epoch 5/40  loss=0.1316  val_auc=0.9944  patience=0/10
+2026-05-18 23:04:39  INFO          epoch 10/40  loss=0.0774  val_auc=0.9958  patience=1/10
+2026-05-18 23:05:08  INFO          epoch 15/40  loss=0.0633  val_auc=0.9962  patience=2/10
+2026-05-18 23:05:37  INFO          epoch 20/40  loss=0.0454  val_auc=0.9974  patience=1/10
+2026-05-18 23:06:06  INFO          epoch 25/40  loss=0.0380  val_auc=0.9923  patience=6/10
+2026-05-18 23:06:29  INFO          early stop at epoch 29/40  best_val_auc=0.9974
+2026-05-18 23:10:55  INFO        [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=3  roc=0.8205 [0.8101,0.8321]  Δauc=+0.1789
+2026-05-18 23:10:55  INFO      [S2 15/180] [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=4
+2026-05-18 23:10:55  INFO          device: mps
+2026-05-18 23:10:55  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-18 23:11:01  INFO          epoch 1/40  loss=0.2866  val_auc=0.9844  patience=0/10
+2026-05-18 23:11:24  INFO          epoch 5/40  loss=0.1316  val_auc=0.9944  patience=0/10
+2026-05-18 23:11:54  INFO          epoch 10/40  loss=0.0774  val_auc=0.9958  patience=1/10
+2026-05-18 23:12:23  INFO          epoch 15/40  loss=0.0633  val_auc=0.9962  patience=2/10
+2026-05-18 23:12:52  INFO          epoch 20/40  loss=0.0454  val_auc=0.9974  patience=1/10
+2026-05-18 23:13:22  INFO          epoch 25/40  loss=0.0380  val_auc=0.9923  patience=6/10
+2026-05-18 23:13:45  INFO          early stop at epoch 29/40  best_val_auc=0.9974
+2026-05-18 23:16:38  INFO        [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=4  roc=0.8475 [0.8382,0.8586]  Δauc=+0.1519
+2026-05-18 23:16:38  INFO      [S2 16/180] [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=5
+2026-05-18 23:16:38  INFO          device: mps
+2026-05-18 23:16:38  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-18 23:16:44  INFO          epoch 1/40  loss=0.2866  val_auc=0.9844  patience=0/10
+2026-05-18 23:17:08  INFO          epoch 5/40  loss=0.1316  val_auc=0.9944  patience=0/10
+2026-05-18 23:17:37  INFO          epoch 10/40  loss=0.0774  val_auc=0.9958  patience=1/10
+2026-05-18 23:18:06  INFO          epoch 15/40  loss=0.0633  val_auc=0.9962  patience=2/10
+2026-05-18 23:18:35  INFO          epoch 20/40  loss=0.0454  val_auc=0.9974  patience=1/10
+2026-05-18 23:19:05  INFO          epoch 25/40  loss=0.0380  val_auc=0.9923  patience=6/10
+2026-05-18 23:19:28  INFO          early stop at epoch 29/40  best_val_auc=0.9974
+2026-05-18 23:22:20  INFO        [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=5  roc=0.7831 [0.7703,0.7950]  Δauc=+0.2163
+2026-05-18 23:22:20  INFO      [S2 17/180] [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=6
+2026-05-18 23:22:21  INFO          device: mps
+2026-05-18 23:22:21  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-18 23:22:27  INFO          epoch 1/40  loss=0.2866  val_auc=0.9844  patience=0/10
+2026-05-18 23:22:50  INFO          epoch 5/40  loss=0.1316  val_auc=0.9944  patience=0/10
+2026-05-18 23:23:19  INFO          epoch 10/40  loss=0.0774  val_auc=0.9958  patience=1/10
+2026-05-18 23:23:48  INFO          epoch 15/40  loss=0.0633  val_auc=0.9962  patience=2/10
+2026-05-18 23:24:17  INFO          epoch 20/40  loss=0.0454  val_auc=0.9974  patience=1/10
+2026-05-18 23:24:46  INFO          epoch 25/40  loss=0.0380  val_auc=0.9923  patience=6/10
+2026-05-18 23:25:09  INFO          early stop at epoch 29/40  best_val_auc=0.9974
+2026-05-18 23:29:15  INFO        [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=6  roc=0.8453 [0.8343,0.8535]  Δauc=+0.1541
+2026-05-18 23:29:15  INFO      [S2 18/180] [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=7
+2026-05-18 23:29:16  INFO          device: mps
+2026-05-18 23:29:16  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-18 23:29:22  INFO          epoch 1/40  loss=0.2866  val_auc=0.9844  patience=0/10
+2026-05-18 23:29:45  INFO          epoch 5/40  loss=0.1316  val_auc=0.9944  patience=0/10
+2026-05-18 23:30:14  INFO          epoch 10/40  loss=0.0774  val_auc=0.9958  patience=1/10
+2026-05-18 23:30:43  INFO          epoch 15/40  loss=0.0633  val_auc=0.9962  patience=2/10
+2026-05-18 23:31:12  INFO          epoch 20/40  loss=0.0454  val_auc=0.9974  patience=1/10
+2026-05-18 23:31:40  INFO          epoch 25/40  loss=0.0380  val_auc=0.9923  patience=6/10
+2026-05-18 23:32:04  INFO          early stop at epoch 29/40  best_val_auc=0.9974
+2026-05-18 23:34:36  INFO        [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=7  roc=0.7894 [0.7780,0.8014]  Δauc=+0.2099
+2026-05-18 23:34:36  INFO      [S2 19/180] [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=8
+2026-05-18 23:34:37  INFO          device: mps
+2026-05-18 23:34:37  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-18 23:34:42  INFO          epoch 1/40  loss=0.2866  val_auc=0.9844  patience=0/10
+2026-05-18 23:35:06  INFO          epoch 5/40  loss=0.1316  val_auc=0.9944  patience=0/10
+2026-05-18 23:35:34  INFO          epoch 10/40  loss=0.0774  val_auc=0.9958  patience=1/10
+2026-05-18 23:36:03  INFO          epoch 15/40  loss=0.0633  val_auc=0.9962  patience=2/10
+2026-05-18 23:36:32  INFO          epoch 20/40  loss=0.0454  val_auc=0.9974  patience=1/10
+2026-05-18 23:37:01  INFO          epoch 25/40  loss=0.0380  val_auc=0.9923  patience=6/10
+2026-05-18 23:37:24  INFO          early stop at epoch 29/40  best_val_auc=0.9974
+2026-05-18 23:40:37  INFO        [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=8  roc=0.8091 [0.7992,0.8197]  Δauc=+0.1903
+2026-05-18 23:40:37  INFO      [S2 20/180] [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=9
+2026-05-18 23:40:37  INFO          device: mps
+2026-05-18 23:40:37  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-18 23:40:43  INFO          epoch 1/40  loss=0.2866  val_auc=0.9844  patience=0/10
+2026-05-18 23:41:06  INFO          epoch 5/40  loss=0.1316  val_auc=0.9944  patience=0/10
+2026-05-18 23:41:35  INFO          epoch 10/40  loss=0.0774  val_auc=0.9958  patience=1/10
+2026-05-18 23:42:04  INFO          epoch 15/40  loss=0.0633  val_auc=0.9962  patience=2/10
+2026-05-18 23:42:32  INFO          epoch 20/40  loss=0.0454  val_auc=0.9974  patience=1/10
+2026-05-18 23:43:01  INFO          epoch 25/40  loss=0.0380  val_auc=0.9923  patience=6/10
+2026-05-18 23:43:24  INFO          early stop at epoch 29/40  best_val_auc=0.9974
+2026-05-18 23:44:07  INFO        [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=9  roc=0.8042 [0.7926,0.8169]  Δauc=+0.1952
+2026-05-18 23:44:07  INFO      [S2 21/180] [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=0
+2026-05-18 23:44:07  INFO          device: mps
+2026-05-18 23:44:07  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-18 23:44:13  INFO          epoch 1/40  loss=0.2760  val_auc=0.9693  patience=0/10
+2026-05-18 23:44:36  INFO          epoch 5/40  loss=0.1172  val_auc=0.9918  patience=1/10
+2026-05-18 23:45:05  INFO          epoch 10/40  loss=0.0798  val_auc=0.9949  patience=3/10
+2026-05-18 23:45:34  INFO          epoch 15/40  loss=0.0481  val_auc=0.9966  patience=4/10
+2026-05-18 23:46:03  INFO          epoch 20/40  loss=0.0369  val_auc=0.9980  patience=0/10
+2026-05-18 23:46:33  INFO          epoch 25/40  loss=0.0342  val_auc=0.9959  patience=5/10
+2026-05-18 23:47:02  INFO          epoch 30/40  loss=0.0211  val_auc=0.9964  patience=10/10
+2026-05-18 23:47:02  INFO          early stop at epoch 30/40  best_val_auc=0.9980
+2026-05-18 23:48:16  INFO        [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=0  roc=0.8453 [0.8367,0.8554]  Δauc=+0.1543
+2026-05-18 23:48:16  INFO      [S2 22/180] [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=1
+2026-05-18 23:48:17  INFO          device: mps
+2026-05-18 23:48:17  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-18 23:48:23  INFO          epoch 1/40  loss=0.2760  val_auc=0.9693  patience=0/10
+2026-05-18 23:48:46  INFO          epoch 5/40  loss=0.1172  val_auc=0.9918  patience=1/10
+2026-05-18 23:49:15  INFO          epoch 10/40  loss=0.0798  val_auc=0.9949  patience=3/10
+2026-05-18 23:49:43  INFO          epoch 15/40  loss=0.0481  val_auc=0.9966  patience=4/10
+2026-05-18 23:50:12  INFO          epoch 20/40  loss=0.0369  val_auc=0.9980  patience=0/10
+2026-05-18 23:50:41  INFO          epoch 25/40  loss=0.0342  val_auc=0.9959  patience=5/10
+2026-05-18 23:51:09  INFO          epoch 30/40  loss=0.0211  val_auc=0.9964  patience=10/10
+2026-05-18 23:51:09  INFO          early stop at epoch 30/40  best_val_auc=0.9980
+2026-05-18 23:53:30  INFO        [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=1  roc=0.8382 [0.8296,0.8481]  Δauc=+0.1614
+2026-05-18 23:53:30  INFO      [S2 23/180] [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=2
+2026-05-18 23:53:31  INFO          device: mps
+2026-05-18 23:53:31  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-18 23:53:36  INFO          epoch 1/40  loss=0.2760  val_auc=0.9693  patience=0/10
+2026-05-18 23:53:59  INFO          epoch 5/40  loss=0.1172  val_auc=0.9918  patience=1/10
+2026-05-18 23:54:27  INFO          epoch 10/40  loss=0.0798  val_auc=0.9949  patience=3/10
+2026-05-18 23:54:55  INFO          epoch 15/40  loss=0.0481  val_auc=0.9966  patience=4/10
+2026-05-18 23:55:23  INFO          epoch 20/40  loss=0.0369  val_auc=0.9980  patience=0/10
+2026-05-18 23:55:51  INFO          epoch 25/40  loss=0.0342  val_auc=0.9959  patience=5/10
+2026-05-18 23:56:20  INFO          epoch 30/40  loss=0.0211  val_auc=0.9964  patience=10/10
+2026-05-18 23:56:20  INFO          early stop at epoch 30/40  best_val_auc=0.9980
+2026-05-19 00:00:06  INFO        [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=2  roc=0.8440 [0.8350,0.8549]  Δauc=+0.1556
+2026-05-19 00:00:06  INFO      [S2 24/180] [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=3
+2026-05-19 00:00:07  INFO          device: mps
+2026-05-19 00:00:07  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 00:00:12  INFO          epoch 1/40  loss=0.2760  val_auc=0.9693  patience=0/10
+2026-05-19 00:00:35  INFO          epoch 5/40  loss=0.1172  val_auc=0.9918  patience=1/10
+2026-05-19 00:01:03  INFO          epoch 10/40  loss=0.0798  val_auc=0.9949  patience=3/10
+2026-05-19 00:01:32  INFO          epoch 15/40  loss=0.0481  val_auc=0.9966  patience=4/10
+2026-05-19 00:02:00  INFO          epoch 20/40  loss=0.0369  val_auc=0.9980  patience=0/10
+2026-05-19 00:02:28  INFO          epoch 25/40  loss=0.0342  val_auc=0.9959  patience=5/10
+2026-05-19 00:02:57  INFO          epoch 30/40  loss=0.0211  val_auc=0.9964  patience=10/10
+2026-05-19 00:02:57  INFO          early stop at epoch 30/40  best_val_auc=0.9980
+2026-05-19 00:07:16  INFO        [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=3  roc=0.8246 [0.8142,0.8350]  Δauc=+0.1750
+2026-05-19 00:07:16  INFO      [S2 25/180] [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=4
+2026-05-19 00:07:16  INFO          device: mps
+2026-05-19 00:07:16  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 00:07:22  INFO          epoch 1/40  loss=0.2760  val_auc=0.9693  patience=0/10
+2026-05-19 00:07:45  INFO          epoch 5/40  loss=0.1172  val_auc=0.9918  patience=1/10
+2026-05-19 00:08:14  INFO          epoch 10/40  loss=0.0798  val_auc=0.9949  patience=3/10
+2026-05-19 00:08:42  INFO          epoch 15/40  loss=0.0481  val_auc=0.9966  patience=4/10
+2026-05-19 00:09:10  INFO          epoch 20/40  loss=0.0369  val_auc=0.9980  patience=0/10
+2026-05-19 00:09:38  INFO          epoch 25/40  loss=0.0342  val_auc=0.9959  patience=5/10
+2026-05-19 00:10:07  INFO          epoch 30/40  loss=0.0211  val_auc=0.9964  patience=10/10
+2026-05-19 00:10:07  INFO          early stop at epoch 30/40  best_val_auc=0.9980
+2026-05-19 00:12:54  INFO        [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=4  roc=0.8454 [0.8354,0.8561]  Δauc=+0.1541
+2026-05-19 00:12:54  INFO      [S2 26/180] [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=5
+2026-05-19 00:12:54  INFO          device: mps
+2026-05-19 00:12:54  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 00:13:00  INFO          epoch 1/40  loss=0.2760  val_auc=0.9693  patience=0/10
+2026-05-19 00:13:23  INFO          epoch 5/40  loss=0.1172  val_auc=0.9918  patience=1/10
+2026-05-19 00:13:51  INFO          epoch 10/40  loss=0.0798  val_auc=0.9949  patience=3/10
+2026-05-19 00:14:19  INFO          epoch 15/40  loss=0.0481  val_auc=0.9966  patience=4/10
+2026-05-19 00:14:47  INFO          epoch 20/40  loss=0.0369  val_auc=0.9980  patience=0/10
+2026-05-19 00:15:15  INFO          epoch 25/40  loss=0.0342  val_auc=0.9959  patience=5/10
+2026-05-19 00:15:43  INFO          epoch 30/40  loss=0.0211  val_auc=0.9964  patience=10/10
+2026-05-19 00:15:43  INFO          early stop at epoch 30/40  best_val_auc=0.9980
+2026-05-19 00:18:31  INFO        [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=5  roc=0.8299 [0.8208,0.8422]  Δauc=+0.1696
+2026-05-19 00:18:31  INFO      [S2 27/180] [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=6
+2026-05-19 00:18:31  INFO          device: mps
+2026-05-19 00:18:31  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 00:18:37  INFO          epoch 1/40  loss=0.2760  val_auc=0.9693  patience=0/10
+2026-05-19 00:19:00  INFO          epoch 5/40  loss=0.1172  val_auc=0.9918  patience=1/10
+2026-05-19 00:19:28  INFO          epoch 10/40  loss=0.0798  val_auc=0.9949  patience=3/10
+2026-05-19 00:19:57  INFO          epoch 15/40  loss=0.0481  val_auc=0.9966  patience=4/10
+2026-05-19 00:20:25  INFO          epoch 20/40  loss=0.0369  val_auc=0.9980  patience=0/10
+2026-05-19 00:20:53  INFO          epoch 25/40  loss=0.0342  val_auc=0.9959  patience=5/10
+2026-05-19 00:21:21  INFO          epoch 30/40  loss=0.0211  val_auc=0.9964  patience=10/10
+2026-05-19 00:21:21  INFO          early stop at epoch 30/40  best_val_auc=0.9980
+2026-05-19 00:25:22  INFO        [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=6  roc=0.8426 [0.8317,0.8537]  Δauc=+0.1569
+2026-05-19 00:25:22  INFO      [S2 28/180] [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=7
+2026-05-19 00:25:23  INFO          device: mps
+2026-05-19 00:25:23  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 00:25:28  INFO          epoch 1/40  loss=0.2760  val_auc=0.9693  patience=0/10
+2026-05-19 00:25:51  INFO          epoch 5/40  loss=0.1172  val_auc=0.9918  patience=1/10
+2026-05-19 00:26:20  INFO          epoch 10/40  loss=0.0798  val_auc=0.9949  patience=3/10
+2026-05-19 00:26:48  INFO          epoch 15/40  loss=0.0481  val_auc=0.9966  patience=4/10
+2026-05-19 00:27:17  INFO          epoch 20/40  loss=0.0369  val_auc=0.9980  patience=0/10
+2026-05-19 00:27:45  INFO          epoch 25/40  loss=0.0342  val_auc=0.9959  patience=5/10
+2026-05-19 00:28:14  INFO          epoch 30/40  loss=0.0211  val_auc=0.9964  patience=10/10
+2026-05-19 00:28:14  INFO          early stop at epoch 30/40  best_val_auc=0.9980
+2026-05-19 00:30:43  INFO        [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=7  roc=0.8396 [0.8304,0.8506]  Δauc=+0.1599
+2026-05-19 00:30:43  INFO      [S2 29/180] [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=8
+2026-05-19 00:30:44  INFO          device: mps
+2026-05-19 00:30:44  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 00:30:49  INFO          epoch 1/40  loss=0.2760  val_auc=0.9693  patience=0/10
+2026-05-19 00:31:12  INFO          epoch 5/40  loss=0.1172  val_auc=0.9918  patience=1/10
+2026-05-19 00:31:40  INFO          epoch 10/40  loss=0.0798  val_auc=0.9949  patience=3/10
+2026-05-19 00:32:09  INFO          epoch 15/40  loss=0.0481  val_auc=0.9966  patience=4/10
+2026-05-19 00:32:37  INFO          epoch 20/40  loss=0.0369  val_auc=0.9980  patience=0/10
+2026-05-19 00:33:18  INFO          epoch 25/40  loss=0.0342  val_auc=0.9959  patience=5/10
+2026-05-19 00:34:18  INFO          epoch 30/40  loss=0.0211  val_auc=0.9964  patience=10/10
+2026-05-19 00:34:18  INFO          early stop at epoch 30/40  best_val_auc=0.9980
+2026-05-19 00:39:27  INFO        [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=8  roc=0.8448 [0.8347,0.8561]  Δauc=+0.1547
+2026-05-19 00:39:27  INFO      [S2 30/180] [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=9
+2026-05-19 00:39:27  INFO          device: mps
+2026-05-19 00:39:27  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 00:39:36  INFO          epoch 1/40  loss=0.2760  val_auc=0.9693  patience=0/10
+2026-05-19 00:40:14  INFO          epoch 5/40  loss=0.1172  val_auc=0.9918  patience=1/10
+2026-05-19 00:40:59  INFO          epoch 10/40  loss=0.0798  val_auc=0.9949  patience=3/10
+2026-05-19 00:41:45  INFO          epoch 15/40  loss=0.0481  val_auc=0.9966  patience=4/10
+2026-05-19 00:42:31  INFO          epoch 20/40  loss=0.0369  val_auc=0.9980  patience=0/10
+2026-05-19 00:43:16  INFO          epoch 25/40  loss=0.0342  val_auc=0.9959  patience=5/10
+2026-05-19 00:44:02  INFO          epoch 30/40  loss=0.0211  val_auc=0.9964  patience=10/10
+2026-05-19 00:44:02  INFO          early stop at epoch 30/40  best_val_auc=0.9980
+2026-05-19 00:45:06  INFO        [adaptation] LogSTFT×ResNet18_2D×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=9  roc=0.8082 [0.7975,0.8196]  Δauc=+0.1913
+2026-05-19 00:45:06  INFO      [S2 31/180] [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=0
+2026-05-19 00:45:07  INFO          device: mps
+2026-05-19 00:45:07  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 00:45:16  INFO          epoch 1/40  loss=0.2862  val_auc=0.9793  patience=0/10
+2026-05-19 00:45:53  INFO          epoch 5/40  loss=0.1249  val_auc=0.9953  patience=0/10
+2026-05-19 00:46:38  INFO          epoch 10/40  loss=0.0706  val_auc=0.9964  patience=1/10
+2026-05-19 00:47:24  INFO          epoch 15/40  loss=0.0505  val_auc=0.9969  patience=3/10
+2026-05-19 00:48:10  INFO          epoch 20/40  loss=0.0392  val_auc=0.9967  patience=8/10
+2026-05-19 00:48:28  INFO          early stop at epoch 22/40  best_val_auc=0.9978
+2026-05-19 00:52:40  INFO        [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=0  roc=0.8806 [0.8735,0.8899]  Δauc=+0.1184
+2026-05-19 00:52:40  INFO      [S2 32/180] [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=1
+2026-05-19 00:52:40  INFO          device: mps
+2026-05-19 00:52:40  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 00:52:49  INFO          epoch 1/40  loss=0.2862  val_auc=0.9793  patience=0/10
+2026-05-19 00:53:26  INFO          epoch 5/40  loss=0.1249  val_auc=0.9953  patience=0/10
+2026-05-19 00:54:12  INFO          epoch 10/40  loss=0.0706  val_auc=0.9964  patience=1/10
+2026-05-19 00:54:58  INFO          epoch 15/40  loss=0.0505  val_auc=0.9969  patience=3/10
+2026-05-19 00:55:43  INFO          epoch 20/40  loss=0.0392  val_auc=0.9967  patience=8/10
+2026-05-19 00:56:01  INFO          early stop at epoch 22/40  best_val_auc=0.9978
+2026-05-19 01:01:04  INFO        [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=1  roc=0.8615 [0.8532,0.8700]  Δauc=+0.1375
+2026-05-19 01:01:04  INFO      [S2 33/180] [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=2
+2026-05-19 01:01:05  INFO          device: mps
+2026-05-19 01:01:05  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 01:01:13  INFO          epoch 1/40  loss=0.2862  val_auc=0.9793  patience=0/10
+2026-05-19 01:01:50  INFO          epoch 5/40  loss=0.1249  val_auc=0.9953  patience=0/10
+2026-05-19 01:02:36  INFO          epoch 10/40  loss=0.0706  val_auc=0.9964  patience=1/10
+2026-05-19 01:03:22  INFO          epoch 15/40  loss=0.0505  val_auc=0.9969  patience=3/10
+2026-05-19 01:04:07  INFO          epoch 20/40  loss=0.0392  val_auc=0.9967  patience=8/10
+2026-05-19 01:04:25  INFO          early stop at epoch 22/40  best_val_auc=0.9978
+2026-05-19 01:07:54  INFO        [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=2  roc=0.8473 [0.8380,0.8562]  Δauc=+0.1518
+2026-05-19 01:07:54  INFO      [S2 34/180] [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=3
+2026-05-19 01:07:55  INFO          device: mps
+2026-05-19 01:07:55  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 01:08:04  INFO          epoch 1/40  loss=0.2862  val_auc=0.9793  patience=0/10
+2026-05-19 01:08:41  INFO          epoch 5/40  loss=0.1249  val_auc=0.9953  patience=0/10
+2026-05-19 01:09:26  INFO          epoch 10/40  loss=0.0706  val_auc=0.9964  patience=1/10
+2026-05-19 01:10:19  INFO          epoch 15/40  loss=0.0505  val_auc=0.9969  patience=3/10
+2026-05-19 01:11:11  INFO          epoch 20/40  loss=0.0392  val_auc=0.9967  patience=8/10
+2026-05-19 01:11:31  INFO          early stop at epoch 22/40  best_val_auc=0.9978
+2026-05-19 01:18:51  INFO        [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=3  roc=0.8551 [0.8462,0.8639]  Δauc=+0.1439
+2026-05-19 01:18:51  INFO      [S2 35/180] [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=4
+2026-05-19 01:18:52  INFO          device: mps
+2026-05-19 01:18:52  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 01:19:02  INFO          epoch 1/40  loss=0.2862  val_auc=0.9793  patience=0/10
+2026-05-19 01:19:43  INFO          epoch 5/40  loss=0.1249  val_auc=0.9953  patience=0/10
+2026-05-19 01:20:32  INFO          epoch 10/40  loss=0.0706  val_auc=0.9964  patience=1/10
+2026-05-19 01:21:17  INFO          epoch 15/40  loss=0.0505  val_auc=0.9969  patience=3/10
+2026-05-19 01:22:02  INFO          epoch 20/40  loss=0.0392  val_auc=0.9967  patience=8/10
+2026-05-19 01:22:20  INFO          early stop at epoch 22/40  best_val_auc=0.9978
+2026-05-19 01:29:58  INFO        [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=4  roc=0.8626 [0.8546,0.8724]  Δauc=+0.1364
+2026-05-19 01:29:58  INFO      [S2 36/180] [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=5
+2026-05-19 01:29:59  INFO          device: mps
+2026-05-19 01:29:59  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 01:30:08  INFO          epoch 1/40  loss=0.2862  val_auc=0.9793  patience=0/10
+2026-05-19 01:30:44  INFO          epoch 5/40  loss=0.1249  val_auc=0.9953  patience=0/10
+2026-05-19 01:31:30  INFO          epoch 10/40  loss=0.0706  val_auc=0.9964  patience=1/10
+2026-05-19 01:32:15  INFO          epoch 15/40  loss=0.0505  val_auc=0.9969  patience=3/10
+2026-05-19 01:33:00  INFO          epoch 20/40  loss=0.0392  val_auc=0.9967  patience=8/10
+2026-05-19 01:33:18  INFO          early stop at epoch 22/40  best_val_auc=0.9978
+2026-05-19 01:38:01  INFO        [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=5  roc=0.8556 [0.8470,0.8650]  Δauc=+0.1434
+2026-05-19 01:38:01  INFO      [S2 37/180] [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=6
+2026-05-19 01:38:02  INFO          device: mps
+2026-05-19 01:38:02  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 01:38:10  INFO          epoch 1/40  loss=0.2862  val_auc=0.9793  patience=0/10
+2026-05-19 01:38:47  INFO          epoch 5/40  loss=0.1249  val_auc=0.9953  patience=0/10
+2026-05-19 01:39:32  INFO          epoch 10/40  loss=0.0706  val_auc=0.9964  patience=1/10
+2026-05-19 01:40:18  INFO          epoch 15/40  loss=0.0505  val_auc=0.9969  patience=3/10
+2026-05-19 01:41:02  INFO          epoch 20/40  loss=0.0392  val_auc=0.9967  patience=8/10
+2026-05-19 01:41:20  INFO          early stop at epoch 22/40  best_val_auc=0.9978
+2026-05-19 01:42:48  INFO        [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=6  roc=0.8687 [0.8612,0.8770]  Δauc=+0.1303
+2026-05-19 01:42:48  INFO      [S2 38/180] [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=7
+2026-05-19 01:42:49  INFO          device: mps
+2026-05-19 01:42:49  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 01:42:58  INFO          epoch 1/40  loss=0.2862  val_auc=0.9793  patience=0/10
+2026-05-19 01:43:35  INFO          epoch 5/40  loss=0.1249  val_auc=0.9953  patience=0/10
+2026-05-19 01:44:20  INFO          epoch 10/40  loss=0.0706  val_auc=0.9964  patience=1/10
+2026-05-19 01:45:05  INFO          epoch 15/40  loss=0.0505  val_auc=0.9969  patience=3/10
+2026-05-19 01:45:50  INFO          epoch 20/40  loss=0.0392  val_auc=0.9967  patience=8/10
+2026-05-19 01:46:08  INFO          early stop at epoch 22/40  best_val_auc=0.9978
+2026-05-19 01:50:39  INFO        [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=7  roc=0.8783 [0.8712,0.8873]  Δauc=+0.1208
+2026-05-19 01:50:39  INFO      [S2 39/180] [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=8
+2026-05-19 01:50:40  INFO          device: mps
+2026-05-19 01:50:40  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 01:50:48  INFO          epoch 1/40  loss=0.2862  val_auc=0.9793  patience=0/10
+2026-05-19 01:51:25  INFO          epoch 5/40  loss=0.1249  val_auc=0.9953  patience=0/10
+2026-05-19 01:52:10  INFO          epoch 10/40  loss=0.0706  val_auc=0.9964  patience=1/10
+2026-05-19 01:52:55  INFO          epoch 15/40  loss=0.0505  val_auc=0.9969  patience=3/10
+2026-05-19 01:53:40  INFO          epoch 20/40  loss=0.0392  val_auc=0.9967  patience=8/10
+2026-05-19 01:53:58  INFO          early stop at epoch 22/40  best_val_auc=0.9978
+2026-05-19 01:55:24  INFO        [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=8  roc=0.8598 [0.8519,0.8692]  Δauc=+0.1392
+2026-05-19 01:55:24  INFO      [S2 40/180] [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=9
+2026-05-19 01:55:25  INFO          device: mps
+2026-05-19 01:55:25  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 01:55:33  INFO          epoch 1/40  loss=0.2862  val_auc=0.9793  patience=0/10
+2026-05-19 01:56:10  INFO          epoch 5/40  loss=0.1249  val_auc=0.9953  patience=0/10
+2026-05-19 01:56:55  INFO          epoch 10/40  loss=0.0706  val_auc=0.9964  patience=1/10
+2026-05-19 01:57:41  INFO          epoch 15/40  loss=0.0505  val_auc=0.9969  patience=3/10
+2026-05-19 01:58:26  INFO          epoch 20/40  loss=0.0392  val_auc=0.9967  patience=8/10
+2026-05-19 01:58:44  INFO          early stop at epoch 22/40  best_val_auc=0.9978
+2026-05-19 02:00:14  INFO        [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=9  roc=0.8592 [0.8519,0.8674]  Δauc=+0.1398
+2026-05-19 02:00:14  INFO      [S2 41/180] [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=0
+2026-05-19 02:00:15  INFO          device: mps
+2026-05-19 02:00:15  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 02:00:24  INFO          epoch 1/40  loss=0.2866  val_auc=0.9844  patience=0/10
+2026-05-19 02:01:00  INFO          epoch 5/40  loss=0.1316  val_auc=0.9944  patience=0/10
+2026-05-19 02:01:46  INFO          epoch 10/40  loss=0.0774  val_auc=0.9958  patience=1/10
+2026-05-19 02:02:31  INFO          epoch 15/40  loss=0.0633  val_auc=0.9962  patience=2/10
+2026-05-19 02:03:16  INFO          epoch 20/40  loss=0.0454  val_auc=0.9974  patience=1/10
+2026-05-19 02:04:01  INFO          epoch 25/40  loss=0.0380  val_auc=0.9923  patience=6/10
+2026-05-19 02:04:37  INFO          early stop at epoch 29/40  best_val_auc=0.9974
+2026-05-19 02:08:46  INFO        [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=0  roc=0.8766 [0.8682,0.8843]  Δauc=+0.1228
+2026-05-19 02:08:46  INFO      [S2 42/180] [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=1
+2026-05-19 02:08:47  INFO          device: mps
+2026-05-19 02:08:47  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 02:08:55  INFO          epoch 1/40  loss=0.2866  val_auc=0.9844  patience=0/10
+2026-05-19 02:09:32  INFO          epoch 5/40  loss=0.1316  val_auc=0.9944  patience=0/10
+2026-05-19 02:10:17  INFO          epoch 10/40  loss=0.0774  val_auc=0.9958  patience=1/10
+2026-05-19 02:11:02  INFO          epoch 15/40  loss=0.0633  val_auc=0.9962  patience=2/10
+2026-05-19 02:11:48  INFO          epoch 20/40  loss=0.0454  val_auc=0.9974  patience=1/10
+2026-05-19 02:12:33  INFO          epoch 25/40  loss=0.0380  val_auc=0.9923  patience=6/10
+2026-05-19 02:13:09  INFO          early stop at epoch 29/40  best_val_auc=0.9974
+2026-05-19 02:18:07  INFO        [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=1  roc=0.8398 [0.8305,0.8507]  Δauc=+0.1596
+2026-05-19 02:18:07  INFO      [S2 43/180] [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=2
+2026-05-19 02:18:08  INFO          device: mps
+2026-05-19 02:18:08  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 02:18:16  INFO          epoch 1/40  loss=0.2866  val_auc=0.9844  patience=0/10
+2026-05-19 02:18:53  INFO          epoch 5/40  loss=0.1316  val_auc=0.9944  patience=0/10
+2026-05-19 02:19:39  INFO          epoch 10/40  loss=0.0774  val_auc=0.9958  patience=1/10
+2026-05-19 02:20:24  INFO          epoch 15/40  loss=0.0633  val_auc=0.9962  patience=2/10
+2026-05-19 02:21:09  INFO          epoch 20/40  loss=0.0454  val_auc=0.9974  patience=1/10
+2026-05-19 02:21:54  INFO          epoch 25/40  loss=0.0380  val_auc=0.9923  patience=6/10
+2026-05-19 02:22:30  INFO          early stop at epoch 29/40  best_val_auc=0.9974
+2026-05-19 02:25:52  INFO        [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=2  roc=0.8270 [0.8159,0.8382]  Δauc=+0.1723
+2026-05-19 02:25:52  INFO      [S2 44/180] [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=3
+2026-05-19 02:25:53  INFO          device: mps
+2026-05-19 02:25:53  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 02:26:02  INFO          epoch 1/40  loss=0.2866  val_auc=0.9844  patience=0/10
+2026-05-19 02:26:38  INFO          epoch 5/40  loss=0.1316  val_auc=0.9944  patience=0/10
+2026-05-19 02:27:23  INFO          epoch 10/40  loss=0.0774  val_auc=0.9958  patience=1/10
+2026-05-19 02:28:08  INFO          epoch 15/40  loss=0.0633  val_auc=0.9962  patience=2/10
+2026-05-19 02:28:53  INFO          epoch 20/40  loss=0.0454  val_auc=0.9974  patience=1/10
+2026-05-19 02:29:39  INFO          epoch 25/40  loss=0.0380  val_auc=0.9923  patience=6/10
+2026-05-19 02:30:15  INFO          early stop at epoch 29/40  best_val_auc=0.9974
+2026-05-19 02:36:42  INFO        [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=3  roc=0.8376 [0.8287,0.8480]  Δauc=+0.1617
+2026-05-19 02:36:42  INFO      [S2 45/180] [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=4
+2026-05-19 02:36:43  INFO          device: mps
+2026-05-19 02:36:43  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 02:36:52  INFO          epoch 1/40  loss=0.2866  val_auc=0.9844  patience=0/10
+2026-05-19 02:37:29  INFO          epoch 5/40  loss=0.1316  val_auc=0.9944  patience=0/10
+2026-05-19 02:38:15  INFO          epoch 10/40  loss=0.0774  val_auc=0.9958  patience=1/10
+2026-05-19 02:39:00  INFO          epoch 15/40  loss=0.0633  val_auc=0.9962  patience=2/10
+2026-05-19 02:39:46  INFO          epoch 20/40  loss=0.0454  val_auc=0.9974  patience=1/10
+2026-05-19 02:40:30  INFO          epoch 25/40  loss=0.0380  val_auc=0.9923  patience=6/10
+2026-05-19 02:41:06  INFO          early stop at epoch 29/40  best_val_auc=0.9974
+2026-05-19 02:48:40  INFO        [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=4  roc=0.8266 [0.8166,0.8366]  Δauc=+0.1728
+2026-05-19 02:48:40  INFO      [S2 46/180] [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=5
+2026-05-19 02:48:41  INFO          device: mps
+2026-05-19 02:48:41  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 02:48:50  INFO          epoch 1/40  loss=0.2866  val_auc=0.9844  patience=0/10
+2026-05-19 02:49:26  INFO          epoch 5/40  loss=0.1316  val_auc=0.9944  patience=0/10
+2026-05-19 02:50:12  INFO          epoch 10/40  loss=0.0774  val_auc=0.9958  patience=1/10
+2026-05-19 02:50:57  INFO          epoch 15/40  loss=0.0633  val_auc=0.9962  patience=2/10
+2026-05-19 02:51:42  INFO          epoch 20/40  loss=0.0454  val_auc=0.9974  patience=1/10
+2026-05-19 02:52:27  INFO          epoch 25/40  loss=0.0380  val_auc=0.9923  patience=6/10
+2026-05-19 02:53:03  INFO          early stop at epoch 29/40  best_val_auc=0.9974
+2026-05-19 02:57:46  INFO        [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=5  roc=0.8315 [0.8211,0.8424]  Δauc=+0.1679
+2026-05-19 02:57:46  INFO      [S2 47/180] [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=6
+2026-05-19 02:57:47  INFO          device: mps
+2026-05-19 02:57:47  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 02:57:55  INFO          epoch 1/40  loss=0.2866  val_auc=0.9844  patience=0/10
+2026-05-19 02:58:32  INFO          epoch 5/40  loss=0.1316  val_auc=0.9944  patience=0/10
+2026-05-19 02:59:17  INFO          epoch 10/40  loss=0.0774  val_auc=0.9958  patience=1/10
+2026-05-19 03:00:03  INFO          epoch 15/40  loss=0.0633  val_auc=0.9962  patience=2/10
+2026-05-19 03:00:48  INFO          epoch 20/40  loss=0.0454  val_auc=0.9974  patience=1/10
+2026-05-19 03:01:33  INFO          epoch 25/40  loss=0.0380  val_auc=0.9923  patience=6/10
+2026-05-19 03:02:09  INFO          early stop at epoch 29/40  best_val_auc=0.9974
+2026-05-19 03:03:35  INFO        [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=6  roc=0.8303 [0.8205,0.8411]  Δauc=+0.1690
+2026-05-19 03:03:35  INFO      [S2 48/180] [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=7
+2026-05-19 03:03:36  INFO          device: mps
+2026-05-19 03:03:36  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 03:03:44  INFO          epoch 1/40  loss=0.2866  val_auc=0.9844  patience=0/10
+2026-05-19 03:04:21  INFO          epoch 5/40  loss=0.1316  val_auc=0.9944  patience=0/10
+2026-05-19 03:05:06  INFO          epoch 10/40  loss=0.0774  val_auc=0.9958  patience=1/10
+2026-05-19 03:05:52  INFO          epoch 15/40  loss=0.0633  val_auc=0.9962  patience=2/10
+2026-05-19 03:06:38  INFO          epoch 20/40  loss=0.0454  val_auc=0.9974  patience=1/10
+2026-05-19 03:07:24  INFO          epoch 25/40  loss=0.0380  val_auc=0.9923  patience=6/10
+2026-05-19 03:08:00  INFO          early stop at epoch 29/40  best_val_auc=0.9974
+2026-05-19 03:12:31  INFO        [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=7  roc=0.8677 [0.8587,0.8776]  Δauc=+0.1316
+2026-05-19 03:12:31  INFO      [S2 49/180] [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=8
+2026-05-19 03:12:32  INFO          device: mps
+2026-05-19 03:12:32  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 03:12:41  INFO          epoch 1/40  loss=0.2866  val_auc=0.9844  patience=0/10
+2026-05-19 03:13:17  INFO          epoch 5/40  loss=0.1316  val_auc=0.9944  patience=0/10
+2026-05-19 03:14:03  INFO          epoch 10/40  loss=0.0774  val_auc=0.9958  patience=1/10
+2026-05-19 03:14:48  INFO          epoch 15/40  loss=0.0633  val_auc=0.9962  patience=2/10
+2026-05-19 03:15:33  INFO          epoch 20/40  loss=0.0454  val_auc=0.9974  patience=1/10
+2026-05-19 03:16:18  INFO          epoch 25/40  loss=0.0380  val_auc=0.9923  patience=6/10
+2026-05-19 03:16:55  INFO          early stop at epoch 29/40  best_val_auc=0.9974
+2026-05-19 03:18:21  INFO        [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=8  roc=0.8398 [0.8293,0.8510]  Δauc=+0.1596
+2026-05-19 03:18:21  INFO      [S2 50/180] [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=9
+2026-05-19 03:18:22  INFO          device: mps
+2026-05-19 03:18:22  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 03:18:31  INFO          epoch 1/40  loss=0.2866  val_auc=0.9844  patience=0/10
+2026-05-19 03:19:07  INFO          epoch 5/40  loss=0.1316  val_auc=0.9944  patience=0/10
+2026-05-19 03:19:53  INFO          epoch 10/40  loss=0.0774  val_auc=0.9958  patience=1/10
+2026-05-19 03:20:38  INFO          epoch 15/40  loss=0.0633  val_auc=0.9962  patience=2/10
+2026-05-19 03:21:23  INFO          epoch 20/40  loss=0.0454  val_auc=0.9974  patience=1/10
+2026-05-19 03:22:08  INFO          epoch 25/40  loss=0.0380  val_auc=0.9923  patience=6/10
+2026-05-19 03:22:44  INFO          early stop at epoch 29/40  best_val_auc=0.9974
+2026-05-19 03:24:15  INFO        [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=9  roc=0.8294 [0.8194,0.8404]  Δauc=+0.1699
+2026-05-19 03:24:15  INFO      [S2 51/180] [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=2  trial=0
+2026-05-19 03:24:16  INFO          device: mps
+2026-05-19 03:24:16  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 03:24:25  INFO          epoch 1/40  loss=0.2760  val_auc=0.9693  patience=0/10
+2026-05-19 03:25:01  INFO          epoch 5/40  loss=0.1172  val_auc=0.9918  patience=1/10
+2026-05-19 03:25:47  INFO          epoch 10/40  loss=0.0798  val_auc=0.9949  patience=3/10
+2026-05-19 03:26:32  INFO          epoch 15/40  loss=0.0481  val_auc=0.9966  patience=4/10
+2026-05-19 03:27:17  INFO          epoch 20/40  loss=0.0369  val_auc=0.9980  patience=0/10
+2026-05-19 03:28:02  INFO          epoch 25/40  loss=0.0342  val_auc=0.9959  patience=5/10
+2026-05-19 03:28:47  INFO          epoch 30/40  loss=0.0211  val_auc=0.9964  patience=10/10
+2026-05-19 03:28:47  INFO          early stop at epoch 30/40  best_val_auc=0.9980
+2026-05-19 03:32:54  INFO        [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=2  trial=0  roc=0.8459 [0.8364,0.8560]  Δauc=+0.1537
+2026-05-19 03:32:54  INFO      [S2 52/180] [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=2  trial=1
+2026-05-19 03:32:55  INFO          device: mps
+2026-05-19 03:32:55  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 03:33:04  INFO          epoch 1/40  loss=0.2760  val_auc=0.9693  patience=0/10
+2026-05-19 03:33:40  INFO          epoch 5/40  loss=0.1172  val_auc=0.9918  patience=1/10
+2026-05-19 03:34:26  INFO          epoch 10/40  loss=0.0798  val_auc=0.9949  patience=3/10
+2026-05-19 03:35:11  INFO          epoch 15/40  loss=0.0481  val_auc=0.9966  patience=4/10
+2026-05-19 03:35:56  INFO          epoch 20/40  loss=0.0369  val_auc=0.9980  patience=0/10
+2026-05-19 03:36:42  INFO          epoch 25/40  loss=0.0342  val_auc=0.9959  patience=5/10
+2026-05-19 03:37:27  INFO          epoch 30/40  loss=0.0211  val_auc=0.9964  patience=10/10
+2026-05-19 03:37:27  INFO          early stop at epoch 30/40  best_val_auc=0.9980
+2026-05-19 03:42:27  INFO        [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=2  trial=1  roc=0.8174 [0.8081,0.8291]  Δauc=+0.1822
+2026-05-19 03:42:27  INFO      [S2 53/180] [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=2  trial=2
+2026-05-19 03:42:28  INFO          device: mps
+2026-05-19 03:42:28  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 03:42:36  INFO          epoch 1/40  loss=0.2760  val_auc=0.9693  patience=0/10
+2026-05-19 03:43:13  INFO          epoch 5/40  loss=0.1172  val_auc=0.9918  patience=1/10
+2026-05-19 03:43:58  INFO          epoch 10/40  loss=0.0798  val_auc=0.9949  patience=3/10
+2026-05-19 03:44:43  INFO          epoch 15/40  loss=0.0481  val_auc=0.9966  patience=4/10
+2026-05-19 03:45:30  INFO          epoch 20/40  loss=0.0369  val_auc=0.9980  patience=0/10
+2026-05-19 03:46:15  INFO          epoch 25/40  loss=0.0342  val_auc=0.9959  patience=5/10
+2026-05-19 03:46:59  INFO          epoch 30/40  loss=0.0211  val_auc=0.9964  patience=10/10
+2026-05-19 03:46:59  INFO          early stop at epoch 30/40  best_val_auc=0.9980
+2026-05-19 03:50:20  INFO        [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=2  trial=2  roc=0.8345 [0.8253,0.8456]  Δauc=+0.1651
+2026-05-19 03:50:20  INFO      [S2 54/180] [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=2  trial=3
+2026-05-19 03:50:21  INFO          device: mps
+2026-05-19 03:50:21  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 03:50:30  INFO          epoch 1/40  loss=0.2760  val_auc=0.9693  patience=0/10
+2026-05-19 03:51:06  INFO          epoch 5/40  loss=0.1172  val_auc=0.9918  patience=1/10
+2026-05-19 03:51:52  INFO          epoch 10/40  loss=0.0798  val_auc=0.9949  patience=3/10
+2026-05-19 03:52:37  INFO          epoch 15/40  loss=0.0481  val_auc=0.9966  patience=4/10
+2026-05-19 03:53:22  INFO          epoch 20/40  loss=0.0369  val_auc=0.9980  patience=0/10
+2026-05-19 03:54:07  INFO          epoch 25/40  loss=0.0342  val_auc=0.9959  patience=5/10
+2026-05-19 03:54:52  INFO          epoch 30/40  loss=0.0211  val_auc=0.9964  patience=10/10
+2026-05-19 03:54:52  INFO          early stop at epoch 30/40  best_val_auc=0.9980
+2026-05-19 04:01:17  INFO        [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=2  trial=3  roc=0.8303 [0.8208,0.8417]  Δauc=+0.1692
+2026-05-19 04:01:17  INFO      [S2 55/180] [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=2  trial=4
+2026-05-19 04:01:18  INFO          device: mps
+2026-05-19 04:01:18  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 04:01:27  INFO          epoch 1/40  loss=0.2760  val_auc=0.9693  patience=0/10
+2026-05-19 04:02:03  INFO          epoch 5/40  loss=0.1172  val_auc=0.9918  patience=1/10
+2026-05-19 04:02:48  INFO          epoch 10/40  loss=0.0798  val_auc=0.9949  patience=3/10
+2026-05-19 04:03:33  INFO          epoch 15/40  loss=0.0481  val_auc=0.9966  patience=4/10
+2026-05-19 04:04:18  INFO          epoch 20/40  loss=0.0369  val_auc=0.9980  patience=0/10
+2026-05-19 04:05:03  INFO          epoch 25/40  loss=0.0342  val_auc=0.9959  patience=5/10
+2026-05-19 04:05:49  INFO          epoch 30/40  loss=0.0211  val_auc=0.9964  patience=10/10
+2026-05-19 04:05:49  INFO          early stop at epoch 30/40  best_val_auc=0.9980
+2026-05-19 04:13:26  INFO        [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=2  trial=4  roc=0.8271 [0.8177,0.8374]  Δauc=+0.1725
+2026-05-19 04:13:26  INFO      [S2 56/180] [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=2  trial=5
+2026-05-19 04:13:27  INFO          device: mps
+2026-05-19 04:13:27  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 04:13:35  INFO          epoch 1/40  loss=0.2760  val_auc=0.9693  patience=0/10
+2026-05-19 04:14:12  INFO          epoch 5/40  loss=0.1172  val_auc=0.9918  patience=1/10
+2026-05-19 04:14:57  INFO          epoch 10/40  loss=0.0798  val_auc=0.9949  patience=3/10
+2026-05-19 04:15:42  INFO          epoch 15/40  loss=0.0481  val_auc=0.9966  patience=4/10
+2026-05-19 04:16:27  INFO          epoch 20/40  loss=0.0369  val_auc=0.9980  patience=0/10
+2026-05-19 04:17:12  INFO          epoch 25/40  loss=0.0342  val_auc=0.9959  patience=5/10
+2026-05-19 04:17:57  INFO          epoch 30/40  loss=0.0211  val_auc=0.9964  patience=10/10
+2026-05-19 04:17:57  INFO          early stop at epoch 30/40  best_val_auc=0.9980
+2026-05-19 04:22:40  INFO        [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=2  trial=5  roc=0.8421 [0.8337,0.8538]  Δauc=+0.1575
+2026-05-19 04:22:40  INFO      [S2 57/180] [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=2  trial=6
+2026-05-19 04:22:41  INFO          device: mps
+2026-05-19 04:22:41  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 04:22:50  INFO          epoch 1/40  loss=0.2760  val_auc=0.9693  patience=0/10
+2026-05-19 04:23:26  INFO          epoch 5/40  loss=0.1172  val_auc=0.9918  patience=1/10
+2026-05-19 04:24:12  INFO          epoch 10/40  loss=0.0798  val_auc=0.9949  patience=3/10
+2026-05-19 04:24:57  INFO          epoch 15/40  loss=0.0481  val_auc=0.9966  patience=4/10
+2026-05-19 04:25:42  INFO          epoch 20/40  loss=0.0369  val_auc=0.9980  patience=0/10
+2026-05-19 04:26:27  INFO          epoch 25/40  loss=0.0342  val_auc=0.9959  patience=5/10
+2026-05-19 04:27:12  INFO          epoch 30/40  loss=0.0211  val_auc=0.9964  patience=10/10
+2026-05-19 04:27:12  INFO          early stop at epoch 30/40  best_val_auc=0.9980
+2026-05-19 04:28:37  INFO        [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=2  trial=6  roc=0.8290 [0.8201,0.8401]  Δauc=+0.1705
+2026-05-19 04:28:37  INFO      [S2 58/180] [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=2  trial=7
+2026-05-19 04:28:38  INFO          device: mps
+2026-05-19 04:28:38  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 04:28:47  INFO          epoch 1/40  loss=0.2760  val_auc=0.9693  patience=0/10
+2026-05-19 04:29:23  INFO          epoch 5/40  loss=0.1172  val_auc=0.9918  patience=1/10
+2026-05-19 04:30:09  INFO          epoch 10/40  loss=0.0798  val_auc=0.9949  patience=3/10
+2026-05-19 04:30:56  INFO          epoch 15/40  loss=0.0481  val_auc=0.9966  patience=4/10
+2026-05-19 04:31:41  INFO          epoch 20/40  loss=0.0369  val_auc=0.9980  patience=0/10
+2026-05-19 04:32:27  INFO          epoch 25/40  loss=0.0342  val_auc=0.9959  patience=5/10
+2026-05-19 04:33:12  INFO          epoch 30/40  loss=0.0211  val_auc=0.9964  patience=10/10
+2026-05-19 04:33:12  INFO          early stop at epoch 30/40  best_val_auc=0.9980
+2026-05-19 04:37:43  INFO        [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=2  trial=7  roc=0.7588 [0.7461,0.7711]  Δauc=+0.2408
+2026-05-19 04:37:43  INFO      [S2 59/180] [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=2  trial=8
+2026-05-19 04:37:44  INFO          device: mps
+2026-05-19 04:37:44  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 04:37:53  INFO          epoch 1/40  loss=0.2760  val_auc=0.9693  patience=0/10
+2026-05-19 04:38:30  INFO          epoch 5/40  loss=0.1172  val_auc=0.9918  patience=1/10
+2026-05-19 04:39:15  INFO          epoch 10/40  loss=0.0798  val_auc=0.9949  patience=3/10
+2026-05-19 04:40:00  INFO          epoch 15/40  loss=0.0481  val_auc=0.9966  patience=4/10
+2026-05-19 04:40:45  INFO          epoch 20/40  loss=0.0369  val_auc=0.9980  patience=0/10
+2026-05-19 04:41:30  INFO          epoch 25/40  loss=0.0342  val_auc=0.9959  patience=5/10
+2026-05-19 04:42:15  INFO          epoch 30/40  loss=0.0211  val_auc=0.9964  patience=10/10
+2026-05-19 04:42:15  INFO          early stop at epoch 30/40  best_val_auc=0.9980
+2026-05-19 04:43:40  INFO        [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=2  trial=8  roc=0.8481 [0.8395,0.8587]  Δauc=+0.1514
+2026-05-19 04:43:40  INFO      [S2 60/180] [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=2  trial=9
+2026-05-19 04:43:41  INFO          device: mps
+2026-05-19 04:43:41  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 04:43:50  INFO          epoch 1/40  loss=0.2760  val_auc=0.9693  patience=0/10
+2026-05-19 04:44:26  INFO          epoch 5/40  loss=0.1172  val_auc=0.9918  patience=1/10
+2026-05-19 04:45:12  INFO          epoch 10/40  loss=0.0798  val_auc=0.9949  patience=3/10
+2026-05-19 04:45:57  INFO          epoch 15/40  loss=0.0481  val_auc=0.9966  patience=4/10
+2026-05-19 04:46:43  INFO          epoch 20/40  loss=0.0369  val_auc=0.9980  patience=0/10
+2026-05-19 04:47:28  INFO          epoch 25/40  loss=0.0342  val_auc=0.9959  patience=5/10
+2026-05-19 04:48:13  INFO          epoch 30/40  loss=0.0211  val_auc=0.9964  patience=10/10
+2026-05-19 04:48:13  INFO          early stop at epoch 30/40  best_val_auc=0.9980
+2026-05-19 04:49:44  INFO        [adaptation] LogSTFT×ResNet18_2D×CoDATS  ds=mitbih_ds1_ds2  seed=2  trial=9  roc=0.8616 [0.8530,0.8723]  Δauc=+0.1379
+2026-05-19 04:49:44  INFO      [S2 61/180] [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=0  trial=0
+2026-05-19 04:49:45  INFO          device: mps
+2026-05-19 04:49:45  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 04:49:53  INFO          epoch 1/40  loss=0.2862  val_auc=0.9793  patience=0/10
+2026-05-19 04:50:30  INFO          epoch 5/40  loss=0.1249  val_auc=0.9953  patience=0/10
+2026-05-19 04:51:15  INFO          epoch 10/40  loss=0.0706  val_auc=0.9964  patience=1/10
+2026-05-19 04:52:00  INFO          epoch 15/40  loss=0.0505  val_auc=0.9969  patience=3/10
+2026-05-19 04:52:45  INFO          epoch 20/40  loss=0.0392  val_auc=0.9967  patience=8/10
+2026-05-19 04:53:03  INFO          early stop at epoch 22/40  best_val_auc=0.9978
+2026-05-19 04:53:16  INFO        [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=0  trial=0  roc=0.8814 [0.8755,0.8903]  Δauc=+0.1176
+2026-05-19 04:53:16  INFO      [S2 62/180] [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=0  trial=1
+2026-05-19 04:53:17  INFO          device: mps
+2026-05-19 04:53:17  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 04:53:25  INFO          epoch 1/40  loss=0.2862  val_auc=0.9793  patience=0/10
+2026-05-19 04:54:02  INFO          epoch 5/40  loss=0.1249  val_auc=0.9953  patience=0/10
+2026-05-19 04:54:47  INFO          epoch 10/40  loss=0.0706  val_auc=0.9964  patience=1/10
+2026-05-19 04:55:32  INFO          epoch 15/40  loss=0.0505  val_auc=0.9969  patience=3/10
+2026-05-19 04:56:17  INFO          epoch 20/40  loss=0.0392  val_auc=0.9967  patience=8/10
+2026-05-19 04:56:35  INFO          early stop at epoch 22/40  best_val_auc=0.9978
+2026-05-19 04:56:43  INFO        [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=0  trial=1  roc=0.8753 [0.8686,0.8844]  Δauc=+0.1237
+2026-05-19 04:56:43  INFO      [S2 63/180] [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=0  trial=2
+2026-05-19 04:56:44  INFO          device: mps
+2026-05-19 04:56:44  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 04:56:52  INFO          epoch 1/40  loss=0.2862  val_auc=0.9793  patience=0/10
+2026-05-19 04:57:29  INFO          epoch 5/40  loss=0.1249  val_auc=0.9953  patience=0/10
+2026-05-19 04:58:14  INFO          epoch 10/40  loss=0.0706  val_auc=0.9964  patience=1/10
+2026-05-19 04:58:59  INFO          epoch 15/40  loss=0.0505  val_auc=0.9969  patience=3/10
+2026-05-19 04:59:44  INFO          epoch 20/40  loss=0.0392  val_auc=0.9967  patience=8/10
+2026-05-19 05:00:02  INFO          early stop at epoch 22/40  best_val_auc=0.9978
+2026-05-19 05:00:26  INFO        [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=0  trial=2  roc=0.8866 [0.8802,0.8955]  Δauc=+0.1124
+2026-05-19 05:00:26  INFO      [S2 64/180] [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=0  trial=3
+2026-05-19 05:00:27  INFO          device: mps
+2026-05-19 05:00:27  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 05:00:35  INFO          epoch 1/40  loss=0.2862  val_auc=0.9793  patience=0/10
+2026-05-19 05:01:12  INFO          epoch 5/40  loss=0.1249  val_auc=0.9953  patience=0/10
+2026-05-19 05:01:57  INFO          epoch 10/40  loss=0.0706  val_auc=0.9964  patience=1/10
+2026-05-19 05:02:42  INFO          epoch 15/40  loss=0.0505  val_auc=0.9969  patience=3/10
+2026-05-19 05:03:27  INFO          epoch 20/40  loss=0.0392  val_auc=0.9967  patience=8/10
+2026-05-19 05:03:45  INFO          early stop at epoch 22/40  best_val_auc=0.9978
+2026-05-19 05:03:54  INFO        [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=0  trial=3  roc=0.8733 [0.8666,0.8826]  Δauc=+0.1257
+2026-05-19 05:03:54  INFO      [S2 65/180] [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=0  trial=4
+2026-05-19 05:03:55  INFO          device: mps
+2026-05-19 05:03:55  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 05:04:04  INFO          epoch 1/40  loss=0.2862  val_auc=0.9793  patience=0/10
+2026-05-19 05:04:40  INFO          epoch 5/40  loss=0.1249  val_auc=0.9953  patience=0/10
+2026-05-19 05:05:26  INFO          epoch 10/40  loss=0.0706  val_auc=0.9964  patience=1/10
+2026-05-19 05:06:12  INFO          epoch 15/40  loss=0.0505  val_auc=0.9969  patience=3/10
+2026-05-19 05:07:02  INFO          epoch 20/40  loss=0.0392  val_auc=0.9967  patience=8/10
+2026-05-19 05:07:20  INFO          early stop at epoch 22/40  best_val_auc=0.9978
+2026-05-19 05:07:44  INFO        [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=0  trial=4  roc=0.8741 [0.8674,0.8834]  Δauc=+0.1249
+2026-05-19 05:07:44  INFO      [S2 66/180] [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=0  trial=5
+2026-05-19 05:07:45  INFO          device: mps
+2026-05-19 05:07:45  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 05:07:53  INFO          epoch 1/40  loss=0.2862  val_auc=0.9793  patience=0/10
+2026-05-19 05:08:30  INFO          epoch 5/40  loss=0.1249  val_auc=0.9953  patience=0/10
+2026-05-19 05:09:15  INFO          epoch 10/40  loss=0.0706  val_auc=0.9964  patience=1/10
+2026-05-19 05:10:01  INFO          epoch 15/40  loss=0.0505  val_auc=0.9969  patience=3/10
+2026-05-19 05:10:45  INFO          epoch 20/40  loss=0.0392  val_auc=0.9967  patience=8/10
+2026-05-19 05:11:03  INFO          early stop at epoch 22/40  best_val_auc=0.9978
+2026-05-19 05:11:10  INFO        [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=0  trial=5  roc=0.8738 [0.8669,0.8830]  Δauc=+0.1252
+2026-05-19 05:11:10  INFO      [S2 67/180] [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=0  trial=6
+2026-05-19 05:11:11  INFO          device: mps
+2026-05-19 05:11:11  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 05:11:20  INFO          epoch 1/40  loss=0.2862  val_auc=0.9793  patience=0/10
+2026-05-19 05:11:56  INFO          epoch 5/40  loss=0.1249  val_auc=0.9953  patience=0/10
+2026-05-19 05:12:42  INFO          epoch 10/40  loss=0.0706  val_auc=0.9964  patience=1/10
+2026-05-19 05:13:27  INFO          epoch 15/40  loss=0.0505  val_auc=0.9969  patience=3/10
+2026-05-19 05:14:12  INFO          epoch 20/40  loss=0.0392  val_auc=0.9967  patience=8/10
+2026-05-19 05:14:30  INFO          early stop at epoch 22/40  best_val_auc=0.9978
+2026-05-19 05:14:38  INFO        [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=0  trial=6  roc=0.8739 [0.8670,0.8831]  Δauc=+0.1252
+2026-05-19 05:14:38  INFO      [S2 68/180] [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=0  trial=7
+2026-05-19 05:14:39  INFO          device: mps
+2026-05-19 05:14:39  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 05:14:48  INFO          epoch 1/40  loss=0.2862  val_auc=0.9793  patience=0/10
+2026-05-19 05:15:25  INFO          epoch 5/40  loss=0.1249  val_auc=0.9953  patience=0/10
+2026-05-19 05:16:11  INFO          epoch 10/40  loss=0.0706  val_auc=0.9964  patience=1/10
+2026-05-19 05:16:56  INFO          epoch 15/40  loss=0.0505  val_auc=0.9969  patience=3/10
+2026-05-19 05:17:41  INFO          epoch 20/40  loss=0.0392  val_auc=0.9967  patience=8/10
+2026-05-19 05:17:59  INFO          early stop at epoch 22/40  best_val_auc=0.9978
+2026-05-19 05:18:15  INFO        [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=0  trial=7  roc=0.8786 [0.8726,0.8874]  Δauc=+0.1204
+2026-05-19 05:18:15  INFO      [S2 69/180] [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=0  trial=8
+2026-05-19 05:18:15  INFO          device: mps
+2026-05-19 05:18:15  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 05:18:24  INFO          epoch 1/40  loss=0.2862  val_auc=0.9793  patience=0/10
+2026-05-19 05:19:00  INFO          epoch 5/40  loss=0.1249  val_auc=0.9953  patience=0/10
+2026-05-19 05:19:46  INFO          epoch 10/40  loss=0.0706  val_auc=0.9964  patience=1/10
+2026-05-19 05:20:31  INFO          epoch 15/40  loss=0.0505  val_auc=0.9969  patience=3/10
+2026-05-19 05:21:16  INFO          epoch 20/40  loss=0.0392  val_auc=0.9967  patience=8/10
+2026-05-19 05:21:34  INFO          early stop at epoch 22/40  best_val_auc=0.9978
+2026-05-19 05:22:17  INFO        [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=0  trial=8  roc=0.8734 [0.8668,0.8828]  Δauc=+0.1256
+2026-05-19 05:22:17  INFO      [S2 70/180] [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=0  trial=9
+2026-05-19 05:22:17  INFO          device: mps
+2026-05-19 05:22:17  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 05:22:26  INFO          epoch 1/40  loss=0.2862  val_auc=0.9793  patience=0/10
+2026-05-19 05:23:02  INFO          epoch 5/40  loss=0.1249  val_auc=0.9953  patience=0/10
+2026-05-19 05:23:47  INFO          epoch 10/40  loss=0.0706  val_auc=0.9964  patience=1/10
+2026-05-19 05:24:33  INFO          epoch 15/40  loss=0.0505  val_auc=0.9969  patience=3/10
+2026-05-19 05:25:18  INFO          epoch 20/40  loss=0.0392  val_auc=0.9967  patience=8/10
+2026-05-19 05:25:36  INFO          early stop at epoch 22/40  best_val_auc=0.9978
+2026-05-19 05:26:13  INFO        [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=0  trial=9  roc=0.8834 [0.8772,0.8919]  Δauc=+0.1157
+2026-05-19 05:26:13  INFO      [S2 71/180] [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=1  trial=0
+2026-05-19 05:26:14  INFO          device: mps
+2026-05-19 05:26:14  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 05:26:22  INFO          epoch 1/40  loss=0.2866  val_auc=0.9844  patience=0/10
+2026-05-19 05:26:59  INFO          epoch 5/40  loss=0.1316  val_auc=0.9944  patience=0/10
+2026-05-19 05:27:44  INFO          epoch 10/40  loss=0.0774  val_auc=0.9958  patience=1/10
+2026-05-19 05:28:30  INFO          epoch 15/40  loss=0.0633  val_auc=0.9962  patience=2/10
+2026-05-19 05:29:15  INFO          epoch 20/40  loss=0.0454  val_auc=0.9974  patience=1/10
+2026-05-19 05:30:01  INFO          epoch 25/40  loss=0.0380  val_auc=0.9923  patience=6/10
+2026-05-19 05:30:37  INFO          early stop at epoch 29/40  best_val_auc=0.9974
+2026-05-19 05:30:48  INFO        [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=1  trial=0  roc=0.8434 [0.8329,0.8545]  Δauc=+0.1559
+2026-05-19 05:30:48  INFO      [S2 72/180] [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=1  trial=1
+2026-05-19 05:30:49  INFO          device: mps
+2026-05-19 05:30:49  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 05:30:58  INFO          epoch 1/40  loss=0.2866  val_auc=0.9844  patience=0/10
+2026-05-19 05:31:35  INFO          epoch 5/40  loss=0.1316  val_auc=0.9944  patience=0/10
+2026-05-19 05:32:20  INFO          epoch 10/40  loss=0.0774  val_auc=0.9958  patience=1/10
+2026-05-19 05:33:05  INFO          epoch 15/40  loss=0.0633  val_auc=0.9962  patience=2/10
+2026-05-19 05:33:50  INFO          epoch 20/40  loss=0.0454  val_auc=0.9974  patience=1/10
+2026-05-19 05:34:36  INFO          epoch 25/40  loss=0.0380  val_auc=0.9923  patience=6/10
+2026-05-19 05:35:12  INFO          early stop at epoch 29/40  best_val_auc=0.9974
+2026-05-19 05:35:20  INFO        [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=1  trial=1  roc=0.8341 [0.8239,0.8451]  Δauc=+0.1652
+2026-05-19 05:35:20  INFO      [S2 73/180] [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=1  trial=2
+2026-05-19 05:35:20  INFO          device: mps
+2026-05-19 05:35:20  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 05:35:29  INFO          epoch 1/40  loss=0.2866  val_auc=0.9844  patience=0/10
+2026-05-19 05:36:06  INFO          epoch 5/40  loss=0.1316  val_auc=0.9944  patience=0/10
+2026-05-19 05:36:53  INFO          epoch 10/40  loss=0.0774  val_auc=0.9958  patience=1/10
+2026-05-19 05:37:39  INFO          epoch 15/40  loss=0.0633  val_auc=0.9962  patience=2/10
+2026-05-19 05:38:24  INFO          epoch 20/40  loss=0.0454  val_auc=0.9974  patience=1/10
+2026-05-19 05:39:09  INFO          epoch 25/40  loss=0.0380  val_auc=0.9923  patience=6/10
+2026-05-19 05:39:45  INFO          early stop at epoch 29/40  best_val_auc=0.9974
+2026-05-19 05:40:08  INFO        [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=1  trial=2  roc=0.8493 [0.8386,0.8608]  Δauc=+0.1501
+2026-05-19 05:40:08  INFO      [S2 74/180] [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=1  trial=3
+2026-05-19 05:40:09  INFO          device: mps
+2026-05-19 05:40:09  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 05:40:18  INFO          epoch 1/40  loss=0.2866  val_auc=0.9844  patience=0/10
+2026-05-19 05:40:54  INFO          epoch 5/40  loss=0.1316  val_auc=0.9944  patience=0/10
+2026-05-19 05:41:40  INFO          epoch 10/40  loss=0.0774  val_auc=0.9958  patience=1/10
+2026-05-19 05:42:25  INFO          epoch 15/40  loss=0.0633  val_auc=0.9962  patience=2/10
+2026-05-19 05:43:10  INFO          epoch 20/40  loss=0.0454  val_auc=0.9974  patience=1/10
+2026-05-19 05:43:55  INFO          epoch 25/40  loss=0.0380  val_auc=0.9923  patience=6/10
+2026-05-19 05:44:31  INFO          early stop at epoch 29/40  best_val_auc=0.9974
+2026-05-19 05:44:40  INFO        [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=1  trial=3  roc=0.8333 [0.8231,0.8443]  Δauc=+0.1661
+2026-05-19 05:44:40  INFO      [S2 75/180] [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=1  trial=4
+2026-05-19 05:44:41  INFO          device: mps
+2026-05-19 05:44:41  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 05:44:50  INFO          epoch 1/40  loss=0.2866  val_auc=0.9844  patience=0/10
+2026-05-19 05:45:28  INFO          epoch 5/40  loss=0.1316  val_auc=0.9944  patience=0/10
+2026-05-19 05:46:13  INFO          epoch 10/40  loss=0.0774  val_auc=0.9958  patience=1/10
+2026-05-19 05:46:58  INFO          epoch 15/40  loss=0.0633  val_auc=0.9962  patience=2/10
+2026-05-19 05:47:43  INFO          epoch 20/40  loss=0.0454  val_auc=0.9974  patience=1/10
+2026-05-19 05:48:28  INFO          epoch 25/40  loss=0.0380  val_auc=0.9923  patience=6/10
+2026-05-19 05:49:04  INFO          early stop at epoch 29/40  best_val_auc=0.9974
+2026-05-19 05:49:28  INFO        [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=1  trial=4  roc=0.8345 [0.8243,0.8455]  Δauc=+0.1648
+2026-05-19 05:49:28  INFO      [S2 76/180] [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=1  trial=5
+2026-05-19 05:49:28  INFO          device: mps
+2026-05-19 05:49:28  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 05:49:37  INFO          epoch 1/40  loss=0.2866  val_auc=0.9844  patience=0/10
+2026-05-19 05:50:13  INFO          epoch 5/40  loss=0.1316  val_auc=0.9944  patience=0/10
+2026-05-19 05:50:59  INFO          epoch 10/40  loss=0.0774  val_auc=0.9958  patience=1/10
+2026-05-19 05:51:44  INFO          epoch 15/40  loss=0.0633  val_auc=0.9962  patience=2/10
+2026-05-19 05:52:29  INFO          epoch 20/40  loss=0.0454  val_auc=0.9974  patience=1/10
+2026-05-19 05:53:14  INFO          epoch 25/40  loss=0.0380  val_auc=0.9923  patience=6/10
+2026-05-19 05:53:50  INFO          early stop at epoch 29/40  best_val_auc=0.9974
+2026-05-19 05:53:57  INFO        [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=1  trial=5  roc=0.8334 [0.8233,0.8445]  Δauc=+0.1659
+2026-05-19 05:53:57  INFO      [S2 77/180] [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=1  trial=6
+2026-05-19 05:53:58  INFO          device: mps
+2026-05-19 05:53:58  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 05:54:07  INFO          epoch 1/40  loss=0.2866  val_auc=0.9844  patience=0/10
+2026-05-19 05:54:43  INFO          epoch 5/40  loss=0.1316  val_auc=0.9944  patience=0/10
+2026-05-19 05:55:29  INFO          epoch 10/40  loss=0.0774  val_auc=0.9958  patience=1/10
+2026-05-19 05:56:14  INFO          epoch 15/40  loss=0.0633  val_auc=0.9962  patience=2/10
+2026-05-19 05:57:01  INFO          epoch 20/40  loss=0.0454  val_auc=0.9974  patience=1/10
+2026-05-19 05:57:46  INFO          epoch 25/40  loss=0.0380  val_auc=0.9923  patience=6/10
+2026-05-19 05:58:22  INFO          early stop at epoch 29/40  best_val_auc=0.9974
+2026-05-19 05:58:30  INFO        [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=1  trial=6  roc=0.8336 [0.8234,0.8446]  Δauc=+0.1658
+2026-05-19 05:58:30  INFO      [S2 78/180] [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=1  trial=7
+2026-05-19 05:58:31  INFO          device: mps
+2026-05-19 05:58:31  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 05:58:40  INFO          epoch 1/40  loss=0.2866  val_auc=0.9844  patience=0/10
+2026-05-19 05:59:17  INFO          epoch 5/40  loss=0.1316  val_auc=0.9944  patience=0/10
+2026-05-19 06:00:02  INFO          epoch 10/40  loss=0.0774  val_auc=0.9958  patience=1/10
+2026-05-19 06:00:47  INFO          epoch 15/40  loss=0.0633  val_auc=0.9962  patience=2/10
+2026-05-19 06:01:33  INFO          epoch 20/40  loss=0.0454  val_auc=0.9974  patience=1/10
+2026-05-19 06:02:17  INFO          epoch 25/40  loss=0.0380  val_auc=0.9923  patience=6/10
+2026-05-19 06:02:53  INFO          early stop at epoch 29/40  best_val_auc=0.9974
+2026-05-19 06:03:09  INFO        [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=1  trial=7  roc=0.8403 [0.8299,0.8514]  Δauc=+0.1591
+2026-05-19 06:03:09  INFO      [S2 79/180] [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=1  trial=8
+2026-05-19 06:03:10  INFO          device: mps
+2026-05-19 06:03:10  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 06:03:19  INFO          epoch 1/40  loss=0.2866  val_auc=0.9844  patience=0/10
+2026-05-19 06:03:55  INFO          epoch 5/40  loss=0.1316  val_auc=0.9944  patience=0/10
+2026-05-19 06:04:40  INFO          epoch 10/40  loss=0.0774  val_auc=0.9958  patience=1/10
+2026-05-19 06:05:26  INFO          epoch 15/40  loss=0.0633  val_auc=0.9962  patience=2/10
+2026-05-19 06:06:11  INFO          epoch 20/40  loss=0.0454  val_auc=0.9974  patience=1/10
+2026-05-19 06:06:57  INFO          epoch 25/40  loss=0.0380  val_auc=0.9923  patience=6/10
+2026-05-19 06:07:35  INFO          early stop at epoch 29/40  best_val_auc=0.9974
+2026-05-19 06:08:17  INFO        [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=1  trial=8  roc=0.8333 [0.8232,0.8444]  Δauc=+0.1660
+2026-05-19 06:08:17  INFO      [S2 80/180] [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=1  trial=9
+2026-05-19 06:08:18  INFO          device: mps
+2026-05-19 06:08:18  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 06:08:27  INFO          epoch 1/40  loss=0.2866  val_auc=0.9844  patience=0/10
+2026-05-19 06:09:03  INFO          epoch 5/40  loss=0.1316  val_auc=0.9944  patience=0/10
+2026-05-19 06:09:49  INFO          epoch 10/40  loss=0.0774  val_auc=0.9958  patience=1/10
+2026-05-19 06:10:34  INFO          epoch 15/40  loss=0.0633  val_auc=0.9962  patience=2/10
+2026-05-19 06:11:19  INFO          epoch 20/40  loss=0.0454  val_auc=0.9974  patience=1/10
+2026-05-19 06:12:04  INFO          epoch 25/40  loss=0.0380  val_auc=0.9923  patience=6/10
+2026-05-19 06:12:40  INFO          early stop at epoch 29/40  best_val_auc=0.9974
+2026-05-19 06:13:17  INFO        [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=1  trial=9  roc=0.8461 [0.8353,0.8574]  Δauc=+0.1533
+2026-05-19 06:13:17  INFO      [S2 81/180] [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=2  trial=0
+2026-05-19 06:13:18  INFO          device: mps
+2026-05-19 06:13:18  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 06:13:27  INFO          epoch 1/40  loss=0.2760  val_auc=0.9693  patience=0/10
+2026-05-19 06:14:03  INFO          epoch 5/40  loss=0.1172  val_auc=0.9918  patience=1/10
+2026-05-19 06:14:48  INFO          epoch 10/40  loss=0.0798  val_auc=0.9949  patience=3/10
+2026-05-19 06:15:33  INFO          epoch 15/40  loss=0.0481  val_auc=0.9966  patience=4/10
+2026-05-19 06:16:18  INFO          epoch 20/40  loss=0.0369  val_auc=0.9980  patience=0/10
+2026-05-19 06:17:04  INFO          epoch 25/40  loss=0.0342  val_auc=0.9959  patience=5/10
+2026-05-19 06:17:49  INFO          epoch 30/40  loss=0.0211  val_auc=0.9964  patience=10/10
+2026-05-19 06:17:49  INFO          early stop at epoch 30/40  best_val_auc=0.9980
+2026-05-19 06:18:00  INFO        [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=2  trial=0  roc=0.8697 [0.8619,0.8795]  Δauc=+0.1299
+2026-05-19 06:18:00  INFO      [S2 82/180] [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=2  trial=1
+2026-05-19 06:18:01  INFO          device: mps
+2026-05-19 06:18:01  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 06:18:10  INFO          epoch 1/40  loss=0.2760  val_auc=0.9693  patience=0/10
+2026-05-19 06:18:47  INFO          epoch 5/40  loss=0.1172  val_auc=0.9918  patience=1/10
+2026-05-19 06:19:32  INFO          epoch 10/40  loss=0.0798  val_auc=0.9949  patience=3/10
+2026-05-19 06:20:17  INFO          epoch 15/40  loss=0.0481  val_auc=0.9966  patience=4/10
+2026-05-19 06:21:03  INFO          epoch 20/40  loss=0.0369  val_auc=0.9980  patience=0/10
+2026-05-19 06:21:48  INFO          epoch 25/40  loss=0.0342  val_auc=0.9959  patience=5/10
+2026-05-19 06:22:33  INFO          epoch 30/40  loss=0.0211  val_auc=0.9964  patience=10/10
+2026-05-19 06:22:33  INFO          early stop at epoch 30/40  best_val_auc=0.9980
+2026-05-19 06:22:40  INFO        [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=2  trial=1  roc=0.8646 [0.8569,0.8745]  Δauc=+0.1350
+2026-05-19 06:22:40  INFO      [S2 83/180] [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=2  trial=2
+2026-05-19 06:22:41  INFO          device: mps
+2026-05-19 06:22:41  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 06:22:50  INFO          epoch 1/40  loss=0.2760  val_auc=0.9693  patience=0/10
+2026-05-19 06:23:26  INFO          epoch 5/40  loss=0.1172  val_auc=0.9918  patience=1/10
+2026-05-19 06:24:11  INFO          epoch 10/40  loss=0.0798  val_auc=0.9949  patience=3/10
+2026-05-19 06:24:57  INFO          epoch 15/40  loss=0.0481  val_auc=0.9966  patience=4/10
+2026-05-19 06:25:42  INFO          epoch 20/40  loss=0.0369  val_auc=0.9980  patience=0/10
+2026-05-19 06:26:27  INFO          epoch 25/40  loss=0.0342  val_auc=0.9959  patience=5/10
+2026-05-19 06:27:12  INFO          epoch 30/40  loss=0.0211  val_auc=0.9964  patience=10/10
+2026-05-19 06:27:12  INFO          early stop at epoch 30/40  best_val_auc=0.9980
+2026-05-19 06:27:36  INFO        [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=2  trial=2  roc=0.8768 [0.8687,0.8864]  Δauc=+0.1227
+2026-05-19 06:27:36  INFO      [S2 84/180] [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=2  trial=3
+2026-05-19 06:27:36  INFO          device: mps
+2026-05-19 06:27:36  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 06:27:45  INFO          epoch 1/40  loss=0.2760  val_auc=0.9693  patience=0/10
+2026-05-19 06:28:22  INFO          epoch 5/40  loss=0.1172  val_auc=0.9918  patience=1/10
+2026-05-19 06:29:07  INFO          epoch 10/40  loss=0.0798  val_auc=0.9949  patience=3/10
+2026-05-19 06:29:52  INFO          epoch 15/40  loss=0.0481  val_auc=0.9966  patience=4/10
+2026-05-19 06:30:37  INFO          epoch 20/40  loss=0.0369  val_auc=0.9980  patience=0/10
+2026-05-19 06:31:22  INFO          epoch 25/40  loss=0.0342  val_auc=0.9959  patience=5/10
+2026-05-19 06:32:07  INFO          epoch 30/40  loss=0.0211  val_auc=0.9964  patience=10/10
+2026-05-19 06:32:07  INFO          early stop at epoch 30/40  best_val_auc=0.9980
+2026-05-19 06:32:17  INFO        [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=2  trial=3  roc=0.8639 [0.8562,0.8739]  Δauc=+0.1356
+2026-05-19 06:32:17  INFO      [S2 85/180] [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=2  trial=4
+2026-05-19 06:32:18  INFO          device: mps
+2026-05-19 06:32:18  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 06:32:26  INFO          epoch 1/40  loss=0.2760  val_auc=0.9693  patience=0/10
+2026-05-19 06:33:03  INFO          epoch 5/40  loss=0.1172  val_auc=0.9918  patience=1/10
+2026-05-19 06:33:49  INFO          epoch 10/40  loss=0.0798  val_auc=0.9949  patience=3/10
+2026-05-19 06:34:34  INFO          epoch 15/40  loss=0.0481  val_auc=0.9966  patience=4/10
+2026-05-19 06:35:20  INFO          epoch 20/40  loss=0.0369  val_auc=0.9980  patience=0/10
+2026-05-19 06:36:05  INFO          epoch 25/40  loss=0.0342  val_auc=0.9959  patience=5/10
+2026-05-19 06:36:54  INFO          epoch 30/40  loss=0.0211  val_auc=0.9964  patience=10/10
+2026-05-19 06:36:54  INFO          early stop at epoch 30/40  best_val_auc=0.9980
+2026-05-19 06:37:17  INFO        [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=2  trial=4  roc=0.8634 [0.8557,0.8734]  Δauc=+0.1361
+2026-05-19 06:37:17  INFO      [S2 86/180] [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=2  trial=5
+2026-05-19 06:37:18  INFO          device: mps
+2026-05-19 06:37:18  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 06:37:27  INFO          epoch 1/40  loss=0.2760  val_auc=0.9693  patience=0/10
+2026-05-19 06:38:04  INFO          epoch 5/40  loss=0.1172  val_auc=0.9918  patience=1/10
+2026-05-19 06:38:49  INFO          epoch 10/40  loss=0.0798  val_auc=0.9949  patience=3/10
+2026-05-19 06:39:34  INFO          epoch 15/40  loss=0.0481  val_auc=0.9966  patience=4/10
+2026-05-19 06:40:19  INFO          epoch 20/40  loss=0.0369  val_auc=0.9980  patience=0/10
+2026-05-19 06:41:04  INFO          epoch 25/40  loss=0.0342  val_auc=0.9959  patience=5/10
+2026-05-19 06:41:49  INFO          epoch 30/40  loss=0.0211  val_auc=0.9964  patience=10/10
+2026-05-19 06:41:49  INFO          early stop at epoch 30/40  best_val_auc=0.9980
+2026-05-19 06:41:57  INFO        [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=2  trial=5  roc=0.8627 [0.8551,0.8727]  Δauc=+0.1369
+2026-05-19 06:41:57  INFO      [S2 87/180] [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=2  trial=6
+2026-05-19 06:41:58  INFO          device: mps
+2026-05-19 06:41:58  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 06:42:07  INFO          epoch 1/40  loss=0.2760  val_auc=0.9693  patience=0/10
+2026-05-19 06:42:43  INFO          epoch 5/40  loss=0.1172  val_auc=0.9918  patience=1/10
+2026-05-19 06:43:29  INFO          epoch 10/40  loss=0.0798  val_auc=0.9949  patience=3/10
+2026-05-19 06:44:14  INFO          epoch 15/40  loss=0.0481  val_auc=0.9966  patience=4/10
+2026-05-19 06:44:59  INFO          epoch 20/40  loss=0.0369  val_auc=0.9980  patience=0/10
+2026-05-19 06:45:44  INFO          epoch 25/40  loss=0.0342  val_auc=0.9959  patience=5/10
+2026-05-19 06:46:29  INFO          epoch 30/40  loss=0.0211  val_auc=0.9964  patience=10/10
+2026-05-19 06:46:29  INFO          early stop at epoch 30/40  best_val_auc=0.9980
+2026-05-19 06:46:37  INFO        [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=2  trial=6  roc=0.8624 [0.8549,0.8724]  Δauc=+0.1371
+2026-05-19 06:46:37  INFO      [S2 88/180] [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=2  trial=7
+2026-05-19 06:46:38  INFO          device: mps
+2026-05-19 06:46:38  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 06:46:47  INFO          epoch 1/40  loss=0.2760  val_auc=0.9693  patience=0/10
+2026-05-19 06:47:23  INFO          epoch 5/40  loss=0.1172  val_auc=0.9918  patience=1/10
+2026-05-19 06:48:08  INFO          epoch 10/40  loss=0.0798  val_auc=0.9949  patience=3/10
+2026-05-19 06:48:54  INFO          epoch 15/40  loss=0.0481  val_auc=0.9966  patience=4/10
+2026-05-19 06:49:39  INFO          epoch 20/40  loss=0.0369  val_auc=0.9980  patience=0/10
+2026-05-19 06:50:24  INFO          epoch 25/40  loss=0.0342  val_auc=0.9959  patience=5/10
+2026-05-19 06:51:09  INFO          epoch 30/40  loss=0.0211  val_auc=0.9964  patience=10/10
+2026-05-19 06:51:09  INFO          early stop at epoch 30/40  best_val_auc=0.9980
+2026-05-19 06:51:24  INFO        [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=2  trial=7  roc=0.8669 [0.8590,0.8768]  Δauc=+0.1327
+2026-05-19 06:51:24  INFO      [S2 89/180] [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=2  trial=8
+2026-05-19 06:51:25  INFO          device: mps
+2026-05-19 06:51:25  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 06:51:34  INFO          epoch 1/40  loss=0.2760  val_auc=0.9693  patience=0/10
+2026-05-19 06:52:10  INFO          epoch 5/40  loss=0.1172  val_auc=0.9918  patience=1/10
+2026-05-19 06:52:56  INFO          epoch 10/40  loss=0.0798  val_auc=0.9949  patience=3/10
+2026-05-19 06:53:41  INFO          epoch 15/40  loss=0.0481  val_auc=0.9966  patience=4/10
+2026-05-19 06:54:26  INFO          epoch 20/40  loss=0.0369  val_auc=0.9980  patience=0/10
+2026-05-19 06:55:11  INFO          epoch 25/40  loss=0.0342  val_auc=0.9959  patience=5/10
+2026-05-19 06:55:55  INFO          epoch 30/40  loss=0.0211  val_auc=0.9964  patience=10/10
+2026-05-19 06:55:55  INFO          early stop at epoch 30/40  best_val_auc=0.9980
+2026-05-19 06:56:38  INFO        [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=2  trial=8  roc=0.8638 [0.8562,0.8738]  Δauc=+0.1357
+2026-05-19 06:56:38  INFO      [S2 90/180] [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=2  trial=9
+2026-05-19 06:56:39  INFO          device: mps
+2026-05-19 06:56:39  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 06:56:48  INFO          epoch 1/40  loss=0.2760  val_auc=0.9693  patience=0/10
+2026-05-19 06:57:25  INFO          epoch 5/40  loss=0.1172  val_auc=0.9918  patience=1/10
+2026-05-19 06:58:10  INFO          epoch 10/40  loss=0.0798  val_auc=0.9949  patience=3/10
+2026-05-19 06:58:55  INFO          epoch 15/40  loss=0.0481  val_auc=0.9966  patience=4/10
+2026-05-19 06:59:40  INFO          epoch 20/40  loss=0.0369  val_auc=0.9980  patience=0/10
+2026-05-19 07:00:25  INFO          epoch 25/40  loss=0.0342  val_auc=0.9959  patience=5/10
+2026-05-19 07:01:10  INFO          epoch 30/40  loss=0.0211  val_auc=0.9964  patience=10/10
+2026-05-19 07:01:10  INFO          early stop at epoch 30/40  best_val_auc=0.9980
+2026-05-19 07:01:48  INFO        [adaptation] LogSTFT×ResNet18_2D×M2N2  ds=mitbih_ds1_ds2  seed=2  trial=9  roc=0.8729 [0.8650,0.8825]  Δauc=+0.1267
+2026-05-19 07:01:48  INFO      [S2 91/180] [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=0
+2026-05-19 07:01:48  INFO          device: mps
+2026-05-19 07:01:48  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 07:01:53  INFO          epoch 1/40  loss=0.4340  val_auc=0.9363  patience=0/10
+2026-05-19 07:02:09  INFO          epoch 5/40  loss=0.2211  val_auc=0.9782  patience=0/10
+2026-05-19 07:02:29  INFO          epoch 10/40  loss=0.1650  val_auc=0.9841  patience=2/10
+2026-05-19 07:02:50  INFO          epoch 15/40  loss=0.1166  val_auc=0.9890  patience=1/10
+2026-05-19 07:03:10  INFO          epoch 20/40  loss=0.1049  val_auc=0.9920  patience=3/10
+2026-05-19 07:03:30  INFO          epoch 25/40  loss=0.0886  val_auc=0.9908  patience=1/10
+2026-05-19 07:03:50  INFO          epoch 30/40  loss=0.0809  val_auc=0.9944  patience=0/10
+2026-05-19 07:04:10  INFO          epoch 35/40  loss=0.0738  val_auc=0.9935  patience=5/10
+2026-05-19 07:04:30  INFO          epoch 40/40  loss=0.0660  val_auc=0.9949  patience=3/10
+2026-05-19 07:05:19  INFO        [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=0  roc=0.8400 [0.8322,0.8508]  Δauc=+0.1581
+2026-05-19 07:05:19  INFO      [S2 92/180] [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=1
+2026-05-19 07:05:19  INFO          device: mps
+2026-05-19 07:05:19  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 07:05:23  INFO          epoch 1/40  loss=0.4340  val_auc=0.9363  patience=0/10
+2026-05-19 07:05:40  INFO          epoch 5/40  loss=0.2211  val_auc=0.9782  patience=0/10
+2026-05-19 07:06:00  INFO          epoch 10/40  loss=0.1650  val_auc=0.9841  patience=2/10
+2026-05-19 07:06:20  INFO          epoch 15/40  loss=0.1166  val_auc=0.9890  patience=1/10
+2026-05-19 07:06:40  INFO          epoch 20/40  loss=0.1049  val_auc=0.9920  patience=3/10
+2026-05-19 07:07:01  INFO          epoch 25/40  loss=0.0886  val_auc=0.9908  patience=1/10
+2026-05-19 07:07:21  INFO          epoch 30/40  loss=0.0809  val_auc=0.9944  patience=0/10
+2026-05-19 07:07:41  INFO          epoch 35/40  loss=0.0738  val_auc=0.9935  patience=5/10
+2026-05-19 07:08:01  INFO          epoch 40/40  loss=0.0660  val_auc=0.9949  patience=3/10
+2026-05-19 07:09:38  INFO        [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=1  roc=0.8395 [0.8312,0.8500]  Δauc=+0.1586
+2026-05-19 07:09:38  INFO      [S2 93/180] [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=2
+2026-05-19 07:09:38  INFO          device: mps
+2026-05-19 07:09:38  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 07:09:43  INFO          epoch 1/40  loss=0.4340  val_auc=0.9363  patience=0/10
+2026-05-19 07:09:59  INFO          epoch 5/40  loss=0.2211  val_auc=0.9782  patience=0/10
+2026-05-19 07:10:19  INFO          epoch 10/40  loss=0.1650  val_auc=0.9841  patience=2/10
+2026-05-19 07:10:39  INFO          epoch 15/40  loss=0.1166  val_auc=0.9890  patience=1/10
+2026-05-19 07:11:00  INFO          epoch 20/40  loss=0.1049  val_auc=0.9920  patience=3/10
+2026-05-19 07:11:20  INFO          epoch 25/40  loss=0.0886  val_auc=0.9908  patience=1/10
+2026-05-19 07:11:40  INFO          epoch 30/40  loss=0.0809  val_auc=0.9944  patience=0/10
+2026-05-19 07:12:00  INFO          epoch 35/40  loss=0.0738  val_auc=0.9935  patience=5/10
+2026-05-19 07:12:20  INFO          epoch 40/40  loss=0.0660  val_auc=0.9949  patience=3/10
+2026-05-19 07:14:34  INFO        [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=2  roc=0.8121 [0.8017,0.8227]  Δauc=+0.1860
+2026-05-19 07:14:34  INFO      [S2 94/180] [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=3
+2026-05-19 07:14:34  INFO          device: mps
+2026-05-19 07:14:34  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 07:14:36  INFO          epoch 1/40  loss=0.4340  val_auc=0.9363  patience=0/10
+2026-05-19 07:14:45  INFO          epoch 5/40  loss=0.2211  val_auc=0.9782  patience=0/10
+2026-05-19 07:14:56  INFO          epoch 10/40  loss=0.1650  val_auc=0.9841  patience=2/10
+2026-05-19 07:15:07  INFO          epoch 15/40  loss=0.1166  val_auc=0.9890  patience=1/10
+2026-05-19 07:15:18  INFO          epoch 20/40  loss=0.1049  val_auc=0.9920  patience=3/10
+2026-05-19 07:15:29  INFO          epoch 25/40  loss=0.0886  val_auc=0.9908  patience=1/10
+2026-05-19 07:15:40  INFO          epoch 30/40  loss=0.0809  val_auc=0.9944  patience=0/10
+2026-05-19 07:15:52  INFO          epoch 35/40  loss=0.0738  val_auc=0.9935  patience=5/10
+2026-05-19 07:16:03  INFO          epoch 40/40  loss=0.0660  val_auc=0.9949  patience=3/10
+2026-05-19 07:17:32  INFO        [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=3  roc=0.8054 [0.7947,0.8167]  Δauc=+0.1927
+2026-05-19 07:17:32  INFO      [S2 95/180] [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=4
+2026-05-19 07:17:32  INFO          device: mps
+2026-05-19 07:17:32  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 07:17:35  INFO          epoch 1/40  loss=0.4340  val_auc=0.9363  patience=0/10
+2026-05-19 07:17:44  INFO          epoch 5/40  loss=0.2211  val_auc=0.9782  patience=0/10
+2026-05-19 07:17:55  INFO          epoch 10/40  loss=0.1650  val_auc=0.9841  patience=2/10
+2026-05-19 07:18:06  INFO          epoch 15/40  loss=0.1166  val_auc=0.9890  patience=1/10
+2026-05-19 07:18:17  INFO          epoch 20/40  loss=0.1049  val_auc=0.9920  patience=3/10
+2026-05-19 07:18:29  INFO          epoch 25/40  loss=0.0886  val_auc=0.9908  patience=1/10
+2026-05-19 07:18:40  INFO          epoch 30/40  loss=0.0809  val_auc=0.9944  patience=0/10
+2026-05-19 07:18:51  INFO          epoch 35/40  loss=0.0738  val_auc=0.9935  patience=5/10
+2026-05-19 07:19:02  INFO          epoch 40/40  loss=0.0660  val_auc=0.9949  patience=3/10
+2026-05-19 07:20:19  INFO        [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=4  roc=0.8189 [0.8067,0.8321]  Δauc=+0.1791
+2026-05-19 07:20:19  INFO      [S2 96/180] [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=5
+2026-05-19 07:20:19  INFO          device: mps
+2026-05-19 07:20:19  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 07:20:21  INFO          epoch 1/40  loss=0.4340  val_auc=0.9363  patience=0/10
+2026-05-19 07:20:30  INFO          epoch 5/40  loss=0.2211  val_auc=0.9782  patience=0/10
+2026-05-19 07:20:42  INFO          epoch 10/40  loss=0.1650  val_auc=0.9841  patience=2/10
+2026-05-19 07:20:53  INFO          epoch 15/40  loss=0.1166  val_auc=0.9890  patience=1/10
+2026-05-19 07:21:04  INFO          epoch 20/40  loss=0.1049  val_auc=0.9920  patience=3/10
+2026-05-19 07:21:15  INFO          epoch 25/40  loss=0.0886  val_auc=0.9908  patience=1/10
+2026-05-19 07:21:26  INFO          epoch 30/40  loss=0.0809  val_auc=0.9944  patience=0/10
+2026-05-19 07:21:38  INFO          epoch 35/40  loss=0.0738  val_auc=0.9935  patience=5/10
+2026-05-19 07:21:49  INFO          epoch 40/40  loss=0.0660  val_auc=0.9949  patience=3/10
+2026-05-19 07:22:47  INFO        [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=5  roc=0.8366 [0.8274,0.8475]  Δauc=+0.1615
+2026-05-19 07:22:47  INFO      [S2 97/180] [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=6
+2026-05-19 07:22:47  INFO          device: mps
+2026-05-19 07:22:47  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 07:22:49  INFO          epoch 1/40  loss=0.4340  val_auc=0.9363  patience=0/10
+2026-05-19 07:22:58  INFO          epoch 5/40  loss=0.2211  val_auc=0.9782  patience=0/10
+2026-05-19 07:23:10  INFO          epoch 10/40  loss=0.1650  val_auc=0.9841  patience=2/10
+2026-05-19 07:23:21  INFO          epoch 15/40  loss=0.1166  val_auc=0.9890  patience=1/10
+2026-05-19 07:23:32  INFO          epoch 20/40  loss=0.1049  val_auc=0.9920  patience=3/10
+2026-05-19 07:23:43  INFO          epoch 25/40  loss=0.0886  val_auc=0.9908  patience=1/10
+2026-05-19 07:23:55  INFO          epoch 30/40  loss=0.0809  val_auc=0.9944  patience=0/10
+2026-05-19 07:24:06  INFO          epoch 35/40  loss=0.0738  val_auc=0.9935  patience=5/10
+2026-05-19 07:24:17  INFO          epoch 40/40  loss=0.0660  val_auc=0.9949  patience=3/10
+2026-05-19 07:25:45  INFO        [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=6  roc=0.8534 [0.8455,0.8644]  Δauc=+0.1447
+2026-05-19 07:25:45  INFO      [S2 98/180] [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=7
+2026-05-19 07:25:45  INFO          device: mps
+2026-05-19 07:25:45  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 07:25:47  INFO          epoch 1/40  loss=0.4340  val_auc=0.9363  patience=0/10
+2026-05-19 07:25:56  INFO          epoch 5/40  loss=0.2211  val_auc=0.9782  patience=0/10
+2026-05-19 07:26:07  INFO          epoch 10/40  loss=0.1650  val_auc=0.9841  patience=2/10
+2026-05-19 07:26:19  INFO          epoch 15/40  loss=0.1166  val_auc=0.9890  patience=1/10
+2026-05-19 07:26:30  INFO          epoch 20/40  loss=0.1049  val_auc=0.9920  patience=3/10
+2026-05-19 07:26:41  INFO          epoch 25/40  loss=0.0886  val_auc=0.9908  patience=1/10
+2026-05-19 07:26:52  INFO          epoch 30/40  loss=0.0809  val_auc=0.9944  patience=0/10
+2026-05-19 07:27:03  INFO          epoch 35/40  loss=0.0738  val_auc=0.9935  patience=5/10
+2026-05-19 07:27:14  INFO          epoch 40/40  loss=0.0660  val_auc=0.9949  patience=3/10
+2026-05-19 07:28:14  INFO        [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=7  roc=0.8327 [0.8236,0.8424]  Δauc=+0.1654
+2026-05-19 07:28:14  INFO      [S2 99/180] [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=8
+2026-05-19 07:28:14  INFO          device: mps
+2026-05-19 07:28:14  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 07:28:16  INFO          epoch 1/40  loss=0.4340  val_auc=0.9363  patience=0/10
+2026-05-19 07:28:25  INFO          epoch 5/40  loss=0.2211  val_auc=0.9782  patience=0/10
+2026-05-19 07:28:37  INFO          epoch 10/40  loss=0.1650  val_auc=0.9841  patience=2/10
+2026-05-19 07:28:48  INFO          epoch 15/40  loss=0.1166  val_auc=0.9890  patience=1/10
+2026-05-19 07:28:59  INFO          epoch 20/40  loss=0.1049  val_auc=0.9920  patience=3/10
+2026-05-19 07:29:10  INFO          epoch 25/40  loss=0.0886  val_auc=0.9908  patience=1/10
+2026-05-19 07:29:21  INFO          epoch 30/40  loss=0.0809  val_auc=0.9944  patience=0/10
+2026-05-19 07:29:32  INFO          epoch 35/40  loss=0.0738  val_auc=0.9935  patience=5/10
+2026-05-19 07:29:44  INFO          epoch 40/40  loss=0.0660  val_auc=0.9949  patience=3/10
+2026-05-19 07:31:00  INFO        [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=8  roc=0.8303 [0.8201,0.8402]  Δauc=+0.1678
+2026-05-19 07:31:00  INFO      [S2 100/180] [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=9
+2026-05-19 07:31:00  INFO          device: mps
+2026-05-19 07:31:00  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 07:31:02  INFO          epoch 1/40  loss=0.4340  val_auc=0.9363  patience=0/10
+2026-05-19 07:31:11  INFO          epoch 5/40  loss=0.2211  val_auc=0.9782  patience=0/10
+2026-05-19 07:31:22  INFO          epoch 10/40  loss=0.1650  val_auc=0.9841  patience=2/10
+2026-05-19 07:31:33  INFO          epoch 15/40  loss=0.1166  val_auc=0.9890  patience=1/10
+2026-05-19 07:31:45  INFO          epoch 20/40  loss=0.1049  val_auc=0.9920  patience=3/10
+2026-05-19 07:31:56  INFO          epoch 25/40  loss=0.0886  val_auc=0.9908  patience=1/10
+2026-05-19 07:32:07  INFO          epoch 30/40  loss=0.0809  val_auc=0.9944  patience=0/10
+2026-05-19 07:32:18  INFO          epoch 35/40  loss=0.0738  val_auc=0.9935  patience=5/10
+2026-05-19 07:32:29  INFO          epoch 40/40  loss=0.0660  val_auc=0.9949  patience=3/10
+2026-05-19 07:32:45  INFO        [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=0  trial=9  roc=0.8272 [0.8190,0.8385]  Δauc=+0.1709
+2026-05-19 07:32:45  INFO      [S2 101/180] [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=0
+2026-05-19 07:32:45  INFO          device: mps
+2026-05-19 07:32:45  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 07:32:47  INFO          epoch 1/40  loss=0.4205  val_auc=0.9472  patience=0/10
+2026-05-19 07:32:56  INFO          epoch 5/40  loss=0.1894  val_auc=0.9802  patience=0/10
+2026-05-19 07:33:07  INFO          epoch 10/40  loss=0.1438  val_auc=0.9825  patience=1/10
+2026-05-19 07:33:19  INFO          epoch 15/40  loss=0.1173  val_auc=0.9902  patience=0/10
+2026-05-19 07:33:30  INFO          epoch 20/40  loss=0.1033  val_auc=0.9910  patience=1/10
+2026-05-19 07:33:41  INFO          epoch 25/40  loss=0.0927  val_auc=0.9909  patience=6/10
+2026-05-19 07:33:52  INFO          epoch 30/40  loss=0.0822  val_auc=0.9927  patience=1/10
+2026-05-19 07:34:03  INFO          epoch 35/40  loss=0.0691  val_auc=0.9900  patience=6/10
+2026-05-19 07:34:14  INFO          epoch 40/40  loss=0.0652  val_auc=0.9938  patience=1/10
+2026-05-19 07:34:45  INFO        [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=0  roc=0.8570 [0.8475,0.8665]  Δauc=+0.1411
+2026-05-19 07:34:45  INFO      [S2 102/180] [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=1
+2026-05-19 07:34:45  INFO          device: mps
+2026-05-19 07:34:45  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 07:34:47  INFO          epoch 1/40  loss=0.4205  val_auc=0.9472  patience=0/10
+2026-05-19 07:34:57  INFO          epoch 5/40  loss=0.1894  val_auc=0.9802  patience=0/10
+2026-05-19 07:35:08  INFO          epoch 10/40  loss=0.1438  val_auc=0.9825  patience=1/10
+2026-05-19 07:35:19  INFO          epoch 15/40  loss=0.1173  val_auc=0.9902  patience=0/10
+2026-05-19 07:35:30  INFO          epoch 20/40  loss=0.1033  val_auc=0.9910  patience=1/10
+2026-05-19 07:35:41  INFO          epoch 25/40  loss=0.0927  val_auc=0.9909  patience=6/10
+2026-05-19 07:35:52  INFO          epoch 30/40  loss=0.0822  val_auc=0.9927  patience=1/10
+2026-05-19 07:36:04  INFO          epoch 35/40  loss=0.0691  val_auc=0.9900  patience=6/10
+2026-05-19 07:36:15  INFO          epoch 40/40  loss=0.0652  val_auc=0.9938  patience=1/10
+2026-05-19 07:37:14  INFO        [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=1  roc=0.8568 [0.8464,0.8661]  Δauc=+0.1413
+2026-05-19 07:37:14  INFO      [S2 103/180] [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=2
+2026-05-19 07:37:14  INFO          device: mps
+2026-05-19 07:37:14  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 07:37:16  INFO          epoch 1/40  loss=0.4205  val_auc=0.9472  patience=0/10
+2026-05-19 07:37:25  INFO          epoch 5/40  loss=0.1894  val_auc=0.9802  patience=0/10
+2026-05-19 07:37:36  INFO          epoch 10/40  loss=0.1438  val_auc=0.9825  patience=1/10
+2026-05-19 07:37:48  INFO          epoch 15/40  loss=0.1173  val_auc=0.9902  patience=0/10
+2026-05-19 07:37:59  INFO          epoch 20/40  loss=0.1033  val_auc=0.9910  patience=1/10
+2026-05-19 07:38:10  INFO          epoch 25/40  loss=0.0927  val_auc=0.9909  patience=6/10
+2026-05-19 07:38:21  INFO          epoch 30/40  loss=0.0822  val_auc=0.9927  patience=1/10
+2026-05-19 07:38:32  INFO          epoch 35/40  loss=0.0691  val_auc=0.9900  patience=6/10
+2026-05-19 07:38:44  INFO          epoch 40/40  loss=0.0652  val_auc=0.9938  patience=1/10
+2026-05-19 07:40:18  INFO        [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=2  roc=0.8564 [0.8467,0.8646]  Δauc=+0.1417
+2026-05-19 07:40:18  INFO      [S2 104/180] [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=3
+2026-05-19 07:40:18  INFO          device: mps
+2026-05-19 07:40:18  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 07:40:20  INFO          epoch 1/40  loss=0.4205  val_auc=0.9472  patience=0/10
+2026-05-19 07:40:29  INFO          epoch 5/40  loss=0.1894  val_auc=0.9802  patience=0/10
+2026-05-19 07:40:40  INFO          epoch 10/40  loss=0.1438  val_auc=0.9825  patience=1/10
+2026-05-19 07:40:51  INFO          epoch 15/40  loss=0.1173  val_auc=0.9902  patience=0/10
+2026-05-19 07:41:02  INFO          epoch 20/40  loss=0.1033  val_auc=0.9910  patience=1/10
+2026-05-19 07:41:14  INFO          epoch 25/40  loss=0.0927  val_auc=0.9909  patience=6/10
+2026-05-19 07:41:25  INFO          epoch 30/40  loss=0.0822  val_auc=0.9927  patience=1/10
+2026-05-19 07:41:36  INFO          epoch 35/40  loss=0.0691  val_auc=0.9900  patience=6/10
+2026-05-19 07:41:47  INFO          epoch 40/40  loss=0.0652  val_auc=0.9938  patience=1/10
+2026-05-19 07:43:35  INFO        [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=3  roc=0.8306 [0.8191,0.8417]  Δauc=+0.1676
+2026-05-19 07:43:35  INFO      [S2 105/180] [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=4
+2026-05-19 07:43:35  INFO          device: mps
+2026-05-19 07:43:35  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 07:43:38  INFO          epoch 1/40  loss=0.4205  val_auc=0.9472  patience=0/10
+2026-05-19 07:43:47  INFO          epoch 5/40  loss=0.1894  val_auc=0.9802  patience=0/10
+2026-05-19 07:43:58  INFO          epoch 10/40  loss=0.1438  val_auc=0.9825  patience=1/10
+2026-05-19 07:44:09  INFO          epoch 15/40  loss=0.1173  val_auc=0.9902  patience=0/10
+2026-05-19 07:44:20  INFO          epoch 20/40  loss=0.1033  val_auc=0.9910  patience=1/10
+2026-05-19 07:44:31  INFO          epoch 25/40  loss=0.0927  val_auc=0.9909  patience=6/10
+2026-05-19 07:44:42  INFO          epoch 30/40  loss=0.0822  val_auc=0.9927  patience=1/10
+2026-05-19 07:44:54  INFO          epoch 35/40  loss=0.0691  val_auc=0.9900  patience=6/10
+2026-05-19 07:45:05  INFO          epoch 40/40  loss=0.0652  val_auc=0.9938  patience=1/10
+2026-05-19 07:46:21  INFO        [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=4  roc=0.8710 [0.8620,0.8801]  Δauc=+0.1272
+2026-05-19 07:46:21  INFO      [S2 106/180] [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=5
+2026-05-19 07:46:21  INFO          device: mps
+2026-05-19 07:46:21  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 07:46:24  INFO          epoch 1/40  loss=0.4205  val_auc=0.9472  patience=0/10
+2026-05-19 07:46:33  INFO          epoch 5/40  loss=0.1894  val_auc=0.9802  patience=0/10
+2026-05-19 07:46:44  INFO          epoch 10/40  loss=0.1438  val_auc=0.9825  patience=1/10
+2026-05-19 07:46:55  INFO          epoch 15/40  loss=0.1173  val_auc=0.9902  patience=0/10
+2026-05-19 07:47:06  INFO          epoch 20/40  loss=0.1033  val_auc=0.9910  patience=1/10
+2026-05-19 07:47:17  INFO          epoch 25/40  loss=0.0927  val_auc=0.9909  patience=6/10
+2026-05-19 07:47:28  INFO          epoch 30/40  loss=0.0822  val_auc=0.9927  patience=1/10
+2026-05-19 07:47:40  INFO          epoch 35/40  loss=0.0691  val_auc=0.9900  patience=6/10
+2026-05-19 07:47:51  INFO          epoch 40/40  loss=0.0652  val_auc=0.9938  patience=1/10
+2026-05-19 07:48:54  INFO        [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=5  roc=0.8616 [0.8521,0.8704]  Δauc=+0.1365
+2026-05-19 07:48:54  INFO      [S2 107/180] [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=6
+2026-05-19 07:48:54  INFO          device: mps
+2026-05-19 07:48:54  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 07:48:56  INFO          epoch 1/40  loss=0.4205  val_auc=0.9472  patience=0/10
+2026-05-19 07:49:05  INFO          epoch 5/40  loss=0.1894  val_auc=0.9802  patience=0/10
+2026-05-19 07:49:17  INFO          epoch 10/40  loss=0.1438  val_auc=0.9825  patience=1/10
+2026-05-19 07:49:29  INFO          epoch 15/40  loss=0.1173  val_auc=0.9902  patience=0/10
+2026-05-19 07:49:41  INFO          epoch 20/40  loss=0.1033  val_auc=0.9910  patience=1/10
+2026-05-19 07:49:53  INFO          epoch 25/40  loss=0.0927  val_auc=0.9909  patience=6/10
+2026-05-19 07:50:05  INFO          epoch 30/40  loss=0.0822  val_auc=0.9927  patience=1/10
+2026-05-19 07:50:17  INFO          epoch 35/40  loss=0.0691  val_auc=0.9900  patience=6/10
+2026-05-19 07:50:29  INFO          epoch 40/40  loss=0.0652  val_auc=0.9938  patience=1/10
+2026-05-19 07:52:13  INFO        [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=6  roc=0.8763 [0.8668,0.8855]  Δauc=+0.1218
+2026-05-19 07:52:13  INFO      [S2 108/180] [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=7
+2026-05-19 07:52:13  INFO          device: mps
+2026-05-19 07:52:13  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 07:52:15  INFO          epoch 1/40  loss=0.4205  val_auc=0.9472  patience=0/10
+2026-05-19 07:52:24  INFO          epoch 5/40  loss=0.1894  val_auc=0.9802  patience=0/10
+2026-05-19 07:52:36  INFO          epoch 10/40  loss=0.1438  val_auc=0.9825  patience=1/10
+2026-05-19 07:52:47  INFO          epoch 15/40  loss=0.1173  val_auc=0.9902  patience=0/10
+2026-05-19 07:52:58  INFO          epoch 20/40  loss=0.1033  val_auc=0.9910  patience=1/10
+2026-05-19 07:53:09  INFO          epoch 25/40  loss=0.0927  val_auc=0.9909  patience=6/10
+2026-05-19 07:53:20  INFO          epoch 30/40  loss=0.0822  val_auc=0.9927  patience=1/10
+2026-05-19 07:53:31  INFO          epoch 35/40  loss=0.0691  val_auc=0.9900  patience=6/10
+2026-05-19 07:53:43  INFO          epoch 40/40  loss=0.0652  val_auc=0.9938  patience=1/10
+2026-05-19 07:54:46  INFO        [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=7  roc=0.8621 [0.8529,0.8709]  Δauc=+0.1360
+2026-05-19 07:54:46  INFO      [S2 109/180] [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=8
+2026-05-19 07:54:46  INFO          device: mps
+2026-05-19 07:54:46  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 07:54:48  INFO          epoch 1/40  loss=0.4205  val_auc=0.9472  patience=0/10
+2026-05-19 07:54:57  INFO          epoch 5/40  loss=0.1894  val_auc=0.9802  patience=0/10
+2026-05-19 07:55:08  INFO          epoch 10/40  loss=0.1438  val_auc=0.9825  patience=1/10
+2026-05-19 07:55:20  INFO          epoch 15/40  loss=0.1173  val_auc=0.9902  patience=0/10
+2026-05-19 07:55:31  INFO          epoch 20/40  loss=0.1033  val_auc=0.9910  patience=1/10
+2026-05-19 07:55:42  INFO          epoch 25/40  loss=0.0927  val_auc=0.9909  patience=6/10
+2026-05-19 07:55:53  INFO          epoch 30/40  loss=0.0822  val_auc=0.9927  patience=1/10
+2026-05-19 07:56:04  INFO          epoch 35/40  loss=0.0691  val_auc=0.9900  patience=6/10
+2026-05-19 07:56:16  INFO          epoch 40/40  loss=0.0652  val_auc=0.9938  patience=1/10
+2026-05-19 07:57:35  INFO        [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=8  roc=0.8236 [0.8121,0.8350]  Δauc=+0.1745
+2026-05-19 07:57:35  INFO      [S2 110/180] [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=9
+2026-05-19 07:57:35  INFO          device: mps
+2026-05-19 07:57:35  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 07:57:37  INFO          epoch 1/40  loss=0.4205  val_auc=0.9472  patience=0/10
+2026-05-19 07:57:46  INFO          epoch 5/40  loss=0.1894  val_auc=0.9802  patience=0/10
+2026-05-19 07:57:57  INFO          epoch 10/40  loss=0.1438  val_auc=0.9825  patience=1/10
+2026-05-19 07:58:08  INFO          epoch 15/40  loss=0.1173  val_auc=0.9902  patience=0/10
+2026-05-19 07:58:20  INFO          epoch 20/40  loss=0.1033  val_auc=0.9910  patience=1/10
+2026-05-19 07:58:31  INFO          epoch 25/40  loss=0.0927  val_auc=0.9909  patience=6/10
+2026-05-19 07:58:42  INFO          epoch 30/40  loss=0.0822  val_auc=0.9927  patience=1/10
+2026-05-19 07:58:53  INFO          epoch 35/40  loss=0.0691  val_auc=0.9900  patience=6/10
+2026-05-19 07:59:04  INFO          epoch 40/40  loss=0.0652  val_auc=0.9938  patience=1/10
+2026-05-19 07:59:21  INFO        [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=1  trial=9  roc=0.8599 [0.8502,0.8685]  Δauc=+0.1382
+2026-05-19 07:59:21  INFO      [S2 111/180] [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=0
+2026-05-19 07:59:21  INFO          device: mps
+2026-05-19 07:59:21  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 07:59:23  INFO          epoch 1/40  loss=0.4602  val_auc=0.9294  patience=0/10
+2026-05-19 07:59:32  INFO          epoch 5/40  loss=0.1970  val_auc=0.9750  patience=1/10
+2026-05-19 07:59:44  INFO          epoch 10/40  loss=0.1379  val_auc=0.9868  patience=0/10
+2026-05-19 07:59:55  INFO          epoch 15/40  loss=0.1155  val_auc=0.9907  patience=0/10
+2026-05-19 08:00:07  INFO          epoch 20/40  loss=0.0933  val_auc=0.9899  patience=5/10
+2026-05-19 08:00:18  INFO          epoch 25/40  loss=0.0854  val_auc=0.9904  patience=1/10
+2026-05-19 08:00:30  INFO          epoch 30/40  loss=0.0703  val_auc=0.9913  patience=2/10
+2026-05-19 08:00:41  INFO          epoch 35/40  loss=0.0763  val_auc=0.9858  patience=2/10
+2026-05-19 08:00:52  INFO          epoch 40/40  loss=0.0662  val_auc=0.9897  patience=7/10
+2026-05-19 08:01:24  INFO        [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=0  roc=0.8704 [0.8596,0.8787]  Δauc=+0.1276
+2026-05-19 08:01:24  INFO      [S2 112/180] [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=1
+2026-05-19 08:01:24  INFO          device: mps
+2026-05-19 08:01:24  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 08:01:26  INFO          epoch 1/40  loss=0.4602  val_auc=0.9294  patience=0/10
+2026-05-19 08:01:35  INFO          epoch 5/40  loss=0.1970  val_auc=0.9750  patience=1/10
+2026-05-19 08:01:46  INFO          epoch 10/40  loss=0.1379  val_auc=0.9868  patience=0/10
+2026-05-19 08:01:58  INFO          epoch 15/40  loss=0.1155  val_auc=0.9907  patience=0/10
+2026-05-19 08:02:09  INFO          epoch 20/40  loss=0.0933  val_auc=0.9899  patience=5/10
+2026-05-19 08:02:20  INFO          epoch 25/40  loss=0.0854  val_auc=0.9904  patience=1/10
+2026-05-19 08:02:31  INFO          epoch 30/40  loss=0.0703  val_auc=0.9913  patience=2/10
+2026-05-19 08:02:42  INFO          epoch 35/40  loss=0.0763  val_auc=0.9858  patience=2/10
+2026-05-19 08:02:53  INFO          epoch 40/40  loss=0.0662  val_auc=0.9897  patience=7/10
+2026-05-19 08:03:54  INFO        [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=1  roc=0.8676 [0.8572,0.8760]  Δauc=+0.1304
+2026-05-19 08:03:54  INFO      [S2 113/180] [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=2
+2026-05-19 08:03:54  INFO          device: mps
+2026-05-19 08:03:54  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 08:03:56  INFO          epoch 1/40  loss=0.4602  val_auc=0.9294  patience=0/10
+2026-05-19 08:04:05  INFO          epoch 5/40  loss=0.1970  val_auc=0.9750  patience=1/10
+2026-05-19 08:04:16  INFO          epoch 10/40  loss=0.1379  val_auc=0.9868  patience=0/10
+2026-05-19 08:04:28  INFO          epoch 15/40  loss=0.1155  val_auc=0.9907  patience=0/10
+2026-05-19 08:04:39  INFO          epoch 20/40  loss=0.0933  val_auc=0.9899  patience=5/10
+2026-05-19 08:04:50  INFO          epoch 25/40  loss=0.0854  val_auc=0.9904  patience=1/10
+2026-05-19 08:05:01  INFO          epoch 30/40  loss=0.0703  val_auc=0.9913  patience=2/10
+2026-05-19 08:05:13  INFO          epoch 35/40  loss=0.0763  val_auc=0.9858  patience=2/10
+2026-05-19 08:05:24  INFO          epoch 40/40  loss=0.0662  val_auc=0.9897  patience=7/10
+2026-05-19 08:07:00  INFO        [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=2  roc=0.8657 [0.8549,0.8744]  Δauc=+0.1323
+2026-05-19 08:07:00  INFO      [S2 114/180] [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=3
+2026-05-19 08:07:00  INFO          device: mps
+2026-05-19 08:07:00  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 08:07:02  INFO          epoch 1/40  loss=0.4602  val_auc=0.9294  patience=0/10
+2026-05-19 08:07:11  INFO          epoch 5/40  loss=0.1970  val_auc=0.9750  patience=1/10
+2026-05-19 08:07:22  INFO          epoch 10/40  loss=0.1379  val_auc=0.9868  patience=0/10
+2026-05-19 08:07:33  INFO          epoch 15/40  loss=0.1155  val_auc=0.9907  patience=0/10
+2026-05-19 08:07:45  INFO          epoch 20/40  loss=0.0933  val_auc=0.9899  patience=5/10
+2026-05-19 08:07:56  INFO          epoch 25/40  loss=0.0854  val_auc=0.9904  patience=1/10
+2026-05-19 08:08:07  INFO          epoch 30/40  loss=0.0703  val_auc=0.9913  patience=2/10
+2026-05-19 08:08:19  INFO          epoch 35/40  loss=0.0763  val_auc=0.9858  patience=2/10
+2026-05-19 08:08:30  INFO          epoch 40/40  loss=0.0662  val_auc=0.9897  patience=7/10
+2026-05-19 08:10:21  INFO        [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=3  roc=0.8427 [0.8309,0.8532]  Δauc=+0.1552
+2026-05-19 08:10:21  INFO      [S2 115/180] [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=4
+2026-05-19 08:10:21  INFO          device: mps
+2026-05-19 08:10:21  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 08:10:23  INFO          epoch 1/40  loss=0.4602  val_auc=0.9294  patience=0/10
+2026-05-19 08:10:32  INFO          epoch 5/40  loss=0.1970  val_auc=0.9750  patience=1/10
+2026-05-19 08:10:43  INFO          epoch 10/40  loss=0.1379  val_auc=0.9868  patience=0/10
+2026-05-19 08:10:54  INFO          epoch 15/40  loss=0.1155  val_auc=0.9907  patience=0/10
+2026-05-19 08:11:06  INFO          epoch 20/40  loss=0.0933  val_auc=0.9899  patience=5/10
+2026-05-19 08:11:17  INFO          epoch 25/40  loss=0.0854  val_auc=0.9904  patience=1/10
+2026-05-19 08:11:28  INFO          epoch 30/40  loss=0.0703  val_auc=0.9913  patience=2/10
+2026-05-19 08:11:40  INFO          epoch 35/40  loss=0.0763  val_auc=0.9858  patience=2/10
+2026-05-19 08:11:51  INFO          epoch 40/40  loss=0.0662  val_auc=0.9897  patience=7/10
+2026-05-19 08:13:08  INFO        [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=4  roc=0.8631 [0.8524,0.8728]  Δauc=+0.1348
+2026-05-19 08:13:08  INFO      [S2 116/180] [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=5
+2026-05-19 08:13:08  INFO          device: mps
+2026-05-19 08:13:08  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 08:13:10  INFO          epoch 1/40  loss=0.4602  val_auc=0.9294  patience=0/10
+2026-05-19 08:13:19  INFO          epoch 5/40  loss=0.1970  val_auc=0.9750  patience=1/10
+2026-05-19 08:13:30  INFO          epoch 10/40  loss=0.1379  val_auc=0.9868  patience=0/10
+2026-05-19 08:13:41  INFO          epoch 15/40  loss=0.1155  val_auc=0.9907  patience=0/10
+2026-05-19 08:13:53  INFO          epoch 20/40  loss=0.0933  val_auc=0.9899  patience=5/10
+2026-05-19 08:14:04  INFO          epoch 25/40  loss=0.0854  val_auc=0.9904  patience=1/10
+2026-05-19 08:14:15  INFO          epoch 30/40  loss=0.0703  val_auc=0.9913  patience=2/10
+2026-05-19 08:14:26  INFO          epoch 35/40  loss=0.0763  val_auc=0.9858  patience=2/10
+2026-05-19 08:14:37  INFO          epoch 40/40  loss=0.0662  val_auc=0.9897  patience=7/10
+2026-05-19 08:15:46  INFO        [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=5  roc=0.8727 [0.8621,0.8811]  Δauc=+0.1252
+2026-05-19 08:15:46  INFO      [S2 117/180] [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=6
+2026-05-19 08:15:47  INFO          device: mps
+2026-05-19 08:15:47  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 08:15:49  INFO          epoch 1/40  loss=0.4602  val_auc=0.9294  patience=0/10
+2026-05-19 08:15:58  INFO          epoch 5/40  loss=0.1970  val_auc=0.9750  patience=1/10
+2026-05-19 08:16:09  INFO          epoch 10/40  loss=0.1379  val_auc=0.9868  patience=0/10
+2026-05-19 08:16:21  INFO          epoch 15/40  loss=0.1155  val_auc=0.9907  patience=0/10
+2026-05-19 08:16:32  INFO          epoch 20/40  loss=0.0933  val_auc=0.9899  patience=5/10
+2026-05-19 08:16:43  INFO          epoch 25/40  loss=0.0854  val_auc=0.9904  patience=1/10
+2026-05-19 08:16:54  INFO          epoch 30/40  loss=0.0703  val_auc=0.9913  patience=2/10
+2026-05-19 08:17:06  INFO          epoch 35/40  loss=0.0763  val_auc=0.9858  patience=2/10
+2026-05-19 08:17:17  INFO          epoch 40/40  loss=0.0662  val_auc=0.9897  patience=7/10
+2026-05-19 08:19:00  INFO        [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=6  roc=0.8767 [0.8663,0.8854]  Δauc=+0.1212
+2026-05-19 08:19:00  INFO      [S2 118/180] [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=7
+2026-05-19 08:19:00  INFO          device: mps
+2026-05-19 08:19:00  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 08:19:02  INFO          epoch 1/40  loss=0.4602  val_auc=0.9294  patience=0/10
+2026-05-19 08:19:11  INFO          epoch 5/40  loss=0.1970  val_auc=0.9750  patience=1/10
+2026-05-19 08:19:22  INFO          epoch 10/40  loss=0.1379  val_auc=0.9868  patience=0/10
+2026-05-19 08:19:33  INFO          epoch 15/40  loss=0.1155  val_auc=0.9907  patience=0/10
+2026-05-19 08:19:45  INFO          epoch 20/40  loss=0.0933  val_auc=0.9899  patience=5/10
+2026-05-19 08:19:56  INFO          epoch 25/40  loss=0.0854  val_auc=0.9904  patience=1/10
+2026-05-19 08:20:07  INFO          epoch 30/40  loss=0.0703  val_auc=0.9913  patience=2/10
+2026-05-19 08:20:18  INFO          epoch 35/40  loss=0.0763  val_auc=0.9858  patience=2/10
+2026-05-19 08:20:29  INFO          epoch 40/40  loss=0.0662  val_auc=0.9897  patience=7/10
+2026-05-19 08:21:33  INFO        [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=7  roc=0.8738 [0.8643,0.8831]  Δauc=+0.1241
+2026-05-19 08:21:33  INFO      [S2 119/180] [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=8
+2026-05-19 08:21:33  INFO          device: mps
+2026-05-19 08:21:33  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 08:21:36  INFO          epoch 1/40  loss=0.4602  val_auc=0.9294  patience=0/10
+2026-05-19 08:21:45  INFO          epoch 5/40  loss=0.1970  val_auc=0.9750  patience=1/10
+2026-05-19 08:21:56  INFO          epoch 10/40  loss=0.1379  val_auc=0.9868  patience=0/10
+2026-05-19 08:22:07  INFO          epoch 15/40  loss=0.1155  val_auc=0.9907  patience=0/10
+2026-05-19 08:22:19  INFO          epoch 20/40  loss=0.0933  val_auc=0.9899  patience=5/10
+2026-05-19 08:22:30  INFO          epoch 25/40  loss=0.0854  val_auc=0.9904  patience=1/10
+2026-05-19 08:22:41  INFO          epoch 30/40  loss=0.0703  val_auc=0.9913  patience=2/10
+2026-05-19 08:22:52  INFO          epoch 35/40  loss=0.0763  val_auc=0.9858  patience=2/10
+2026-05-19 08:23:04  INFO          epoch 40/40  loss=0.0662  val_auc=0.9897  patience=7/10
+2026-05-19 08:24:23  INFO        [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=8  roc=0.8275 [0.8156,0.8379]  Δauc=+0.1705
+2026-05-19 08:24:23  INFO      [S2 120/180] [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=9
+2026-05-19 08:24:23  INFO          device: mps
+2026-05-19 08:24:23  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 08:24:26  INFO          epoch 1/40  loss=0.4602  val_auc=0.9294  patience=0/10
+2026-05-19 08:24:35  INFO          epoch 5/40  loss=0.1970  val_auc=0.9750  patience=1/10
+2026-05-19 08:24:46  INFO          epoch 10/40  loss=0.1379  val_auc=0.9868  patience=0/10
+2026-05-19 08:24:57  INFO          epoch 15/40  loss=0.1155  val_auc=0.9907  patience=0/10
+2026-05-19 08:25:08  INFO          epoch 20/40  loss=0.0933  val_auc=0.9899  patience=5/10
+2026-05-19 08:25:19  INFO          epoch 25/40  loss=0.0854  val_auc=0.9904  patience=1/10
+2026-05-19 08:25:31  INFO          epoch 30/40  loss=0.0703  val_auc=0.9913  patience=2/10
+2026-05-19 08:25:42  INFO          epoch 35/40  loss=0.0763  val_auc=0.9858  patience=2/10
+2026-05-19 08:25:53  INFO          epoch 40/40  loss=0.0662  val_auc=0.9897  patience=7/10
+2026-05-19 08:26:11  INFO        [adaptation] RawSignal×PatchTST×MK_MMD  ds=mitbih_ds1_ds2  seed=2  trial=9  roc=0.8667 [0.8565,0.8752]  Δauc=+0.1313
+2026-05-19 08:26:11  INFO      [S2 121/180] [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=0
+2026-05-19 08:26:11  INFO          device: mps
+2026-05-19 08:26:11  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 08:26:13  INFO          epoch 1/40  loss=0.4340  val_auc=0.9363  patience=0/10
+2026-05-19 08:26:22  INFO          epoch 5/40  loss=0.2211  val_auc=0.9782  patience=0/10
+2026-05-19 08:26:34  INFO          epoch 10/40  loss=0.1650  val_auc=0.9841  patience=2/10
+2026-05-19 08:26:45  INFO          epoch 15/40  loss=0.1166  val_auc=0.9890  patience=1/10
+2026-05-19 08:26:57  INFO          epoch 20/40  loss=0.1049  val_auc=0.9920  patience=3/10
+2026-05-19 08:27:08  INFO          epoch 25/40  loss=0.0886  val_auc=0.9908  patience=1/10
+2026-05-19 08:27:19  INFO          epoch 30/40  loss=0.0809  val_auc=0.9944  patience=0/10
+2026-05-19 08:27:30  INFO          epoch 35/40  loss=0.0738  val_auc=0.9935  patience=5/10
+2026-05-19 08:27:42  INFO          epoch 40/40  loss=0.0660  val_auc=0.9949  patience=3/10
+2026-05-19 08:28:50  INFO        [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=0  roc=0.5000 [0.5000,0.5000]  Δauc=+0.4981
+2026-05-19 08:28:50  INFO      [S2 122/180] [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=1
+2026-05-19 08:28:50  INFO          device: mps
+2026-05-19 08:28:50  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 08:28:52  INFO          epoch 1/40  loss=0.4340  val_auc=0.9363  patience=0/10
+2026-05-19 08:29:01  INFO          epoch 5/40  loss=0.2211  val_auc=0.9782  patience=0/10
+2026-05-19 08:29:13  INFO          epoch 10/40  loss=0.1650  val_auc=0.9841  patience=2/10
+2026-05-19 08:29:24  INFO          epoch 15/40  loss=0.1166  val_auc=0.9890  patience=1/10
+2026-05-19 08:29:35  INFO          epoch 20/40  loss=0.1049  val_auc=0.9920  patience=3/10
+2026-05-19 08:29:46  INFO          epoch 25/40  loss=0.0886  val_auc=0.9908  patience=1/10
+2026-05-19 08:29:57  INFO          epoch 30/40  loss=0.0809  val_auc=0.9944  patience=0/10
+2026-05-19 08:30:09  INFO          epoch 35/40  loss=0.0738  val_auc=0.9935  patience=5/10
+2026-05-19 08:30:20  INFO          epoch 40/40  loss=0.0660  val_auc=0.9949  patience=3/10
+2026-05-19 08:31:43  INFO        [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=1  roc=0.8263 [0.8164,0.8374]  Δauc=+0.1717
+2026-05-19 08:31:43  INFO      [S2 123/180] [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=2
+2026-05-19 08:31:43  INFO          device: mps
+2026-05-19 08:31:43  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 08:31:45  INFO          epoch 1/40  loss=0.4340  val_auc=0.9363  patience=0/10
+2026-05-19 08:31:55  INFO          epoch 5/40  loss=0.2211  val_auc=0.9782  patience=0/10
+2026-05-19 08:32:06  INFO          epoch 10/40  loss=0.1650  val_auc=0.9841  patience=2/10
+2026-05-19 08:32:17  INFO          epoch 15/40  loss=0.1166  val_auc=0.9890  patience=1/10
+2026-05-19 08:32:29  INFO          epoch 20/40  loss=0.1049  val_auc=0.9920  patience=3/10
+2026-05-19 08:32:40  INFO          epoch 25/40  loss=0.0886  val_auc=0.9908  patience=1/10
+2026-05-19 08:32:51  INFO          epoch 30/40  loss=0.0809  val_auc=0.9944  patience=0/10
+2026-05-19 08:33:03  INFO          epoch 35/40  loss=0.0738  val_auc=0.9935  patience=5/10
+2026-05-19 08:33:14  INFO          epoch 40/40  loss=0.0660  val_auc=0.9949  patience=3/10
+2026-05-19 08:34:10  INFO        [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=2  roc=0.8380 [0.8304,0.8486]  Δauc=+0.1601
+2026-05-19 08:34:10  INFO      [S2 124/180] [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=3
+2026-05-19 08:34:10  INFO          device: mps
+2026-05-19 08:34:10  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 08:34:12  INFO          epoch 1/40  loss=0.4340  val_auc=0.9363  patience=0/10
+2026-05-19 08:34:21  INFO          epoch 5/40  loss=0.2211  val_auc=0.9782  patience=0/10
+2026-05-19 08:34:32  INFO          epoch 10/40  loss=0.1650  val_auc=0.9841  patience=2/10
+2026-05-19 08:34:43  INFO          epoch 15/40  loss=0.1166  val_auc=0.9890  patience=1/10
+2026-05-19 08:34:55  INFO          epoch 20/40  loss=0.1049  val_auc=0.9920  patience=3/10
+2026-05-19 08:35:06  INFO          epoch 25/40  loss=0.0886  val_auc=0.9908  patience=1/10
+2026-05-19 08:35:17  INFO          epoch 30/40  loss=0.0809  val_auc=0.9944  patience=0/10
+2026-05-19 08:35:28  INFO          epoch 35/40  loss=0.0738  val_auc=0.9935  patience=5/10
+2026-05-19 08:35:39  INFO          epoch 40/40  loss=0.0660  val_auc=0.9949  patience=3/10
+2026-05-19 08:37:27  INFO        [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=3  roc=0.8090 [0.7999,0.8202]  Δauc=+0.1891
+2026-05-19 08:37:27  INFO      [S2 125/180] [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=4
+2026-05-19 08:37:27  INFO          device: mps
+2026-05-19 08:37:27  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 08:37:29  INFO          epoch 1/40  loss=0.4340  val_auc=0.9363  patience=0/10
+2026-05-19 08:37:38  INFO          epoch 5/40  loss=0.2211  val_auc=0.9782  patience=0/10
+2026-05-19 08:37:49  INFO          epoch 10/40  loss=0.1650  val_auc=0.9841  patience=2/10
+2026-05-19 08:38:01  INFO          epoch 15/40  loss=0.1166  val_auc=0.9890  patience=1/10
+2026-05-19 08:38:12  INFO          epoch 20/40  loss=0.1049  val_auc=0.9920  patience=3/10
+2026-05-19 08:38:23  INFO          epoch 25/40  loss=0.0886  val_auc=0.9908  patience=1/10
+2026-05-19 08:38:35  INFO          epoch 30/40  loss=0.0809  val_auc=0.9944  patience=0/10
+2026-05-19 08:38:46  INFO          epoch 35/40  loss=0.0738  val_auc=0.9935  patience=5/10
+2026-05-19 08:38:57  INFO          epoch 40/40  loss=0.0660  val_auc=0.9949  patience=3/10
+2026-05-19 08:41:06  INFO        [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=4  roc=0.5000 [0.5000,0.5000]  Δauc=+0.4981
+2026-05-19 08:41:06  INFO      [S2 126/180] [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=5
+2026-05-19 08:41:06  INFO          device: mps
+2026-05-19 08:41:06  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 08:41:09  INFO          epoch 1/40  loss=0.4340  val_auc=0.9363  patience=0/10
+2026-05-19 08:41:18  INFO          epoch 5/40  loss=0.2211  val_auc=0.9782  patience=0/10
+2026-05-19 08:41:29  INFO          epoch 10/40  loss=0.1650  val_auc=0.9841  patience=2/10
+2026-05-19 08:41:41  INFO          epoch 15/40  loss=0.1166  val_auc=0.9890  patience=1/10
+2026-05-19 08:41:52  INFO          epoch 20/40  loss=0.1049  val_auc=0.9920  patience=3/10
+2026-05-19 08:42:04  INFO          epoch 25/40  loss=0.0886  val_auc=0.9908  patience=1/10
+2026-05-19 08:42:15  INFO          epoch 30/40  loss=0.0809  val_auc=0.9944  patience=0/10
+2026-05-19 08:42:27  INFO          epoch 35/40  loss=0.0738  val_auc=0.9935  patience=5/10
+2026-05-19 08:42:39  INFO          epoch 40/40  loss=0.0660  val_auc=0.9949  patience=3/10
+2026-05-19 08:44:00  INFO        [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=5  roc=0.8417 [0.8336,0.8514]  Δauc=+0.1563
+2026-05-19 08:44:00  INFO      [S2 127/180] [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=6
+2026-05-19 08:44:00  INFO          device: mps
+2026-05-19 08:44:00  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 08:44:02  INFO          epoch 1/40  loss=0.4340  val_auc=0.9363  patience=0/10
+2026-05-19 08:44:11  INFO          epoch 5/40  loss=0.2211  val_auc=0.9782  patience=0/10
+2026-05-19 08:44:23  INFO          epoch 10/40  loss=0.1650  val_auc=0.9841  patience=2/10
+2026-05-19 08:44:34  INFO          epoch 15/40  loss=0.1166  val_auc=0.9890  patience=1/10
+2026-05-19 08:44:46  INFO          epoch 20/40  loss=0.1049  val_auc=0.9920  patience=3/10
+2026-05-19 08:44:57  INFO          epoch 25/40  loss=0.0886  val_auc=0.9908  patience=1/10
+2026-05-19 08:45:09  INFO          epoch 30/40  loss=0.0809  val_auc=0.9944  patience=0/10
+2026-05-19 08:45:21  INFO          epoch 35/40  loss=0.0738  val_auc=0.9935  patience=5/10
+2026-05-19 08:45:33  INFO          epoch 40/40  loss=0.0660  val_auc=0.9949  patience=3/10
+2026-05-19 08:45:59  INFO        [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=6  roc=0.7670 [0.7555,0.7793]  Δauc=+0.2311
+2026-05-19 08:45:59  INFO      [S2 128/180] [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=7
+2026-05-19 08:45:59  INFO          device: mps
+2026-05-19 08:45:59  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 08:46:02  INFO          epoch 1/40  loss=0.4340  val_auc=0.9363  patience=0/10
+2026-05-19 08:46:12  INFO          epoch 5/40  loss=0.2211  val_auc=0.9782  patience=0/10
+2026-05-19 08:46:23  INFO          epoch 10/40  loss=0.1650  val_auc=0.9841  patience=2/10
+2026-05-19 08:46:35  INFO          epoch 15/40  loss=0.1166  val_auc=0.9890  patience=1/10
+2026-05-19 08:46:47  INFO          epoch 20/40  loss=0.1049  val_auc=0.9920  patience=3/10
+2026-05-19 08:46:59  INFO          epoch 25/40  loss=0.0886  val_auc=0.9908  patience=1/10
+2026-05-19 08:47:10  INFO          epoch 30/40  loss=0.0809  val_auc=0.9944  patience=0/10
+2026-05-19 08:47:22  INFO          epoch 35/40  loss=0.0738  val_auc=0.9935  patience=5/10
+2026-05-19 08:47:34  INFO          epoch 40/40  loss=0.0660  val_auc=0.9949  patience=3/10
+2026-05-19 08:48:52  INFO        [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=7  roc=0.8406 [0.8312,0.8503]  Δauc=+0.1574
+2026-05-19 08:48:52  INFO      [S2 129/180] [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=8
+2026-05-19 08:48:52  INFO          device: mps
+2026-05-19 08:48:52  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 08:48:54  INFO          epoch 1/40  loss=0.4340  val_auc=0.9363  patience=0/10
+2026-05-19 08:49:04  INFO          epoch 5/40  loss=0.2211  val_auc=0.9782  patience=0/10
+2026-05-19 08:49:16  INFO          epoch 10/40  loss=0.1650  val_auc=0.9841  patience=2/10
+2026-05-19 08:49:27  INFO          epoch 15/40  loss=0.1166  val_auc=0.9890  patience=1/10
+2026-05-19 08:49:39  INFO          epoch 20/40  loss=0.1049  val_auc=0.9920  patience=3/10
+2026-05-19 08:49:50  INFO          epoch 25/40  loss=0.0886  val_auc=0.9908  patience=1/10
+2026-05-19 08:50:02  INFO          epoch 30/40  loss=0.0809  val_auc=0.9944  patience=0/10
+2026-05-19 08:50:14  INFO          epoch 35/40  loss=0.0738  val_auc=0.9935  patience=5/10
+2026-05-19 08:50:25  INFO          epoch 40/40  loss=0.0660  val_auc=0.9949  patience=3/10
+2026-05-19 08:50:51  INFO        [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=8  roc=0.8441 [0.8365,0.8536]  Δauc=+0.1540
+2026-05-19 08:50:51  INFO      [S2 130/180] [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=9
+2026-05-19 08:50:51  INFO          device: mps
+2026-05-19 08:50:51  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 08:50:53  INFO          epoch 1/40  loss=0.4340  val_auc=0.9363  patience=0/10
+2026-05-19 08:51:03  INFO          epoch 5/40  loss=0.2211  val_auc=0.9782  patience=0/10
+2026-05-19 08:51:15  INFO          epoch 10/40  loss=0.1650  val_auc=0.9841  patience=2/10
+2026-05-19 08:51:27  INFO          epoch 15/40  loss=0.1166  val_auc=0.9890  patience=1/10
+2026-05-19 08:51:38  INFO          epoch 20/40  loss=0.1049  val_auc=0.9920  patience=3/10
+2026-05-19 08:51:50  INFO          epoch 25/40  loss=0.0886  val_auc=0.9908  patience=1/10
+2026-05-19 08:52:02  INFO          epoch 30/40  loss=0.0809  val_auc=0.9944  patience=0/10
+2026-05-19 08:52:14  INFO          epoch 35/40  loss=0.0738  val_auc=0.9935  patience=5/10
+2026-05-19 08:52:25  INFO          epoch 40/40  loss=0.0660  val_auc=0.9949  patience=3/10
+2026-05-19 08:52:52  INFO        [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=0  trial=9  roc=0.8615 [0.8553,0.8703]  Δauc=+0.1366
+2026-05-19 08:52:52  INFO      [S2 131/180] [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=0
+2026-05-19 08:52:52  INFO          device: mps
+2026-05-19 08:52:52  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 08:52:54  INFO          epoch 1/40  loss=0.4205  val_auc=0.9472  patience=0/10
+2026-05-19 08:53:04  INFO          epoch 5/40  loss=0.1894  val_auc=0.9802  patience=0/10
+2026-05-19 08:53:16  INFO          epoch 10/40  loss=0.1438  val_auc=0.9825  patience=1/10
+2026-05-19 08:53:28  INFO          epoch 15/40  loss=0.1173  val_auc=0.9902  patience=0/10
+2026-05-19 08:53:40  INFO          epoch 20/40  loss=0.1033  val_auc=0.9910  patience=1/10
+2026-05-19 08:53:52  INFO          epoch 25/40  loss=0.0927  val_auc=0.9909  patience=6/10
+2026-05-19 08:54:03  INFO          epoch 30/40  loss=0.0822  val_auc=0.9927  patience=1/10
+2026-05-19 08:54:15  INFO          epoch 35/40  loss=0.0691  val_auc=0.9900  patience=6/10
+2026-05-19 08:54:27  INFO          epoch 40/40  loss=0.0652  val_auc=0.9938  patience=1/10
+2026-05-19 08:55:37  INFO        [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=0  roc=0.5000 [0.5000,0.5000]  Δauc=+0.4981
+2026-05-19 08:55:37  INFO      [S2 132/180] [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=1
+2026-05-19 08:55:37  INFO          device: mps
+2026-05-19 08:55:37  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 08:55:40  INFO          epoch 1/40  loss=0.4205  val_auc=0.9472  patience=0/10
+2026-05-19 08:55:49  INFO          epoch 5/40  loss=0.1894  val_auc=0.9802  patience=0/10
+2026-05-19 08:56:01  INFO          epoch 10/40  loss=0.1438  val_auc=0.9825  patience=1/10
+2026-05-19 08:56:12  INFO          epoch 15/40  loss=0.1173  val_auc=0.9902  patience=0/10
+2026-05-19 08:56:24  INFO          epoch 20/40  loss=0.1033  val_auc=0.9910  patience=1/10
+2026-05-19 08:56:36  INFO          epoch 25/40  loss=0.0927  val_auc=0.9909  patience=6/10
+2026-05-19 08:56:47  INFO          epoch 30/40  loss=0.0822  val_auc=0.9927  patience=1/10
+2026-05-19 08:56:59  INFO          epoch 35/40  loss=0.0691  val_auc=0.9900  patience=6/10
+2026-05-19 08:57:11  INFO          epoch 40/40  loss=0.0652  val_auc=0.9938  patience=1/10
+2026-05-19 08:58:37  INFO        [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=1  roc=0.8485 [0.8377,0.8581]  Δauc=+0.1496
+2026-05-19 08:58:37  INFO      [S2 133/180] [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=2
+2026-05-19 08:58:37  INFO          device: mps
+2026-05-19 08:58:37  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 08:58:39  INFO          epoch 1/40  loss=0.4205  val_auc=0.9472  patience=0/10
+2026-05-19 08:58:49  INFO          epoch 5/40  loss=0.1894  val_auc=0.9802  patience=0/10
+2026-05-19 08:59:01  INFO          epoch 10/40  loss=0.1438  val_auc=0.9825  patience=1/10
+2026-05-19 08:59:13  INFO          epoch 15/40  loss=0.1173  val_auc=0.9902  patience=0/10
+2026-05-19 08:59:24  INFO          epoch 20/40  loss=0.1033  val_auc=0.9910  patience=1/10
+2026-05-19 08:59:36  INFO          epoch 25/40  loss=0.0927  val_auc=0.9909  patience=6/10
+2026-05-19 08:59:48  INFO          epoch 30/40  loss=0.0822  val_auc=0.9927  patience=1/10
+2026-05-19 09:00:00  INFO          epoch 35/40  loss=0.0691  val_auc=0.9900  patience=6/10
+2026-05-19 09:00:11  INFO          epoch 40/40  loss=0.0652  val_auc=0.9938  patience=1/10
+2026-05-19 09:01:10  INFO        [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=2  roc=0.8658 [0.8561,0.8751]  Δauc=+0.1323
+2026-05-19 09:01:10  INFO      [S2 134/180] [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=3
+2026-05-19 09:01:10  INFO          device: mps
+2026-05-19 09:01:10  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 09:01:13  INFO          epoch 1/40  loss=0.4205  val_auc=0.9472  patience=0/10
+2026-05-19 09:01:22  INFO          epoch 5/40  loss=0.1894  val_auc=0.9802  patience=0/10
+2026-05-19 09:01:34  INFO          epoch 10/40  loss=0.1438  val_auc=0.9825  patience=1/10
+2026-05-19 09:01:45  INFO          epoch 15/40  loss=0.1173  val_auc=0.9902  patience=0/10
+2026-05-19 09:01:57  INFO          epoch 20/40  loss=0.1033  val_auc=0.9910  patience=1/10
+2026-05-19 09:02:08  INFO          epoch 25/40  loss=0.0927  val_auc=0.9909  patience=6/10
+2026-05-19 09:02:19  INFO          epoch 30/40  loss=0.0822  val_auc=0.9927  patience=1/10
+2026-05-19 09:02:31  INFO          epoch 35/40  loss=0.0691  val_auc=0.9900  patience=6/10
+2026-05-19 09:02:42  INFO          epoch 40/40  loss=0.0652  val_auc=0.9938  patience=1/10
+2026-05-19 09:04:31  INFO        [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=3  roc=0.8658 [0.8555,0.8738]  Δauc=+0.1323
+2026-05-19 09:04:31  INFO      [S2 135/180] [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=4
+2026-05-19 09:04:31  INFO          device: mps
+2026-05-19 09:04:31  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 09:04:33  INFO          epoch 1/40  loss=0.4205  val_auc=0.9472  patience=0/10
+2026-05-19 09:04:42  INFO          epoch 5/40  loss=0.1894  val_auc=0.9802  patience=0/10
+2026-05-19 09:04:54  INFO          epoch 10/40  loss=0.1438  val_auc=0.9825  patience=1/10
+2026-05-19 09:05:06  INFO          epoch 15/40  loss=0.1173  val_auc=0.9902  patience=0/10
+2026-05-19 09:05:17  INFO          epoch 20/40  loss=0.1033  val_auc=0.9910  patience=1/10
+2026-05-19 09:05:29  INFO          epoch 25/40  loss=0.0927  val_auc=0.9909  patience=6/10
+2026-05-19 09:05:40  INFO          epoch 30/40  loss=0.0822  val_auc=0.9927  patience=1/10
+2026-05-19 09:05:52  INFO          epoch 35/40  loss=0.0691  val_auc=0.9900  patience=6/10
+2026-05-19 09:06:03  INFO          epoch 40/40  loss=0.0652  val_auc=0.9938  patience=1/10
+2026-05-19 09:08:10  INFO        [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=4  roc=0.5000 [0.5000,0.5000]  Δauc=+0.4981
+2026-05-19 09:08:10  INFO      [S2 136/180] [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=5
+2026-05-19 09:08:10  INFO          device: mps
+2026-05-19 09:08:10  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 09:08:13  INFO          epoch 1/40  loss=0.4205  val_auc=0.9472  patience=0/10
+2026-05-19 09:08:22  INFO          epoch 5/40  loss=0.1894  val_auc=0.9802  patience=0/10
+2026-05-19 09:08:33  INFO          epoch 10/40  loss=0.1438  val_auc=0.9825  patience=1/10
+2026-05-19 09:08:45  INFO          epoch 15/40  loss=0.1173  val_auc=0.9902  patience=0/10
+2026-05-19 09:08:56  INFO          epoch 20/40  loss=0.1033  val_auc=0.9910  patience=1/10
+2026-05-19 09:09:07  INFO          epoch 25/40  loss=0.0927  val_auc=0.9909  patience=6/10
+2026-05-19 09:09:21  INFO          epoch 30/40  loss=0.0822  val_auc=0.9927  patience=1/10
+2026-05-19 09:26:15  INFO          epoch 35/40  loss=0.0691  val_auc=0.9900  patience=6/10
+2026-05-19 09:27:06  INFO          epoch 40/40  loss=0.0652  val_auc=0.9938  patience=1/10
+2026-05-19 11:45:21  INFO        [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=5  roc=0.8638 [0.8540,0.8728]  Δauc=+0.1343
+2026-05-19 11:45:21  INFO      [S2 137/180] [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=6
+2026-05-19 11:45:21  INFO          device: mps
+2026-05-19 11:45:21  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 11:45:25  INFO          epoch 1/40  loss=0.4205  val_auc=0.9472  patience=0/10
+2026-05-19 11:55:26  INFO          epoch 5/40  loss=0.1894  val_auc=0.9802  patience=0/10
+2026-05-19 12:11:33  INFO          epoch 10/40  loss=0.1438  val_auc=0.9825  patience=1/10
+2026-05-19 12:35:56  INFO          epoch 15/40  loss=0.1173  val_auc=0.9902  patience=0/10
+2026-05-19 13:01:05  INFO          epoch 20/40  loss=0.1033  val_auc=0.9910  patience=1/10
+2026-05-19 13:12:35  INFO          epoch 25/40  loss=0.0927  val_auc=0.9909  patience=6/10
+2026-05-19 13:27:43  INFO          epoch 30/40  loss=0.0822  val_auc=0.9927  patience=1/10
+2026-05-19 13:42:51  INFO          epoch 35/40  loss=0.0691  val_auc=0.9900  patience=6/10
+2026-05-19 13:52:50  INFO          epoch 40/40  loss=0.0652  val_auc=0.9938  patience=1/10
+2026-05-19 14:42:48  INFO        [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=6  roc=0.8201 [0.8099,0.8314]  Δauc=+0.1780
+2026-05-19 14:42:48  INFO      [S2 138/180] [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=7
+2026-05-19 14:42:48  INFO          device: mps
+2026-05-19 14:42:48  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 14:42:53  INFO          epoch 1/40  loss=0.4205  val_auc=0.9472  patience=0/10
+2026-05-19 15:02:18  INFO          epoch 5/40  loss=0.1894  val_auc=0.9802  patience=0/10
+2026-05-19 15:19:32  INFO          epoch 10/40  loss=0.1438  val_auc=0.9825  patience=1/10
+2026-05-19 15:35:50  INFO          epoch 15/40  loss=0.1173  val_auc=0.9902  patience=0/10
+2026-05-19 15:55:25  INFO          epoch 20/40  loss=0.1033  val_auc=0.9910  patience=1/10
+2026-05-19 16:24:26  INFO          epoch 25/40  loss=0.0927  val_auc=0.9909  patience=6/10
+2026-05-19 16:39:15  INFO          epoch 30/40  loss=0.0822  val_auc=0.9927  patience=1/10
+2026-05-19 17:08:35  INFO          epoch 35/40  loss=0.0691  val_auc=0.9900  patience=6/10
+2026-05-19 17:20:55  INFO          epoch 40/40  loss=0.0652  val_auc=0.9938  patience=1/10
+2026-05-19 19:17:44  INFO        [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=7  roc=0.7544 [0.7415,0.7673]  Δauc=+0.2437
+2026-05-19 19:17:44  INFO      [S2 139/180] [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=8
+2026-05-19 19:17:44  INFO          device: mps
+2026-05-19 19:17:44  INFO          early stopping: train=5100  val=900  patience=10
+2026-05-19 19:17:49  INFO          epoch 1/40  loss=0.4205  val_auc=0.9472  patience=0/10
+2026-05-19 19:32:44  INFO          epoch 5/40  loss=0.1894  val_auc=0.9802  patience=0/10
+2026-05-19 19:42:39  INFO          epoch 10/40  loss=0.1438  val_auc=0.9825  patience=1/10
+2026-05-19 19:47:46  INFO          epoch 15/40  loss=0.1173  val_auc=0.9902  patience=0/10
+2026-05-19 19:57:27  INFO          epoch 20/40  loss=0.1033  val_auc=0.9910  patience=1/10
+2026-05-19 20:12:03  INFO          epoch 25/40  loss=0.0927  val_auc=0.9909  patience=6/10
+2026-05-19 20:13:40  INFO          epoch 30/40  loss=0.0822  val_auc=0.9927  patience=1/10
+2026-05-19 20:14:01  INFO          epoch 35/40  loss=0.0691  val_auc=0.9900  patience=6/10
+2026-05-19 20:14:29  INFO          epoch 40/40  loss=0.0652  val_auc=0.9938  patience=1/10
+2026-05-19 20:15:27  INFO        [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=8  roc=0.8724 [0.8627,0.8808]  Δauc=+0.1257
+2026-05-19 20:15:27  INFO      [S2 140/180] [adaptation] RawSignal×PatchTST×CoDATS  ds=mitbih_ds1_ds2  seed=1  trial=9
+2026-05-19 20:15:27  INFO          device: mps
+2026-05-19 20:15:27  INFO          early stopping: train=5100  val=900  patience=10
