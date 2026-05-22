@@ -39,7 +39,7 @@ compatibility:
 
   CWT_Morlet:
     LogReg:              true
-    RandomForest:        true
-    GBM:                 true
+    RandomForest:        false   # 32×T ≈ 8960 features — impractically slow
+    GBM:                 false   # 32×T ≈ 8960 features — impractically slow
     SVM:                 true
     StatTestClassifier:  false   # 2-D distribution — define per implementation
