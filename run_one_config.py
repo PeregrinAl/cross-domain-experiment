@@ -148,7 +148,7 @@ _DEFAULT_DA_HP: dict[str, dict[str, Any]] = {
 
 _REPR_PARAMS: dict[str, dict[str, Any]] = {
     "RawSignal":  {},
-    "LogSTFT":    {"n_fft": 64, "hop_length": 16},
+    "LogSTFT":    {"n_fft": 64, "hop_length": 64},
     "CWT_Morlet": {"n_scales": 32},
 }
 
