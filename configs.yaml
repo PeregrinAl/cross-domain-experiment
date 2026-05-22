@@ -24,8 +24,13 @@ priorities:
       Sleep-EDF (cross-subject EEG), and CWRU (cross-load vibration).
     groups:
       - datasets:        [mitbih, sleep-edf, cwru]
-        representations: [raw, log-stft, cwt-morlet]
+        representations: [raw, log-stft]
         models:          [logreg, random-forest, gbm]
+        da_methods:      [source-only, coral]
+      # CWT only with LogReg — RF/GBM on flattened scalograms are intractable
+      - datasets:        [mitbih, sleep-edf, cwru]
+        representations: [cwt-morlet]
+        models:          [logreg]
         da_methods:      [source-only, coral]
 
   2:
