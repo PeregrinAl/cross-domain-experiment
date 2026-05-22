@@ -32,8 +32,8 @@ compatibility:
 
   LogSTFT:
     LogReg:              true
-    RandomForest:        true
-    GBM:                 true
+    RandomForest:        false   # F×T up to ~6k features on Sleep-EDF — impractically slow
+    GBM:                 false   # F×T up to ~6k features on Sleep-EDF — impractically slow
     SVM:                 true
     StatTestClassifier:  false   # 2-D distribution — define per implementation
 
