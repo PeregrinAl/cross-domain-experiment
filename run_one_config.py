@@ -244,9 +244,26 @@ def _register_dataset(cli_name: str, ds_key: str, seed: int) -> None:
     from nstad_bench.experiments.runner import register_dataset
 
     if cli_name == "mitbih":
-        from nstad_bench.data.mitbih_loader import mitbih_loader
         override = os.environ.get("KAGGLE_MITBIH_DIR")
-        register_dataset(ds_key, mitbih_loader(data_root=override, seed=seed))
+        root = Path(override) if override else None
+        # Auto-detect format: CSV (mondejar Kaggle dataset) vs WFDB (PhysioNet raw)
+        # mondejar dataset has CSV either directly in root or in mitbih_database/ subdir
+        def _find_csv_root(r: Path | None) -> Path | None:
+            if r is None:
+                return None
+            for candidate in [r, r / "mitbih_database"]:
+                if (candidate / "mitbih_train.csv").exists():
+                    return candidate
+            return None
+        _csv_root = _find_csv_root(root)
+        if _csv_root:
+            from nstad_bench.data.mitbih_csv_loader import mitbih_csv_loader
+            log.info("MIT-BIH: using CSV loader (mondejar format) from %s", _csv_root)
+            register_dataset(ds_key, mitbih_csv_loader(data_root=_csv_root, seed=seed))
+        else:
+            from nstad_bench.data.mitbih_loader import mitbih_loader
+            log.info("MIT-BIH: using WFDB loader (PhysioNet format)")
+            register_dataset(ds_key, mitbih_loader(data_root=override, seed=seed))
     elif cli_name == "sleep-edf":
         from nstad_bench.data.sleep_edf_loader import sleep_edf_loader
         override = os.environ.get("KAGGLE_SLEEP_EDF_DIR")
