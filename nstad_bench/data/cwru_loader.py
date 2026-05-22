@@ -74,6 +74,10 @@ _HP_PAT_OLD = re.compile(r"(?i)_(\d+)\s*hp")
 # brjapon/Kaggle format: Time_Normal_1_098.mat, B007_1_123.mat, OR007_6_1_136.mat
 # HP load is always the second-to-last underscore token (file ID is last).
 _HP_PAT_NEW = re.compile(r"_(\d+)_\d+$")
+# esraakhaled/Kaggle format: B007_3.mat, Normal_0.mat, OR007@6_3.mat
+# HP load is the single trailing underscore token (no file-ID suffix).
+# Tried last so it doesn't shadow the two-token formats above.
+_HP_PAT_TRAIL = re.compile(r"_(\d+)$")
 
 
 def _default_root() -> Path:
@@ -136,7 +140,9 @@ def _discover_files(root: Path, hp: str) -> tuple[list[Path], list[Path]]:
     fault: list[Path] = []
     target_hp = str(hp)
     for p in sorted(root.rglob("*.mat")):
-        m = _HP_PAT_OLD.search(p.stem) or _HP_PAT_NEW.search(p.stem)
+        m = (_HP_PAT_OLD.search(p.stem)
+             or _HP_PAT_NEW.search(p.stem)
+             or _HP_PAT_TRAIL.search(p.stem))
         if not m or m.group(1) != target_hp:
             continue
         if _NORMAL_PAT.search(p.stem):

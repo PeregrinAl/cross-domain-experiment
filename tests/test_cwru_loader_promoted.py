@@ -62,6 +62,26 @@ def test_discovers_files_by_hp_suffix(patched_reader, tmp_path):
     assert all("fan_end_summary" not in p.stem for p in all_found)
 
 
+def test_discovers_esraakhaled_format(patched_reader, tmp_path):
+    """esraakhaled format: B007_3.mat, Normal_0.mat, OR007@6_3.mat"""
+    root = tmp_path / "cwru_esra"
+    root.mkdir()
+    for stem in (
+        "Normal_0", "B007_0", "IR007_0", "OR007@6_0",
+        "Normal_3", "B007_3", "IR007_3", "OR007@6_3",
+        "fan_end_summary",
+    ):
+        (root / f"{stem}.mat").touch()
+
+    normal_0, fault_0 = cwru_mod._discover_files(root, "0")
+    normal_3, fault_3 = cwru_mod._discover_files(root, "3")
+    assert {p.stem for p in normal_0} == {"Normal_0"}
+    assert {p.stem for p in normal_3} == {"Normal_3"}
+    assert len(fault_0) == 3 and len(fault_3) == 3
+    all_found = normal_0 + fault_0 + normal_3 + fault_3
+    assert all("fan_end_summary" not in p.stem for p in all_found)
+
+
 def test_loader_returns_correct_shapes(patched_reader, tmp_path):
     root = _make_fake_root(tmp_path)
     loader = cwru_mod.cwru_loader(data_root=root, seed=0, max_per_class=20)
