@@ -129,9 +129,9 @@ _DEFAULT_MODEL_CFG: dict[str, dict[str, Any]] = {
                         "d_model": 128, "n_heads": 4, "n_layers": 3},
     "ResNet18_2D":     {"epochs": 30, "lr": 5e-4, "batch_size": 32},
     # Statistical
-    "LogReg":       {"C": 1.0, "max_iter": 1000},
-    "RandomForest": {"n_estimators": 200, "max_depth": None, "min_samples_leaf": 1},
-    "GBM":          {"n_estimators": 200, "learning_rate": 0.05, "max_depth": 3},
+    "LogReg":       {"C": 1.0, "max_iter": 300, "solver": "saga"},
+    "RandomForest": {"n_estimators": 100, "max_depth": 15, "min_samples_leaf": 1, "n_jobs": -1},
+    "GBM":          {"n_estimators": 100, "learning_rate": 0.1, "max_depth": 4},
 }
 
 _DEFAULT_DA_HP: dict[str, dict[str, Any]] = {
