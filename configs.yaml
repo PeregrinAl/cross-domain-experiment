@@ -23,14 +23,13 @@ priorities:
       minimum required for the defence: it covers MIT-BIH (mild shift),
       Sleep-EDF (cross-subject EEG), and CWRU (cross-load vibration).
     groups:
+      # CWT excluded from stat branch: flattened scalograms (32×T) produce
+      # 9k–96k features depending on dataset — intractable for trees,
+      # and linear models lose the 2-D structure. CWT is reserved for
+      # neural models (Priority 2) that can exploit the 2-D representation.
       - datasets:        [mitbih, sleep-edf, cwru]
         representations: [raw, log-stft]
         models:          [logreg, random-forest, gbm]
-        da_methods:      [source-only, coral]
-      # CWT only with LogReg — RF/GBM on flattened scalograms are intractable
-      - datasets:        [mitbih, sleep-edf, cwru]
-        representations: [cwt-morlet]
-        models:          [logreg]
         da_methods:      [source-only, coral]
 
   2:
