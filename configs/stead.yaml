@@ -113,8 +113,3 @@ adaptation_methods:
     lr_disc:       {type: log_float, low: 1.0e-4, high: 1.0e-2}
     lambda_domain: {type: log_float, low: 0.01,  high: 5.0}
     batch_size:    {type: choice,    choices: [32, 64]}
-
-  M2N2:
-    n_steps:    {type: int,       low: 30,    high: 200}
-    lr:         {type: log_float, low: 1.0e-5, high: 5.0e-4}
-    batch_size: {type: choice,    choices: [32, 64]}

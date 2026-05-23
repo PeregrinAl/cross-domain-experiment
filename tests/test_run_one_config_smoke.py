@@ -202,7 +202,6 @@ def fast_deep_defaults(monkeypatch):
         "MK_MMD":  {"n_epochs": 1, "lr": 1e-3, "lambda_mmd": 1.0, "batch_size": 16},
         "CoDATS":  {"n_epochs": 1, "lr": 1e-3, "lr_disc": 1e-3,
                     "lambda_domain": 1.0, "batch_size": 16},
-        "M2N2":    {"n_steps": 5, "lr": 1e-3, "batch_size": 16},
     }
     for k, v in fast_da.items():
         monkeypatch.setitem(roc._DEFAULT_DA_HP, k, v)

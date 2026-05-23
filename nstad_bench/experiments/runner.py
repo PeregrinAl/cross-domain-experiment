@@ -56,7 +56,7 @@ import numpy as np
 import pandas as pd
 import yaml
 
-from nstad_bench.adaptation import CoDATS, M2N2, MK_MMD, SourceOnly
+from nstad_bench.adaptation import CoDATS, DeepCORAL, M2N2, MK_MMD, SourceOnly
 from nstad_bench.metrics.bootstrap import bootstrap_ci
 from nstad_bench.metrics.scores import (
     best_threshold,
@@ -121,6 +121,12 @@ _ADAPT_REGISTRY: dict[str, type] = {
     "SourceOnly": SourceOnly,
     "MK_MMD":     MK_MMD,
     "CoDATS":     CoDATS,
+    "DeepCORAL":  DeepCORAL,
+    # M2N2 kept in the registry for backward-compat with explicit YAML configs
+    # and the M2N2 test suite, but it is excluded from the default benchmark
+    # matrix (configs.yaml + run_one_config.py CLI) on methodological grounds:
+    # M2N2 is a test-time TSAD method whose objective does not align with the
+    # supervised binary cross-domain setting used here.
     "M2N2":       M2N2,
 }
 
@@ -329,7 +335,7 @@ def _build_adapt(
     cls = _ADAPT_REGISTRY[psi]
     if psi == "SourceOnly":
         return cls()
-    elif psi in ("MK_MMD", "CoDATS"):
+    elif psi in ("MK_MMD", "CoDATS", "DeepCORAL"):
         return cls(X_s_repr, y_s, **hp)
     elif psi == "M2N2":
         return cls(**hp)

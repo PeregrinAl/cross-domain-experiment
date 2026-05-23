@@ -42,7 +42,7 @@ priorities:
       - datasets:        [sleep-edf, cwru]
         representations: [raw, log-stft, cwt-morlet]
         models:          [inception-time, patch-tst, resnet2d]
-        da_methods:      [source-only, codats, m2n2, mk-mmd]
+        da_methods:      [source-only, deep-coral, codats, mk-mmd]
 
   3:
     description: >
@@ -57,4 +57,4 @@ priorities:
       - datasets:        [mitbih]
         representations: [raw, log-stft, cwt-morlet]
         models:          [inception-time, patch-tst, resnet2d]
-        da_methods:      [source-only, codats, m2n2, mk-mmd]
+        da_methods:      [source-only, deep-coral, codats, mk-mmd]

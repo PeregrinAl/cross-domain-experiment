@@ -104,8 +104,8 @@ SHALLOW_DA: dict[str, str] = {
 }
 DEEP_DA: dict[str, str] = {
     "source-only": "SourceOnly",
+    "deep-coral":  "DeepCORAL",
     "codats":      "CoDATS",
-    "m2n2":        "M2N2",
     "mk-mmd":      "MK_MMD",
 }
 DA_METHODS: dict[str, set[str]] = {
@@ -113,8 +113,8 @@ DA_METHODS: dict[str, set[str]] = {
     "source-only":        {"stat", "deep"},
     "coral":              {"stat"},
     "subspace-alignment": {"stat"},
+    "deep-coral":         {"deep"},
     "codats":             {"deep"},
-    "m2n2":               {"deep"},
     "mk-mmd":             {"deep"},
 }
 
@@ -136,10 +136,10 @@ _DEFAULT_MODEL_CFG: dict[str, dict[str, Any]] = {
 
 _DEFAULT_DA_HP: dict[str, dict[str, Any]] = {
     # Neural DA
-    "MK_MMD":  {"n_epochs": 15, "lr": 1e-4, "lambda_mmd": 1.0, "batch_size": 64},
-    "CoDATS":  {"n_epochs": 15, "lr": 1e-4, "lr_disc": 1e-3,
-                "lambda_domain": 1.0, "batch_size": 64},
-    "M2N2":    {"n_steps": 50, "lr": 1e-4, "batch_size": 64},
+    "MK_MMD":    {"n_epochs": 15, "lr": 1e-4, "lambda_mmd": 1.0, "batch_size": 64},
+    "CoDATS":    {"n_epochs": 15, "lr": 1e-4, "lr_disc": 1e-3,
+                  "lambda_domain": 1.0, "batch_size": 64},
+    "DeepCORAL": {"n_epochs": 15, "lr": 1e-4, "lambda_coral": 1.0, "batch_size": 64},
     # Statistical DA
     "CORAL":             {"lambda_reg": 1e-3, "align_mean": True},
     "SubspaceAlignment": {"n_components": 30},
@@ -308,7 +308,7 @@ def _build_stat_model(theta: str):
 
 
 def _build_neural_adapt(psi: str, X_s: np.ndarray, y_s: np.ndarray):
-    from nstad_bench.adaptation import CoDATS, M2N2, MK_MMD, SourceOnly
+    from nstad_bench.adaptation import CoDATS, DeepCORAL, MK_MMD, SourceOnly
     hp = _DEFAULT_DA_HP[psi]
     if psi == "SourceOnly":
         return SourceOnly()
@@ -316,8 +316,8 @@ def _build_neural_adapt(psi: str, X_s: np.ndarray, y_s: np.ndarray):
         return MK_MMD(X_s, y_s, **hp)
     if psi == "CoDATS":
         return CoDATS(X_s, y_s, **hp)
-    if psi == "M2N2":
-        return M2N2(**hp)
+    if psi == "DeepCORAL":
+        return DeepCORAL(X_s, y_s, **hp)
     raise ValueError(f"Unknown neural DA method: {psi!r}")
 
 

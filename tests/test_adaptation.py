@@ -31,7 +31,7 @@ import torch
 
 import torch.nn as nn
 
-from nstad_bench.adaptation import CoDATS, MK_MMD, M2N2, SourceOnly
+from nstad_bench.adaptation import CoDATS, DeepCORAL, MK_MMD, M2N2, SourceOnly
 from nstad_bench.models import InceptionTime1D
 
 # Normalization layer types whose affine params M2N2 is allowed to update
@@ -264,6 +264,71 @@ class TestCoDATS:
         CoDATS(X_s, y_s, n_epochs=1, batch_size=16).adapt(trained_model, target_data)
         for n, p in trained_model.named_parameters():
             assert torch.equal(p, params_snap[n]), f"Original mutated at '{n}'"
+
+
+# ---------------------------------------------------------------------------
+# DeepCORAL
+# ---------------------------------------------------------------------------
+
+class TestDeepCORAL:
+
+    @pytest.fixture(scope="class")
+    def adapted(self, trained_model, source_data, target_data):
+        X_s, y_s = source_data
+        return DeepCORAL(
+            X_s, y_s,
+            n_epochs=3, lr=1e-3, lambda_coral=1.0, batch_size=16,
+        ).adapt(trained_model, target_data)
+
+    def test_returns_new_object(self, trained_model, adapted):
+        assert adapted is not trained_model
+
+    def test_parameters_changed(self, trained_model, adapted):
+        any_changed = any(
+            not torch.equal(p_o, p_a)
+            for p_o, p_a in zip(trained_model.parameters(), adapted.parameters())
+        )
+        assert any_changed, "DeepCORAL did not update any model parameters"
+
+    def test_valid_proba_on_target(self, adapted, target_data):
+        _assert_valid_proba(adapted.predict_proba(target_data), "DeepCORAL/target")
+
+    def test_valid_proba_on_source(self, adapted, source_data):
+        X_s, _ = source_data
+        _assert_valid_proba(adapted.predict_proba(X_s), "DeepCORAL/source")
+
+    def test_no_collapse_on_source(self, adapted, source_data):
+        X_s, _ = source_data
+        _assert_no_collapse(adapted.predict_proba(X_s), "DeepCORAL")
+
+    def test_original_unchanged(self, trained_model, source_data, target_data):
+        X_s, y_s = source_data
+        params_snap = {n: p.clone() for n, p in trained_model.named_parameters()}
+        DeepCORAL(X_s, y_s, n_epochs=1, batch_size=16).adapt(trained_model, target_data)
+        for n, p in trained_model.named_parameters():
+            assert torch.equal(p, params_snap[n]), f"Original mutated at '{n}'"
+
+
+def test_coral_loss_zero_on_identical_features():
+    """CORAL loss between identical feature batches must be zero (covariances
+    are equal, Frobenius distance vanishes).
+    """
+    from nstad_bench.adaptation.deep_coral import coral_loss
+    torch.manual_seed(0)
+    X = torch.randn(32, 16)
+    loss = coral_loss(X, X.clone())
+    assert torch.isclose(loss, torch.tensor(0.0), atol=1e-6)
+
+
+def test_coral_loss_positive_on_shifted_features():
+    """CORAL loss must be strictly positive when target has different scale
+    (different covariance), regardless of mean shift.
+    """
+    from nstad_bench.adaptation.deep_coral import coral_loss
+    torch.manual_seed(0)
+    Xs = torch.randn(32, 16)
+    Xt = Xs * 3.0   # same mean once centred, but covariance is 9× larger
+    assert coral_loss(Xs, Xt).item() > 0.0
 
 
 # ---------------------------------------------------------------------------
