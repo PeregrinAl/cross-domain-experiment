@@ -9,7 +9,15 @@
 # any incompatible (model / da_method) or (representation / model) pair with
 # a clean exit-code-2, so over-specified groups are safe.
 #
-# Seeds are global — every config runs once per seed.
+# Seeds
+# -----
+# `seeds` is the default seed list.  A priority may override with its own
+# `seeds:` list — used to give the deep branch 5 seeds (Wilcoxon-friendly
+# at the seed-variance scale typical of neural training) while keeping the
+# statistical branch at 3 seeds (training noise there is negligible).
+#
+# Five datasets are wired in.  To run only a subset, set DATASETS_FILTER
+# in the notebook — no config edits required.
 # ─────────────────────────────────────────────────────────────────────────────
 
 seeds: [0, 1, 2]
@@ -18,28 +26,31 @@ priorities:
 
   1:
     description: >
-      Statistical branch baselines on all three datasets — source-only +
-      CORAL across every (representation × model) pair.  This is the
-      minimum required for the defence: it covers MIT-BIH (mild shift),
-      Sleep-EDF (cross-subject EEG), and CWRU (cross-load vibration).
+      Statistical branch baselines on all five datasets — source-only +
+      CORAL across every (representation × model) pair.  Covers the three
+      core domain-shift signal modalities (vibration / audio / EEG) plus
+      the two retained legacy benchmarks (ECG / sleep EEG) for direct
+      comparability with earlier results.
     groups:
       # CWT excluded from stat branch: flattened scalograms (32×T) produce
       # 9k–96k features depending on dataset — intractable for trees,
       # and linear models lose the 2-D structure. CWT is reserved for
       # neural models (Priority 2) that can exploit the 2-D representation.
-      - datasets:        [mitbih, sleep-edf, cwru]
+      - datasets:        [mitbih, sleep-edf, cwru, chbmit, mimii]
         representations: [raw, log-stft]
         models:          [logreg, random-forest, gbm]
         da_methods:      [source-only, coral]
 
   2:
     description: >
-      Deep branch on the two large-shift datasets — every deep DA method
+      Deep branch on the three new-modality datasets — every deep DA method
       paired with every (representation × neural-model) combination.  The
       compatibility matrix prunes incompatible pairs (e.g. raw × resnet2d)
-      automatically.  Each deep run is capped at 30 epochs per the spec.
+      automatically.  5 seeds per (config) — Wilcoxon-friendly variance
+      estimation at the seed-noise scale typical of neural training.
+    seeds: [0, 1, 2, 3, 4]
     groups:
-      - datasets:        [sleep-edf, cwru]
+      - datasets:        [cwru, chbmit, mimii]
         representations: [raw, log-stft, cwt-morlet]
         models:          [inception-time, patch-tst, resnet2d]
         da_methods:      [source-only, deep-coral, codats, mk-mmd]
@@ -47,14 +58,16 @@ priorities:
   3:
     description: >
       Completes the stat-branch DA matrix (adds subspace-alignment for all
-      three datasets) and replays the deep branch on MIT-BIH for direct
-      comparability with the published MIT-BIH baseline tables.
+      five datasets) and replays the deep branch on the retained legacy
+      datasets (MIT-BIH + Sleep-EDF) for direct comparability with their
+      earlier published tables.
+    seeds: [0, 1, 2, 3, 4]
     groups:
-      - datasets:        [mitbih, sleep-edf, cwru]
+      - datasets:        [mitbih, sleep-edf, cwru, chbmit, mimii]
         representations: [raw, log-stft, cwt-morlet]
         models:          [logreg, random-forest, gbm]
         da_methods:      [subspace-alignment]
-      - datasets:        [mitbih]
+      - datasets:        [mitbih, sleep-edf]
         representations: [raw, log-stft, cwt-morlet]
         models:          [inception-time, patch-tst, resnet2d]
         da_methods:      [source-only, deep-coral, codats, mk-mmd]

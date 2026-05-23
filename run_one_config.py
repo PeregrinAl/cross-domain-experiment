@@ -10,10 +10,10 @@ CLI
 ::
 
     python run_one_config.py \\
-        --dataset {mitbih,sleep-edf,cwru} \\
+        --dataset {mitbih,sleep-edf,cwru,chbmit,mimii} \\
         --representation {raw,log-stft,cwt-morlet} \\
         --model {random-forest,logreg,gbm,inception-time,patch-tst,resnet2d} \\
-        --da-method {source-only,coral,subspace-alignment,codats,m2n2,mk-mmd} \\
+        --da-method {source-only,coral,subspace-alignment,codats,deep-coral,mk-mmd} \\
         --seed N \\
         --output-csv path/to/results.csv
 
@@ -75,6 +75,8 @@ DATASETS: dict[str, str] = {
     "mitbih":    "mitbih_ds1_ds2",
     "sleep-edf": "sleep_edf_loso",
     "cwru":      "cwru_load_0_3",
+    "chbmit":    "chbmit_loso",
+    "mimii":     "mimii_pump_cross_unit",
 }
 
 REPRESENTATIONS: dict[str, str] = {
@@ -238,8 +240,9 @@ def _register_dataset(cli_name: str, ds_key: str, seed: int) -> None:
 
     Honors ``DATA_ROOT`` via the loader factories; the Kaggle notebook may
     additionally pass an explicit slug path through the env vars
-    ``KAGGLE_MITBIH_DIR`` / ``KAGGLE_SLEEP_EDF_DIR`` / ``KAGGLE_CWRU_DIR``
-    when the Kaggle dataset slug differs from the canonical subdir name.
+    ``KAGGLE_MITBIH_DIR`` / ``KAGGLE_SLEEP_EDF_DIR`` / ``KAGGLE_CWRU_DIR`` /
+    ``KAGGLE_CHBMIT_DIR`` / ``KAGGLE_MIMII_DIR`` when the Kaggle dataset
+    slug differs from the canonical subdir name.
     """
     from nstad_bench.experiments.runner import register_dataset
 
@@ -272,6 +275,30 @@ def _register_dataset(cli_name: str, ds_key: str, seed: int) -> None:
         from nstad_bench.data.cwru_loader import cwru_loader
         override = os.environ.get("KAGGLE_CWRU_DIR")
         register_dataset(ds_key, cwru_loader(data_root=override, seed=seed))
+    elif cli_name == "chbmit":
+        from nstad_bench.data.chbmit_loader import chbmit_loader, DEFAULT_PATIENTS
+        # Rotate the LOSO test patient through DEFAULT_PATIENTS by seed —
+        # mirrors the Sleep-EDF "seed picks fold from target pool" convention
+        # so each seed evaluates a different held-out patient.
+        test_patient = DEFAULT_PATIENTS[seed % len(DEFAULT_PATIENTS)]
+        override = os.environ.get("KAGGLE_CHBMIT_DIR")
+        log.info("CHB-MIT: LOSO fold for seed=%d → test_patient=%s", seed, test_patient)
+        register_dataset(
+            ds_key,
+            chbmit_loader(data_root=override, test_patient=test_patient, seed=seed),
+        )
+    elif cli_name == "mimii":
+        from nstad_bench.data.mimii_loader import mimii_loader
+        # Default machine type is pump (the only one universally available on
+        # Kaggle via senaca/mimii-pump-sound-dataset).  Override via
+        # KAGGLE_MIMII_MACHINE if you've also uploaded valve / fan / slider.
+        machine = os.environ.get("KAGGLE_MIMII_MACHINE", "pump")
+        override = os.environ.get("KAGGLE_MIMII_DIR")
+        log.info("MIMII: machine=%s (seed=%d rotates target unit)", machine, seed)
+        register_dataset(
+            ds_key,
+            mimii_loader(data_root=override, machine=machine, seed=seed),
+        )
     else:   # pragma: no cover — argparse choices already restrict this
         raise ValueError(f"Unknown dataset CLI key: {cli_name!r}")
 
