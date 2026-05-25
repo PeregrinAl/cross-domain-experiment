@@ -140,6 +140,17 @@ _PROHIBITIVE_COMBOS: set[tuple[str, str, str]] = {
     # "spectral repr × shallow alignment" comparison.
     ("mimii", "log-stft", "coral"),
     ("mimii", "log-stft", "subspace-alignment"),
+    # MIMII cwt-morlet on ResNet18_2D: input shape (32, 16000) — extremely
+    # wide aspect ratio creates >1 GB intermediate activations per BN layer,
+    # OOMs on a 15 GB T4 even at batch=4.  Would need A100 (80 GB) or
+    # downsampled CWT (n_scales smaller / signal pre-pooled).  Skip until
+    # the representation pipeline supports CWT downsampling.
+    ("mimii", "cwt-morlet", "source-only"),
+    ("mimii", "cwt-morlet", "deep-coral"),
+    ("mimii", "cwt-morlet", "codats"),
+    ("mimii", "cwt-morlet", "mk-mmd"),
+    ("mimii", "cwt-morlet", "coral"),
+    ("mimii", "cwt-morlet", "subspace-alignment"),
 }
 
 # Default hyperparameters per architecture / DA method (mid-point of search spaces).
