@@ -30,8 +30,15 @@ from dataclasses import dataclass, field
 
 import numpy as np
 import pandas as pd
-from scikit_posthocs import posthoc_nemenyi_friedman
 from scipy.stats import friedmanchisquare, wilcoxon
+
+# scikit-posthocs is an optional dependency used only for Nemenyi post-hoc
+# tests.  Guard the import so that the rest of the metrics package (and
+# run_one_config.py) can be imported without it installed.
+try:
+    from scikit_posthocs import posthoc_nemenyi_friedman as _posthoc_nemenyi
+except ImportError:  # pragma: no cover
+    _posthoc_nemenyi = None  # type: ignore[assignment]
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -227,7 +234,12 @@ def friedman_nemenyi(
     stat, p = friedmanchisquare(*scores.T)
 
     # Nemenyi post-hoc (scores rows = blocks, cols = treatments)
-    nemenyi_df: pd.DataFrame = posthoc_nemenyi_friedman(scores)
+    if _posthoc_nemenyi is None:
+        raise ImportError(
+            "scikit-posthocs is required for Nemenyi post-hoc tests. "
+            "Install it with: pip install scikit-posthocs"
+        )
+    nemenyi_df: pd.DataFrame = _posthoc_nemenyi(scores)
     nemenyi_df.columns = method_names
     nemenyi_df.index   = method_names
 

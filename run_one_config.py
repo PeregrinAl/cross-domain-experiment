@@ -140,10 +140,15 @@ _PROHIBITIVE_COMBOS: set[tuple[str, str, str]] = {
     # "spectral repr × shallow alignment" comparison.
     ("mimii", "log-stft", "coral"),
     ("mimii", "log-stft", "subspace-alignment"),
-    # NOTE: MIMII × cwt-morlet × ResNet2D was previously listed here as
-    # prohibitive on T4, but the long-seq guard in _build_neural_model now
-    # drops batch_size to 8 for ndim==3 inputs with shape[-1] > 4000,
-    # bringing memory back within T4 limits.  Combo re-enabled above.
+    # MIMII × cwt-morlet: (32, 16000) scalogram OOMs ResNet2D on T4 even at
+    # batch=8 — a single BatchNorm op tries to allocate ~7.8 GiB.  The
+    # long-seq guard in _build_neural_model is not sufficient for this combo;
+    # skip all four DA methods.  CWRU/CHB-MIT × cwt-morlet × ResNet2D cover
+    # the "wavelet repr × deep 2-D" comparison at tractable T.
+    ("mimii", "cwt-morlet", "source-only"),
+    ("mimii", "cwt-morlet", "deep-coral"),
+    ("mimii", "cwt-morlet", "codats"),
+    ("mimii", "cwt-morlet", "mk-mmd"),
 }
 
 # Default hyperparameters per architecture / DA method (mid-point of search spaces).

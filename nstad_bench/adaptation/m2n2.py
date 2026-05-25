@@ -29,6 +29,16 @@ Three self-supervised objectives are jointly optimised on target batches:
 
        L_mask = ‖p̂(x) − p̂(x ⊙ m)‖²,  m ~ Bernoulli(1 − r)
 
+4. **Diversity regularisation** (prevent collapse to a single class by
+   maximising the entropy of the *mean* prediction across the batch)::
+
+       L_div = −H(E[p̂]) = Σ_c ē_c log ē_c,  ē = (1/B) Σ_i p̂_i
+
+   Without this term entropy minimisation alone collapses to a degenerate
+   "all-one-class" solution on any skewed or small batch.  The diversity
+   loss is subtracted (equivalent to *maximising* H(E[p̂])), weighted by
+   ``lambda_div`` (default 1.0).
+
 Parameter update strategy — BN/LN affine parameters only
 ----------------------------------------------------------
 Following the Tent (Wang et al. 2021) principle, **only the affine parameters
@@ -106,6 +116,10 @@ class M2N2(BaseAdaptation):
         Noise-consistency loss weight (default 0.5).
     lambda_mask :
         Mask-consistency loss weight (default 0.5).
+    lambda_div :
+        Diversity-regularisation weight (default 1.0).  Maximises the entropy
+        of the mean batch prediction, preventing entropy-minimisation collapse.
+        Set to 0.0 to disable (only useful for ablation studies).
     batch_size :
         Mini-batch size (default 32).
     """
@@ -120,6 +134,7 @@ class M2N2(BaseAdaptation):
         lambda_ent: float = 1.0,
         lambda_cons: float = 0.5,
         lambda_mask: float = 0.5,
+        lambda_div: float = 1.0,
         batch_size: int = 32,
     ) -> None:
         self.n_steps     = n_steps
@@ -129,6 +144,7 @@ class M2N2(BaseAdaptation):
         self.lambda_ent  = lambda_ent
         self.lambda_cons = lambda_cons
         self.lambda_mask = lambda_mask
+        self.lambda_div  = lambda_div
         self.batch_size  = batch_size
 
     # ---------------------------------------------------------------------- #
@@ -165,12 +181,19 @@ class M2N2(BaseAdaptation):
         for p in norm_params:
             p.requires_grad_(True)
 
-        # ── 3. Set mode: eval everywhere, train only for norm layers ──────
-        #    eval  → dropout off, BN uses running stats for non-norm layers
-        #    train → norm layers use target batch statistics
+        # ── 3. Keep the model in eval mode throughout ─────────────────────
+        #
+        # Full model eval means:
+        #   • Dropout is disabled (stable forward pass)
+        #   • BatchNorm uses *frozen* running_mean / running_var
+        #   • running_mean / running_var are NOT updated during adaptation
+        #
+        # We only learn the affine parameters (γ, β) which rescale and
+        # shift already-normalised features.  Keeping BN in eval mode is
+        # critical: putting BN in train mode would contaminate
+        # running_mean/running_var with target-domain statistics, breaking
+        # source predictions when predict_proba is later called in eval mode.
         model.eval()
-        for mod in norm_modules:
-            mod.train()
 
         # ── 4. Optimiser acts only on norm affine params ──────────────────
         optimizer = torch.optim.Adam(norm_params, lr=self.lr)
@@ -205,11 +228,25 @@ class M2N2(BaseAdaptation):
                 p_masked    = torch.softmax(model.head(feat_masked), dim=-1)
                 mask_loss   = F.mse_loss(p_clean, p_masked)
 
+                # ── L_div : diversity / anti-collapse regulariser ─────────
+                # Compute diversity over the FULL target set (not just the
+                # mini-batch) so the global class-balance signal is stable.
+                # Using the full set prevents the mini-batch entropy term from
+                # repeatedly cycling into collapse between batches.
+                #
+                # Maximise H(E[p̂_all]) by minimising its negation −H.
+                p_all    = torch.softmax(
+                    model.head(model.projector(model.backbone(Xt_t))), dim=-1
+                )
+                p_mean   = p_all.mean(0)                                # (C,)
+                div_loss = (p_mean * torch.log(p_mean + 1e-8)).sum()   # −H
+
                 # ── Total loss ────────────────────────────────────────────
                 loss = (
                     self.lambda_ent  * ent_loss
                     + self.lambda_cons * cons_loss
                     + self.lambda_mask * mask_loss
+                    + self.lambda_div  * div_loss   # div_loss is already −H
                 )
 
                 optimizer.zero_grad()

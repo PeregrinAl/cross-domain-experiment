@@ -101,7 +101,13 @@ def target_data(source_data) -> np.ndarray:
 
 @pytest.fixture(scope="module")
 def trained_model(source_data) -> InceptionTime1D:
-    """Source model trained for 5 epochs — non-trivially discriminative."""
+    """Source model trained for 5 epochs — non-trivially discriminative.
+
+    A fixed PyTorch seed is set before model init and training so this
+    fixture is deterministic regardless of which other tests ran first.
+    """
+    import torch
+    torch.manual_seed(42)
     X, y = source_data
     m = InceptionTime1D(
         in_channels=1, nb_filters=NB_FILTERS, bottleneck=NB_FILTERS, depth=1
