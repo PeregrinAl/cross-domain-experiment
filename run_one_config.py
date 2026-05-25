@@ -131,8 +131,15 @@ DA_METHODS: dict[str, set[str]] = {
 # (source-only / deep-coral / codats / mk-mmd) work on the 128-d projector
 # embedding regardless of input dimensionality.
 _PROHIBITIVE_COMBOS: set[tuple[str, str, str]] = {
+    # MIMII raw: D = 16 000 (16 kHz × 1 s window) → ~15 min per fit
     ("mimii", "raw", "coral"),
     ("mimii", "raw", "subspace-alignment"),
+    # MIMII log-stft: D ≈ 8 250 (33 bins × 250 frames) → still ~3-5 min per fit.
+    # 3 seeds → 10-15 min for one (model, da) combo.  Skip to keep wall time
+    # bounded; CWRU + CHB-MIT × log-stft × CORAL (D ≤ 528) cover the
+    # "spectral repr × shallow alignment" comparison.
+    ("mimii", "log-stft", "coral"),
+    ("mimii", "log-stft", "subspace-alignment"),
 }
 
 # Default hyperparameters per architecture / DA method (mid-point of search spaces).
