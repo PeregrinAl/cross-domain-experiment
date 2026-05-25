@@ -140,17 +140,10 @@ _PROHIBITIVE_COMBOS: set[tuple[str, str, str]] = {
     # "spectral repr × shallow alignment" comparison.
     ("mimii", "log-stft", "coral"),
     ("mimii", "log-stft", "subspace-alignment"),
-    # MIMII cwt-morlet on ResNet18_2D: input shape (32, 16000) — extremely
-    # wide aspect ratio creates >1 GB intermediate activations per BN layer,
-    # OOMs on a 15 GB T4 even at batch=4.  Would need A100 (80 GB) or
-    # downsampled CWT (n_scales smaller / signal pre-pooled).  Skip until
-    # the representation pipeline supports CWT downsampling.
-    ("mimii", "cwt-morlet", "source-only"),
-    ("mimii", "cwt-morlet", "deep-coral"),
-    ("mimii", "cwt-morlet", "codats"),
-    ("mimii", "cwt-morlet", "mk-mmd"),
-    ("mimii", "cwt-morlet", "coral"),
-    ("mimii", "cwt-morlet", "subspace-alignment"),
+    # NOTE: MIMII × cwt-morlet × ResNet2D was previously listed here as
+    # prohibitive on T4, but the long-seq guard in _build_neural_model now
+    # drops batch_size to 8 for ndim==3 inputs with shape[-1] > 4000,
+    # bringing memory back within T4 limits.  Combo re-enabled above.
 }
 
 # Default hyperparameters per architecture / DA method (mid-point of search spaces).
@@ -370,7 +363,7 @@ def _build_neural_model(theta: str, X_repr: np.ndarray):
     from nstad_bench.models import InceptionTime1D, PatchTST, ResNet18_2D
     cfg = _DEFAULT_MODEL_CFG[theta].copy()
 
-    # Long-sequence guard (only matters for 1-D models on raw audio-rate input).
+    # Long-sequence guard for 1-D models on raw audio-rate input.
     seq_len = int(X_repr.shape[-1])
     if X_repr.ndim == 2 and seq_len > 8000:
         if theta == "InceptionTime1D":
@@ -383,6 +376,19 @@ def _build_neural_model(theta: str, X_repr: np.ndarray):
             cfg["d_model"]    = min(cfg.get("d_model", 128), 64)
             cfg["n_layers"]   = min(cfg.get("n_layers", 3), 2)
             log.info("  long-seq guard: PatchTST → batch=8, d_model=64, n_layers=2")
+
+    # Long-time-dim guard for 2-D representations on ResNet2D.
+    # CWT-Morlet on MIMII raw windows: scalogram shape (32, 16000) creates >1 GB
+    # intermediate activations per BN layer at default batch=32, OOMs on T4.
+    # Drop to batch=8 (~130 MB/activation → ~1.3 GB total).  Wall-time/epoch
+    # roughly unchanged: 4x fewer steps per epoch × 4x more steps = same.
+    elif X_repr.ndim == 3 and X_repr.shape[-1] > 4000:
+        if theta == "ResNet18_2D":
+            cfg["batch_size"] = min(cfg["batch_size"], 8)
+            log.info(
+                "  long-seq guard: ResNet18_2D wide-T (T=%d) → batch=8",
+                X_repr.shape[-1],
+            )
 
     train_keys = {"epochs", "lr", "batch_size"}
     ctor = {k: v for k, v in cfg.items() if k not in train_keys}
@@ -416,6 +422,9 @@ def _build_neural_adapt(psi: str, X_s: np.ndarray, y_s: np.ndarray):
     if X_s.ndim == 2 and X_s.shape[-1] > 8000:
         hp["batch_size"] = min(hp.get("batch_size", 64), 16)
         log.info("  long-seq guard: %s → batch=%d", psi, hp["batch_size"])
+    elif X_s.ndim == 3 and X_s.shape[-1] > 4000:
+        hp["batch_size"] = min(hp.get("batch_size", 64), 8)
+        log.info("  long-seq guard: %s wide-T → batch=%d", psi, hp["batch_size"])
 
     if psi == "SourceOnly":
         return SourceOnly()
