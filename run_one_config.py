@@ -120,6 +120,21 @@ DA_METHODS: dict[str, set[str]] = {
     "mk-mmd":             {"deep"},
 }
 
+# Combos that are mathematically valid but computationally prohibitive at the
+# given feature dimensionality.  Shallow CORAL and SubspaceAlignment are O(D^3)
+# in feature dim (covariance/SVD on a D×D matrix), which is fine for low-D
+# representations but ~15 min per fit on MIMII raw (D = 16000 samples per 1s
+# window).  We skip these the same way as INCOMPATIBLE (exit 2 → driver SKIP).
+#
+# Use log-stft + CORAL on MIMII instead — same alignment principle, ~500-d
+# features, runs in seconds.  For deep DA on MIMII raw, all four neural methods
+# (source-only / deep-coral / codats / mk-mmd) work on the 128-d projector
+# embedding regardless of input dimensionality.
+_PROHIBITIVE_COMBOS: set[tuple[str, str, str]] = {
+    ("mimii", "raw", "coral"),
+    ("mimii", "raw", "subspace-alignment"),
+}
+
 # Default hyperparameters per architecture / DA method (mid-point of search spaces).
 # Picking fixed defaults here means the CSV row reflects a deterministic
 # (model, da_method) — no random HP-sampling, so seeds vary only training noise.
@@ -212,6 +227,15 @@ def _validate(args: argparse.Namespace) -> tuple[str, str, str, str, str]:
         sys.exit(
             f"INCOMPATIBLE: model={args.model!r} ({branch} branch) cannot run "
             f"with da-method={args.da_method!r} ({other} branch). Skipping."
+        )
+
+    if (args.dataset, args.representation, args.da_method) in _PROHIBITIVE_COMBOS:
+        sys.exit(
+            f"PROHIBITIVE: {args.dataset}×{args.representation}×{args.da_method} "
+            f"is computationally infeasible (shallow CORAL/SubspaceAlignment are "
+            f"O(D^3); MIMII raw D=16000 → ~15 min per fit). Use "
+            f"{args.dataset}×log-stft for shallow DA, or {args.dataset}×raw with "
+            f"deep-coral/codats/mk-mmd. Skipping."
         )
 
     if branch == "stat":
