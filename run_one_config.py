@@ -345,8 +345,34 @@ def _build_repr(phi: str):
 
 
 def _build_neural_model(theta: str, X_repr: np.ndarray):
+    """Build a neural model, auto-shrinking capacity for long input sequences.
+
+    For 1-D inputs with T > 8000 samples (e.g. MIMII raw, T=16000), the default
+    InceptionTime1D / PatchTST configs OOM on a 15 GB T4 GPU — activation memory
+    scales as ``batch_size × channels × T``.  We auto-shrink batch_size, filters,
+    depth (InceptionTime) or d_model, n_layers (PatchTST) so the model fits.
+
+    The threshold T=8000 is conservative: CHB-MIT (T=512), CWRU (T=1024), and
+    MIT-BIH (T=180) all stay below it and use full-capacity defaults; only
+    MIMII raw (T=16000) triggers the shrink.
+    """
     from nstad_bench.models import InceptionTime1D, PatchTST, ResNet18_2D
     cfg = _DEFAULT_MODEL_CFG[theta].copy()
+
+    # Long-sequence guard (only matters for 1-D models on raw audio-rate input).
+    seq_len = int(X_repr.shape[-1])
+    if X_repr.ndim == 2 and seq_len > 8000:
+        if theta == "InceptionTime1D":
+            cfg["batch_size"] = min(cfg["batch_size"], 16)
+            cfg["nb_filters"] = min(cfg.get("nb_filters", 32), 16)
+            cfg["depth"]      = min(cfg.get("depth", 6), 4)
+            log.info("  long-seq guard: InceptionTime1D → batch=16, nb_filters=16, depth=4")
+        elif theta == "PatchTST":
+            cfg["batch_size"] = min(cfg["batch_size"], 8)
+            cfg["d_model"]    = min(cfg.get("d_model", 128), 64)
+            cfg["n_layers"]   = min(cfg.get("n_layers", 3), 2)
+            log.info("  long-seq guard: PatchTST → batch=8, d_model=64, n_layers=2")
+
     train_keys = {"epochs", "lr", "batch_size"}
     ctor = {k: v for k, v in cfg.items() if k not in train_keys}
     if theta == "InceptionTime1D":
@@ -355,7 +381,7 @@ def _build_neural_model(theta: str, X_repr: np.ndarray):
     if theta == "ResNet18_2D":
         return ResNet18_2D(in_channels=1, **ctor), cfg
     if theta == "PatchTST":
-        return PatchTST(in_channels=1, seq_len=int(X_repr.shape[-1]), **ctor), cfg
+        return PatchTST(in_channels=1, seq_len=seq_len, **ctor), cfg
     raise ValueError(f"Unknown neural model: {theta!r}")
 
 
@@ -366,8 +392,20 @@ def _build_stat_model(theta: str):
 
 
 def _build_neural_adapt(psi: str, X_s: np.ndarray, y_s: np.ndarray):
+    """Build a deep DA adapter, shrinking batch_size for long sequences.
+
+    Mirrors the long-sequence guard in ``_build_neural_model``: deep-DA fine-
+    tuning loops do the same backbone+projector forward pass as fit(), so
+    activation memory scales the same way.  Drop batch_size from 64 → 16
+    when T > 8000 to keep T4 GPU memory bounded.
+    """
     from nstad_bench.adaptation import CoDATS, DeepCORAL, MK_MMD, SourceOnly
-    hp = _DEFAULT_DA_HP[psi]
+    hp = _DEFAULT_DA_HP[psi].copy()
+
+    if X_s.ndim == 2 and X_s.shape[-1] > 8000:
+        hp["batch_size"] = min(hp.get("batch_size", 64), 16)
+        log.info("  long-seq guard: %s → batch=%d", psi, hp["batch_size"])
+
     if psi == "SourceOnly":
         return SourceOnly()
     if psi == "MK_MMD":
