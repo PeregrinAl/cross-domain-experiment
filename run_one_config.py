@@ -403,7 +403,10 @@ def _build_neural_model(theta: str, X_repr: np.ndarray):
     if theta == "ResNet18_2D":
         return ResNet18_2D(in_channels=1, **ctor), cfg
     if theta == "PatchTST":
-        return PatchTST(in_channels=1, seq_len=seq_len, **ctor), cfg
+        # Multi-channel input (e.g. LogSTFT / CWT_Morlet): treat freq bins
+        # or wavelet scales as independent channels, same as InceptionTime1D.
+        in_ch = 1 if X_repr.ndim == 2 else X_repr.shape[1]
+        return PatchTST(in_channels=in_ch, seq_len=seq_len, **ctor), cfg
     raise ValueError(f"Unknown neural model: {theta!r}")
 
 

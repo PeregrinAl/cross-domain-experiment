@@ -25,15 +25,24 @@
 compatibility:
   RawSignal:
     InceptionTime1D: true
-    ResNet18_2D:     false
+    ResNet18_2D:     false   # ResNet2D needs 2-D (F, T) input
     PatchTST:        true
 
   LogSTFT:
-    InceptionTime1D: false
+    # LogSTFT produces (N, F, T).  ResNet18_2D treats it as an image.
+    # InceptionTime1D and PatchTST treat the F frequency bins as independent
+    # channels (multi-variate 1-D input), identical to multi-lead ECG.
+    # This enables the representation × model crossing needed to disentangle
+    # representation effects from architecture effects.
+    InceptionTime1D: true
     ResNet18_2D:     true
-    PatchTST:        false
+    PatchTST:        true
 
   CWT_Morlet:
-    InceptionTime1D: false
+    # Same rationale as LogSTFT: F wavelet scales become channels.
+    # MIMII × CWT_Morlet is already blocked by _PROHIBITIVE_COMBOS in
+    # run_one_config.py (scalogram 32×16000 OOMs T4); this entry only
+    # affects tractable datasets (CHB-MIT: 32×512, CWRU: 32×1024).
+    InceptionTime1D: true
     ResNet18_2D:     true
-    PatchTST:        false
+    PatchTST:        true

@@ -380,12 +380,19 @@ class TestCompatibilityYaml:
                 f"ResNet18_2D should not be compatible with {repr_name}"
             )
 
-    def test_2d_reprs_not_used_with_1d_models(self, compat):
-        """1-D models must be False for 2-D representations."""
+    def test_1d_models_enabled_for_spectral_reprs(self, compat):
+        """LogSTFT and CWT_Morlet must be compatible with 1-D models.
+
+        1-D models (InceptionTime1D, PatchTST) treat frequency bins / wavelet
+        scales as independent channels — identical to multi-lead ECG input.
+        This crossing is required to disentangle representation effects from
+        architecture effects in the ablation analysis.
+        """
         for repr_name in ("LogSTFT", "CWT_Morlet"):
             for model_name in ("InceptionTime1D", "PatchTST"):
-                assert not compat[repr_name][model_name], (
-                    f"{model_name} should not be compatible with {repr_name}"
+                assert compat[repr_name][model_name], (
+                    f"{model_name} should be compatible with {repr_name} "
+                    "(freq bins / scales treated as channels)"
                 )
 
     def test_at_least_one_valid_pair_per_repr(self, compat):
