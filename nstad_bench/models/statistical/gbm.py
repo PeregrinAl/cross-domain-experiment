@@ -57,4 +57,7 @@ class GBM(StatModel):
         self._adapt_transform = None
 
     def _extract(self, X: np.ndarray) -> np.ndarray:
-        return np.asarray(X, dtype=np.float64).reshape(X.shape[0], -1)
+        arr = np.asarray(X, dtype=np.float64)
+        n = arr.shape[0]
+        d = int(np.prod(arr.shape[1:])) if arr.ndim > 1 else 1
+        return arr.reshape(n, d)

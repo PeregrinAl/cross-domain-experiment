@@ -321,6 +321,16 @@ def mitbih_loader(
         X_s, y_s = _build_split(src_pool, _ds1)
         X_t, y_t = _build_split(tgt_pool, _ds2)
 
+        if len(X_s) == 0 or len(X_t) == 0:
+            raise FileNotFoundError(
+                f"No MIT-BIH beats loaded from {root}.\n"
+                "Expected either:\n"
+                "  WFDB format  — .hea/.dat/.atr files for records 100–234\n"
+                "  CSV format   — mitbih_train.csv + mitbih_test.csv (mondejar)\n"
+                "Check that KAGGLE_MITBIH_DIR / DATA_ROOT / NSTAD_DATA_ROOT "
+                "points to the correct directory."
+            )
+
         log.info(
             "MIT-BIH DS1→DS2 — source: %d  (N=%d, A=%d)  "
             "target: %d  (N=%d, A=%d)",
