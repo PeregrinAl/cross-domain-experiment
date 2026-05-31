@@ -230,17 +230,16 @@ class TestReproducibility:
 # ─────────────────────────────────────────────────────────────────────────────
 
 class TestMissing:
-    def test_missing_record_skipped(self, tmp_path):
-        """A missing record should log a warning and be skipped gracefully."""
+    def test_missing_record_raises(self, tmp_path):
+        """All records missing → FileNotFoundError with a helpful message."""
+        import pytest
         import nstad_bench.data.mitbih_loader as m
         orig_ds1, orig_ds2 = m.DS1, m.DS2
         m.DS1 = ("nonexistent_record",)
         m.DS2 = ("nonexistent_record2",)
         try:
             loader = m.mitbih_loader(data_root=tmp_path, max_per_class=10)
-            X_s, y_s, X_t, y_t = loader()
-            # no records loaded → empty arrays
-            assert len(y_s) == 0
-            assert len(y_t) == 0
+            with pytest.raises(FileNotFoundError, match="No MIT-BIH beats loaded"):
+                loader()
         finally:
             m.DS1, m.DS2 = orig_ds1, orig_ds2

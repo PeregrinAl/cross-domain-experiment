@@ -100,6 +100,98 @@ def _default_root() -> Path:
 
 # ── Core segmentation ─────────────────────────────────────────────────────────
 
+def _segment_records_mondejar(
+    records: tuple[str, ...],
+    root: Path,
+) -> dict[str, dict[str, list[np.ndarray]]]:
+    """Segment beats from the mondejar/mitbih-database Kaggle per-record CSV format.
+
+    File layout expected in *root*::
+
+        {rec}.csv              — signal, CSV with header row; MLII in the column
+                                 whose name contains "MLII" (e.g. ``"'MLII'"``).
+                                 Fallback: 3rd column (index 2), matching the
+                                 typical 4-column layout: elapsed, sample#, MLII, V5.
+        {rec}annotations.txt   — beat annotations in WFDB text format::
+
+                                     Time       Sample #  Type  Sub  Chan  Num
+                                     0:00.261     94       N      0    0    0
+                                     …
+
+                                 Lines where the sample-# field is not an integer
+                                 (header, rhythm labels, etc.) are silently skipped.
+
+    Each beat is a z-score normalised float32 array of shape ``(2*WIN,)`` (280 samples).
+    Records missing either file are skipped with a warning.
+    """
+    try:
+        import pandas as pd
+    except ImportError as exc:
+        raise ImportError("pandas is required for the mondejar MIT-BIH format.") from exc
+
+    pool: dict[str, dict[str, list]] = {}
+    for rec in records:
+        pool[rec] = {"normal": [], "arr": []}
+        sig_path = root / f"{rec}.csv"
+        ann_path = root / f"{rec}annotations.txt"
+
+        if not sig_path.exists() or not ann_path.exists():
+            log.warning("Record %s: %s not found — skipping", rec,
+                        "signal CSV" if not sig_path.exists() else "annotations")
+            continue
+
+        try:
+            df = pd.read_csv(sig_path)
+            # Column whose name contains "MLII" (may be stored as "'MLII'" with
+            # embedded single quotes from the original WFDB export).
+            mlii_col = next((c for c in df.columns if "MLII" in c), None)
+            if mlii_col is None:
+                # Fallback: 3rd column (index 2) matches typical 4-col layout
+                mlii_col = df.columns[2] if len(df.columns) >= 3 else df.columns[0]
+                log.debug("Record %s: no 'MLII' column found, using %r", rec, mlii_col)
+            s = df[mlii_col].to_numpy().astype(np.float32)
+            s = (s - s.mean()) / (s.std() + 1e-8)
+        except Exception as exc:
+            log.warning("Could not read signal %s: %s — skipping", sig_path.name, exc)
+            continue
+
+        try:
+            with open(ann_path) as fh:
+                for line in fh:
+                    parts = line.split()
+                    if len(parts) < 2:
+                        continue
+                    # Detect whether the first field is a time string (e.g. "0:00.261")
+                    # or a raw sample number.  WFDB text annotations always have
+                    # the time first, then sample #, then beat type.
+                    if ":" in parts[0]:          # time-prefixed: Time Sample# Type …
+                        if len(parts) < 3:
+                            continue
+                        try:
+                            idx = int(parts[1])
+                            sym = parts[2]
+                        except ValueError:
+                            continue
+                    else:                         # bare: Sample# Type …
+                        try:
+                            idx = int(parts[0])
+                            sym = parts[1]
+                        except ValueError:
+                            continue
+
+                    if idx < WIN or idx + WIN >= len(s):
+                        continue
+                    beat = s[idx - WIN: idx + WIN]
+                    if sym in ARRHYTHMIA_SYMBOLS:
+                        pool[rec]["arr"].append(beat)
+                    elif sym in NORMAL_SYMBOLS:
+                        pool[rec]["normal"].append(beat)
+        except Exception as exc:
+            log.warning("Could not read annotations %s: %s — skipping", ann_path.name, exc)
+
+    return pool
+
+
 def _segment_records(
     records: tuple[str, ...],
     root: Path,
@@ -272,10 +364,21 @@ def mitbih_loader(
     def _load() -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
         rng = np.random.default_rng(seed)
 
-        log.info("Segmenting DS1 (source) from %s …", root)
-        src_pool = _segment_records(_ds1, root)
-        log.info("Segmenting DS2 (target) from %s …", root)
-        tgt_pool = _segment_records(_ds2, root)
+        # Auto-detect storage format:
+        #   mondejar per-record CSV  → {rec}.csv + {rec}annotations.txt
+        #   WFDB (PhysioNet)         → {rec}.dat / {rec}.hea / {rec}.atr
+        # Probe with the first DS1 record (101 is always in DS1).
+        if (root / f"{_ds1[0]}.csv").exists():
+            log.info("MIT-BIH: detected mondejar per-record CSV format at %s", root)
+            _seg = _segment_records_mondejar
+        else:
+            log.info("MIT-BIH: using WFDB reader at %s", root)
+            _seg = _segment_records
+
+        log.info("Segmenting DS1 (source) …")
+        src_pool = _seg(_ds1, root)
+        log.info("Segmenting DS2 (target) …")
+        tgt_pool = _seg(_ds2, root)
 
         def _build_split(
             pool: dict, records: tuple[str, ...]
@@ -324,11 +427,12 @@ def mitbih_loader(
         if len(X_s) == 0 or len(X_t) == 0:
             raise FileNotFoundError(
                 f"No MIT-BIH beats loaded from {root}.\n"
-                "Expected either:\n"
-                "  WFDB format  — .hea/.dat/.atr files for records 100–234\n"
-                "  CSV format   — mitbih_train.csv + mitbih_test.csv (mondejar)\n"
-                "Check that KAGGLE_MITBIH_DIR / DATA_ROOT / NSTAD_DATA_ROOT "
-                "points to the correct directory."
+                "Supported formats (auto-detected):\n"
+                "  WFDB          — .hea/.dat/.atr files for records 100–234\n"
+                "  mondejar CSV  — {rec}.csv + {rec}annotations.txt per record\n"
+                "  pre-segmented — mitbih_train.csv + mitbih_test.csv\n"
+                "Check KAGGLE_MITBIH_DIR points to the directory that contains "
+                "those files directly (not a subdirectory of it)."
             )
 
         log.info(
