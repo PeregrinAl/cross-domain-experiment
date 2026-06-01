@@ -508,10 +508,29 @@ def _execute(branch: str, ds_key: str, phi: str, theta: str, psi: str, seed: int
         log.info("Fitting %s …", theta)
         model.fit(X_s, y_s)
 
-    # Source val split — identical RNG to the long-format runner so the held-out
-    # source pool is the same one used for early-stopping and threshold selection.
-    _, _, X_val, y_val = _stratified_val_split(X_s, y_s)
-    in_domain_auc = float(roc_auc(y_val, model.predict_proba(X_val)[:, 1]))
+    # Source val split — identical RNG/seed to the neural fit()'s internal
+    # early-stopping split, so X_val is the SAME held-out pool the neural
+    # models never trained on.  Used for in-domain AUC and threshold selection.
+    X_tr, y_tr, X_val, y_val = _stratified_val_split(X_s, y_s)
+
+    # In-domain AUC must be a HELD-OUT estimate for BOTH branches:
+    #   • Neural — model.fit() already trained on X_tr only (X_val held out
+    #     for early stopping), so evaluating the trained model on X_val is
+    #     genuinely held-out.
+    #   • Statistical — the main `model` was fit on the FULL X_s above (sklearn
+    #     has no internal val split), so X_val ⊂ training data; evaluating it
+    #     there would be resubstitution (RandomForest → exactly 1.0).  Instead
+    #     estimate in-domain generalisation with a throwaway clone trained on
+    #     X_tr only and evaluated on the held-out X_val.  This does NOT touch
+    #     the main model used for adaptation / cross-domain below, so the
+    #     cross-domain metrics are unchanged — only `in_domain_auc` (and the
+    #     derived `delta_auc`) become a proper held-out estimate.
+    if branch == "deep":
+        in_domain_auc = float(roc_auc(y_val, model.predict_proba(X_val)[:, 1]))
+    else:
+        _id_model = _build_stat_model(theta)
+        _id_model.fit(X_tr, y_tr)
+        in_domain_auc = float(roc_auc(y_val, _id_model.predict_proba(X_val)[:, 1]))
 
     if branch == "deep":
         adapt = _build_neural_adapt(psi, X_s, y_s)
